@@ -1,0 +1,102 @@
+@use "./variables" as *;
+
+@mixin tablet {
+  @media (min-width: $tablet-breakpoint) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop-breakpoint) {
+    @content;
+  }
+}
+
+@use './partials' as *;
+/*font styles - mixins*/
+@mixin pageHeader {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@mixin pageHeaderLarge {
+    font-size: 2.25rem;
+    line-height: 2.75rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+@mixin sectionHeader {
+    font-size: .75remrem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@mixin sectionHeaderLarge {
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@mixin subHeader {
+    font-size: .6125rem;
+    line-height: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@mixin subHeaderLarge {
+    font-size: .875rem;
+    line-height: 1.375rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@mixin bodyCopy {
+    font-size: .8125rem;
+    line-height: 1.125rem;
+    font-weight: normal;
+    margin: 0;
+}
+
+@mixin bodyCopyLarge {
+    font-size: .875rem;
+    line-height: 1.375rem;
+    font-weight: normal;
+    margin: 0;
+}
+
+@mixin label {
+    font-size: .625rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@mixin labelLarge {
+    font-size: .75rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+@mixin tablet {
+    @media (min-width: $tablet-breakpoint) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: $desktop-breakpoint) {
+        @content;
+    }
+}
+
+@mixin flexin($direction:row) {
+    display: flex;
+    flex-direction: $direction;
+}
