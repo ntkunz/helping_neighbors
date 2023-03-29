@@ -1,4 +1,4 @@
-@use './partials' as *;
+@use './variables' as *;
 @use './fonts' as *;
 @use './mixins' as *;
 
@@ -8,8 +8,8 @@
     font-family: AvenirNext LT Pro, sans-serif;
     margin: 0;
     padding: 0;
-    font-family: 'Overpass', sans-serif;
     font-family: 'Quicksand', sans-serif;
+    font-family: 'Overpass', sans-serif;
 }
 
 .container {

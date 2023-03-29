@@ -1,0 +1,41 @@
+@use '../../styles/global' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
+.container {
+    background-color: $green-medium;
+}
+
+.header {
+
+
+    &__title {
+        padding: 1rem;
+        @include pageHeader;
+        display: block;
+    }
+    &__buttons {
+        @include flexin;
+        flex-wrap: wrap;
+        background-color: $blue-light;
+        justify-content: space-around
+    }
+
+    &__btn {
+        @include bodyCopy;
+        color: $basic-dark;
+        background-color: $blue-light;
+        border: none;
+        border-radius: 5px;
+        padding: .5rem;
+        flex-basis: auto;
+        margin: 0 1rem;
+        cursor: pointer;
+        transition: all .1s ease-in-out;
+
+        &:hover {
+            background-color: $blue-medium;
+            color: black;
+        }
+    }
+}

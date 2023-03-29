@@ -6,8 +6,10 @@ export default function Header() {
 
     return(
 
-    <header className="header">
-        <Link to="/dashboard"><img className="header__img" src={headerImg} alt="Helping Neighbors Logo" /></Link>
+    <header className="container">
+        {/* <Link to="/dashboard"><img className="header__img" src={headerImg} alt="Helping Neighbors Logo" /></Link> */}
+        <h1 className="header__title">Helping Neighbors</h1>
+
         <div className="header__buttons">
             {/* make this navlink either login or logout depending on userState */}
             {/* <NavLink to="/warehouses" className={({ isActive }) => 
@@ -17,11 +19,10 @@ export default function Header() {
                 isActive ? "header__inventory-button--active" : "header__inventory-button"
                 }><h3 className="header__button">Inventory</h3></NavLink> */}
             
-            <h1 className="Header__text">Helping Neighbors</h1>
             {/* <NavLink to="/login" className="header__btn">Logout</NavLink> */}
-            <NavLink className="header__btn">Logout</NavLink>
+            {/* <NavLink className="header__btn">Logout</NavLink> */}
             {/* <NavLink to="/dashboard" className="header__btn">Login</NavLink> */}
-            <NavLink className="header__btn">Login</NavLink>
+            {/* <NavLink className="header__btn">Login</NavLink> */}
             {/* <NavLink to="/dashboard" className="header__btn">Home</NavLink> */}
             <NavLink className="header__btn">Home</NavLink>
             {/* <NavLink to="/messages" className="header__btn">Messages</NavLink> */}

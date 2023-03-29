@@ -1,7 +1,7 @@
 import "./Footer.scss";
 
-export default Footer() {
-    return(
-        
-    )
+export default function Footer() {
+    return (
+      <h3>footer</h3>  
+    );
 }

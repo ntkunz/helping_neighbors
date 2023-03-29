@@ -1,0 +1,63 @@
+/*font styles - mixins*/
+/*global styling*/
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: AvenirNext LT Pro, sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: "Quicksand", sans-serif;
+  font-family: "Overpass", sans-serif;
+}
+
+.container {
+  padding: 1rem 1.5rem;
+}
+@media (min-width: 48rem) {
+  .container {
+    padding: 2rem 4rem;
+  }
+}
+@media (min-width: 80rem) {
+  .container {
+    padding: 3rem 8rem;
+  }
+}
+
+.container {
+  background-color: #12ee6e;
+}
+
+.header__title {
+  padding: 1rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  margin: 0;
+  display: block;
+}
+.header__buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #88daee;
+  justify-content: space-around;
+}
+.header__btn {
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: normal;
+  margin: 0;
+  color: #242525;
+  background-color: #88daee;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  flex-basis: auto;
+  margin: 0 1rem;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+.header__btn:hover {
+  background-color: #65d0eb;
+  color: black;
+}/*# sourceMappingURL=Header.css.map */
