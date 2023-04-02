@@ -1,3 +1,13 @@
 @use '../../styles/global' as *;
 @use '../../styles/mixins' as *;
 @use '../../styles/variables' as *;
+
+.dashboard {
+    background-color: $color-light-blue;
+    display: flex;
+    justify-content: space-between;
+
+    &__neighbors {
+        flex-basis: 65%;
+    }
+}

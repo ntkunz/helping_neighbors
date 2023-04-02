@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
-// import LoginPage from "./pages/LoginPage/LoginPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 // import Neighbors from "./pages/Neighbors/Neighbors";
 // import Profile from "./pages/Profile/Profile";
@@ -11,13 +11,25 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 
 
 export default function App() {
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  function handleLoggedin(e) {
+    e.preventDefault();
+    setLoggedIn(!loggedIn);
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
+        <Header 
+          loggedIn={loggedIn} 
+          handleLoggedIn={handleLoggedin}
+        />
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
+          {loggedIn ? <Route path="/dashboard" element={<Dashboard />} /> : <Route path="/" element={<LoginPage />} />}
+          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           {/* <Route path="/messages" element={<Messages />} />
           <Route path="/neighbors" element={<Neighbors />} />
           <Route path="/profile" element={<Profile />} />

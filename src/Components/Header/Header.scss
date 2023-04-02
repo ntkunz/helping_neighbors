@@ -2,40 +2,135 @@
 @use '../../styles/mixins' as *;
 @use '../../styles/variables' as *;
 
-.container {
-    background-color: $green-medium;
-}
 
 .header {
+    width: 100%;
+    background-color: $color-light-grey;
 
+    &__container {
+        display: flex;
+        padding: 1rem 2rem 0;
+        justify-content: space-between;
+
+        @include tablet {
+            padding: 2rem 3rem 0rem;
+        }
+    }
+
+    //header title and subtitle
+    &__titlebox {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 0 0 .625rem;
+    }
 
     &__title {
-        padding: 1rem;
-        @include pageHeader;
+        @include pageHeaderLarge;
         display: block;
-    }
-    &__buttons {
-        @include flexin;
-        flex-wrap: wrap;
-        background-color: $blue-light;
-        justify-content: space-around
+        padding: 0 0 1rem;
     }
 
+    &__subtitle {
+        @include sectionHeaderLarge;
+        display: block;
+        padding: 0 0 0 .5rem;
+    }
+
+    //login button box
+    &__loginbox {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-start;
+    }
+
+    //navigation menu box
+    &__navbox {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-evenly;
+    }
+
+    //header buttons
     &__btn {
         @include bodyCopy;
         color: $basic-dark;
         background-color: $blue-light;
         border: none;
+        border-bottom: 10px solid $color-light-grey;
         border-radius: 5px;
-        padding: .5rem;
+        padding: .5rem 0;
         flex-basis: auto;
         margin: 0 1rem;
         cursor: pointer;
-        transition: all .1s ease-in-out;
+        transition: color .3s ease-in-out;
+        transition: background-color .1s ease-in-out;
+        transition: border-bottom .1s ease-in-out;
+        min-width: 15rem;
 
         &:hover {
-            background-color: $blue-medium;
-            color: black;
+            background-color: $blue-dark;
+            border-bottom: 10px solid $blue-dark;
+            border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+            color: $color-light-grey;
         }
     }
 }
+
+.active {
+    border-bottom: 10px solid $color-light-grey;
+    // background-color: $color-light-blue;
+    background-image: linear-gradient($color-light-blue, $color-light-grey);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+
+
+
+
+
+
+
+
+// .container {
+//     // background-color: $color-light-grey;
+// }
+
+// .header {
+
+//     display: flex;
+
+//     &__title {
+//         padding: 1rem;
+//         @include pageHeader;
+//         display: block;
+//     }
+//     &__buttons {
+//         @include flexin;
+//         flex-wrap: wrap;
+//         background-color: $color-dark-blue;
+//         justify-content: space-around
+//     }
+
+//     &__btn {
+//         @include bodyCopy;
+//         color: $basic-dark;
+//         background-color: $blue-light;
+//         border: none;
+//         border-radius: 5px;
+//         padding: .5rem;
+//         flex-basis: auto;
+//         margin: 0 1rem;
+//         cursor: pointer;
+//         transition: all .1s ease-in-out;
+
+//         &:hover {
+//             background-color: $blue-medium;
+//             color: black;
+//         }
+//     }
+// }

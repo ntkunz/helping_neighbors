@@ -20,4 +20,13 @@
   .container {
     padding: 3rem 8rem;
   }
-}/*# sourceMappingURL=LoginPage.css.map */
+}
+
+.dashboard {
+  background-color: #a8dadc;
+  display: flex;
+  justify-content: space-between;
+}
+.dashboard__neighbors {
+  flex-basis: 65%;
+}/*# sourceMappingURL=Dashboard.css.map */
