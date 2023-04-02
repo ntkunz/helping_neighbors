@@ -2,16 +2,10 @@
 @use '../../styles/mixins' as *;
 @use '../../styles/variables' as *;
 
-.messages {
-    background-color: $color-two;
+.message {
 
     &__title {
         display: block;
         padding: 0 0 1rem;
     }
 }
-
-.dashboard__messages {
-    flex-basis: 35%;
-}
-

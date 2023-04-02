@@ -21,7 +21,19 @@
 
     //header title and subtitle
 
-    &__thtle-btn{
+    &__title-btn{
+        text-decoration: none;
+        color: $color-six;
+        border-bottom: 10px solid $color-one;
+        border-radius: 5px;
+        transition: border-bottom, color .3s ease-in;
+
+        &:hover {
+            color: $color-four;
+            border-bottom: 10px solid $color-two;
+        }
+
+        
     }
 
     &__titlebox {
@@ -29,23 +41,22 @@
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
-        padding: 0 0 .625rem;
+        // padding: 0 0 .625rem;
     }
 
     &__title {
         @include pageHeaderLarge;
         display: block;
         padding: 0 0 1rem;
-        color: $color-six;
-        text-decoration: none;
+        // text-decoration: none;
     }
 
     &__subtitle {
         @include sectionHeaderLarge;
         display: block;
         padding: 0 0 0 .5rem;
-        color: $color-six;
-        text-decoration: none;
+        // color: $color-six;
+        // text-decoration: none;
     }
 
     //login button box
@@ -60,39 +71,38 @@
     &__navbox {
         display: flex;
         align-items: flex-end;
-        justify-content: space-evenly;
     }
 
     //header buttons
     &__btn {
         @include bodyCopy;
         color: $color-six;
-        background-color: $color-two;
+        background-image: linear-gradient($color-two, $color-one);
         border: none;
         border-bottom: 10px solid $color-one;
         border-radius: 5px;
         padding: .5rem 0;
         flex-basis: auto;
-        margin: 0 1rem;
+        margin: 0 0 0 1rem;
         cursor: pointer;
         transition: color .3s ease-in-out;
-        transition: background-color .1s ease-in-out;
-        transition: border-bottom .1s ease-in-out;
+        transition: background-color, border-bottom .1s ease-in-out;
+        // transition: border-bottom .1s ease-in-out;
         min-width: 15rem;
 
         &:hover {
             background-color: $color-four;
-            border-bottom: 10px solid $color-four;
+            border-bottom: 10px solid $color-two;
             border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-            color: $color-one;
+            border-bottom-right-radius: 0;
+            color: $color-five;
         }
     }
 }
 
 .active {
-    border-bottom: 10px solid $color-one;
-    background-image: linear-gradient($color-two, $color-one);
+    border-bottom: 10px solid $color-two;
+    background-image: linear-gradient($color-one, $color-two);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }

@@ -1,4 +1,11 @@
-@use '../../styles/partials/global' as *;
-@use '../../styles/partials/mixins' as *;
-@use '../../styles/partials/partials' as *;
-@use '../../styles/partials/fonts' as *;
+@use '../../styles/global' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
+.neighbors {
+    background-color: $color-two;
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    flex-wrap: wrap;
+}

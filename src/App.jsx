@@ -5,7 +5,8 @@ import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
-// import Neighbors from "./pages/Neighbors/Neighbors";
+import Neighbors from "./pages/Neighbors/Neighbors";
+import NeighborsComponent from "./Components/NeighborsComponent/NeighborsComponent";
 // import Profile from "./pages/Profile/Profile";
 // import ProfileEdit from "./pages/ProfileEdit/ProfileEdit";
 
@@ -31,10 +32,10 @@ export default function App() {
           {/* <Route path="/" element={<Login />} /> */}
           {loggedIn ? <Route path="/dashboard" element={<Dashboard />} /> : <Route path="/" element={<LoginPage />} />}
           {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          {/* <Route path="/messages" element={<Messages />} />
-          <Route path="/neighbors" element={<Neighbors />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:id" element={<ProfileEdit />} /> */}
+          {/* <Route path="/messages" element={<Messages />} /> */}
+          <Route path="/neighbors" element={<NeighborsComponent />} />
+          {/* <Route path="/profile" element={<Profile />} /> */}
+          {/* <Route path="/profile/:id" element={<ProfileEdit />} /> */}
         </Routes>
         </div>
         <Footer />
