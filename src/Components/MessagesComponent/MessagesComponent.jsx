@@ -1,6 +1,6 @@
 import "./MessagesComponent.scss";
 import Message from "../Message/Message";
-
+import { NavLink } from "react-router-dom";
 
 export default function MessagesCommponent() {
     return(
@@ -12,6 +12,7 @@ export default function MessagesCommponent() {
                 <Message />
                 <Message />
             </div>
+            <NavLink to="/messages" className="messages__link"><button  className="messages__btn">All Messages</button></NavLink>
         </div>
     )
 }   

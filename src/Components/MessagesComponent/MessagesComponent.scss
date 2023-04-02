@@ -4,10 +4,49 @@
 
 .messages {
     background-color: $color-two;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    padding-inline: clamp(.25rem, 1rem, 1rem);
+    padding-block: clamp(.25rem, 1rem, 1rem);
+    border-radius: .375rem;
 
     &__title {
         display: block;
         padding: 0 0 1rem;
+    }
+
+    &__container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__link {
+        width: 75%;
+        text-decoration: none;
+    }
+
+    &__btn {
+        border: none;
+        padding: .5rem;
+        width: 100%;
+        border-radius: .25rem;
+        background-image: linear-gradient($color-one, $color-two-light);
+        color: $color-four;
+        font-size: clamp(.5rem, .75rem, 1.25rem);
+        font-weight: 600;
+        text-align: center;
+        display: block;
+        transition: color .3s ease-in;
+        
+        &:hover {
+            cursor: pointer;
+            color: $color-six;
+            background-image: linear-gradient($color-one, $color-two);
+        }
     }
 }
 

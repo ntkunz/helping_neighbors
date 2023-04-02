@@ -11,12 +11,9 @@
     &__container {
         display: flex;
         padding: 1rem 2rem 0;
+        padding-inline: max(3.25rem, .5rem);
         justify-content: space-between;
         width: 100%;
-
-        @include tablet {
-            padding: 2rem 3rem 0rem;
-        }
     }
 
     //header title and subtitle
@@ -41,22 +38,18 @@
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
-        // padding: 0 0 .625rem;
     }
 
     &__title {
         @include pageHeaderLarge;
         display: block;
         padding: 0 0 1rem;
-        // text-decoration: none;
     }
 
     &__subtitle {
         @include sectionHeaderLarge;
         display: block;
         padding: 0 0 0 .5rem;
-        // color: $color-six;
-        // text-decoration: none;
     }
 
     //login button box
@@ -80,15 +73,13 @@
         background-image: linear-gradient($color-two, $color-one);
         border: none;
         border-bottom: 10px solid $color-one;
-        border-radius: 5px;
-        padding: .5rem 0;
+        border-radius: .25rem;
+        padding: .5rem 1rem;
         flex-basis: auto;
         margin: 0 0 0 1rem;
         cursor: pointer;
         transition: color .3s ease-in-out;
         transition: background-color, border-bottom .1s ease-in-out;
-        // transition: border-bottom .1s ease-in-out;
-        min-width: 15rem;
 
         &:hover {
             background-color: $color-four;

@@ -6,12 +6,13 @@
     background-color: $color-one;
     display: flex;
     flex-grow: 1;
-    gap: 1rem;
+    gap: max(1rem, .25rem);
     width: 100%;
     justify-content: space-around;
     border-bottom: none;
 
     &__messages {
+        display: flex;
         flex-basis: 35%;
     }
 

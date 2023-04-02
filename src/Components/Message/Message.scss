@@ -3,9 +3,37 @@
 @use '../../styles/variables' as *;
 
 .message {
+    padding: clamp(.25rem, .5rem, .5rem);
+    background-image: linear-gradient($color-one, $color-two-light);
+    margin-block: clamp(.125rem, .5rem, .5rem);
+    border-radius: .25rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 
-    &__title {
-        display: block;
+    &__top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         padding: 0 0 1rem;
+    }
+
+    // &__title {
+    // }
+
+    &__date {
+        font-size: clamp(.5rem, .75rem, 1.25rem);
+        font-weight: 600;
+        color: $color-four;
+    }
+
+    &__text {
+        @include bodyCopy;
+        text-align: left;
+
+        @include tablet {
+            @include bodyCopyLarge;
+        }
     }
 }

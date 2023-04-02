@@ -8,4 +8,6 @@
     flex-direction: row;
     justify-content: space-evenly;
     padding: .5rem;
+    padding-inline: max(.5rem, .125rem);
+    border-radius: .375rem;
 }

@@ -6,6 +6,6 @@
     background-color: $color-two;
     display: flex;
     flex-direction: row;
-    padding: 1rem;
+    padding: clamp(.25rem, 75rem, 1rem);
     flex-wrap: wrap;
 }
