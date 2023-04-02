@@ -3,9 +3,21 @@
 @use '../../styles/variables' as *;
 
 .dashboard {
-    background-color: $color-light-blue;
+    background-color: $color-one;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: space-around;
+    border-bottom: none;
+
+    &__messages {
+        flex-basis: 35%;
+    }
+
+    // &__neighbors {
+    //     flex-basis: 65%;
+    // }
 
     &__neighbors {
         flex-basis: 65%;

@@ -23,8 +23,10 @@ export default function Header( { loggedIn, handleLoggedIn } ) {
 <header className="header">
     <div className="header__container">
         <div className="header__titlebox">
-            <h1 className="header__title">Helping</h1>
-            <h2 className="header__subtitle">Neighbors</h2>
+            <NavLink to="/dashboard" className="header__title-btn">
+                <h1 className="header__title">Helping</h1>
+                <h2 className="header__subtitle">Neighbors</h2>
+            </NavLink>
         </div>
 
         <div className="header__navbox">

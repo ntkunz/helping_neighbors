@@ -1,0 +1,17 @@
+@use '../../styles/global' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
+.messages {
+    // background-color: $color-one;
+
+    &__title {
+        display: block;
+        padding: 0 0 1rem;
+    }
+}
+
+.dashboard__messages {
+    flex-basis: 35%;
+}
+

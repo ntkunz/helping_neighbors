@@ -1,13 +1,18 @@
 import "./Dashboard.scss";
-import DashUserInfo from "../../Components/Dashboard/DashUserInfo";
-import DashNeighbors from "../../Components/Dashboard/DashNeighbors";
+import UserInfoComponent from "../../Components/UserInfoComponent/UserInfoComponent";
+import NeighborsComponent from "../../Components/NeighborsComponent/NeighborsComponent";
+import MessagesComponent from "../../Components/MessagesComponent/MessagesComponent";
 
 
 export default function Dashboard() {
     return ( 
         <div className="dashboard">
-            <DashNeighbors className="dashboard__neighbors"/>
-            <DashUserInfo />
+            <div className="dashboard__messages">
+                <MessagesComponent />
+            </div>
+            <div className="dashboard__neighbors">
+                <NeighborsComponent />
+            </div>
         </div>
 
     )

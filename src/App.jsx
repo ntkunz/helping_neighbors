@@ -26,6 +26,7 @@ export default function App() {
           loggedIn={loggedIn} 
           handleLoggedIn={handleLoggedin}
         />
+        <div className="App__routes">
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
           {loggedIn ? <Route path="/dashboard" element={<Dashboard />} /> : <Route path="/" element={<LoginPage />} />}
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<ProfileEdit />} /> */}
         </Routes>
+        </div>
         <Footer />
       </BrowserRouter>
 

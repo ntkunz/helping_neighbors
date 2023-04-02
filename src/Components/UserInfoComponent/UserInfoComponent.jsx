@@ -23,7 +23,7 @@ useEffect(() => {
 
     
     return(
-        <div className="dash__user container">
+        <div className="dash__user-container">
             <h2 className="dash__user-name">Bart Simpson</h2>
             <img src={userImg} alt="Bart Profile" className="dash__user-img" />
             <p className="dash__user-about">`My name is Bart, and I've lived in the neighborhood
