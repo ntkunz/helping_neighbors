@@ -33,7 +33,7 @@ export default function Header( { loggedIn, handleLoggedIn } ) {
             <NavLink to="/messages" className="header__btn">Messages</NavLink>
             <NavLink to="/neighbors" className="header__btn">Explore Your Neighborhood</NavLink>
             <NavLink to="/profile" className="header__btn">Profile</NavLink>
-            {loggedIn ? <button onClick={(handleLoggedIn)} className="header__btn">Logout</button> : <button onClick={(handleLoggedIn)} className="header__btn">Login</button>}
+            {loggedIn ? <button onClick={handleLoggedIn} className="header__btn">Logout</button> : <button onClick={(handleLoggedIn)} className="header__btn">Login</button>}
         </div>
 
         {/* <div className="header__loginbox">

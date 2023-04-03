@@ -31,6 +31,11 @@
     &__text {
         @include bodyCopy;
         text-align: left;
+        overflow: hidden;
+        width: 325px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
 
         @include tablet {
             @include bodyCopyLarge;

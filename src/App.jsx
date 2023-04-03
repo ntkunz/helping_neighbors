@@ -1,6 +1,6 @@
 import './App.scss';
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -15,9 +15,12 @@ export default function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
 
+  let navigate = useNavigate();
+
   function handleLoggedin(e) {
     e.preventDefault();
     setLoggedIn(!loggedIn);
+    // navigate('/dashboard');
   }
 
   return (
