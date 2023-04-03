@@ -1,7 +1,8 @@
 import "./Messages.scss";
+import MessagesCommponent from "../../Components/MessagesComponent/MessagesComponent";
 
-export default Messages() { 
+export default function Messages({ loggedIn }) { 
     return (
-
+        {loggedIn && <MessagesComponent />}
     )
 }

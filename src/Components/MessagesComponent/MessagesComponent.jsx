@@ -2,7 +2,7 @@ import "./MessagesComponent.scss";
 import Message from "../Message/Message";
 import { NavLink } from "react-router-dom";
 
-export default function MessagesCommponent() {
+export default function MessagesCommponent( { loggedIn }) {
     return(
         <div className="messages">
             {/* <h3 className="messages__title">Messages</h3> */}
