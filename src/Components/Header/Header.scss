@@ -20,13 +20,13 @@
 
     &__title-btn{
         text-decoration: none;
-        color: $color-six;
+        color: $color-four;
         border-bottom: 10px solid $color-one;
         border-radius: 5px;
         transition: border-bottom, color .3s ease-in;
 
         &:hover {
-            color: $color-four;
+            color: $color-six;
             border-bottom: 10px solid $color-two;
         }
 
