@@ -9,3 +9,7 @@
     padding: clamp(.25rem, 75rem, 1rem);
     flex-wrap: wrap;
 }
+
+.neighbor__link {
+    width: clamp(18.75rem, 30%, 28.75rem);
+}

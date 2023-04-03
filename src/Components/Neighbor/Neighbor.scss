@@ -5,7 +5,6 @@
 .neighbor {
     background-color: $color-one;
     background-image: linear-gradient($color-one, $color-two-light);
-    width: min(25%, 35%);
     height: clamp(18rem, 24rem, 28rem);
     margin: .5rem;
     margin-inline: max(.5rem, .125rem);
