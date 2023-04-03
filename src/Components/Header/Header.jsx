@@ -23,17 +23,17 @@ export default function Header( { loggedIn, handleLoggedIn } ) {
 <header className="header">
     <div className="header__container">
         <div className="header__titlebox">
-            <NavLink to="/dashboard" className="header__title-btn">
+            <NavLink to="/neighbors" className="header__title-btn">
                 <h1 className="header__title">Helping</h1>
                 <h2 className="header__subtitle">Neighbors</h2>
             </NavLink>
         </div>
 
         <div className="header__navbox">
-            <NavLink to="/messages" className="header__btn">Messages</NavLink>
+            {/* <NavLink to="/messages" className="header__btn">Messages</NavLink> */}
             <NavLink to="/neighbors" className="header__btn">Explore Your Neighborhood</NavLink>
             <NavLink to="/profile" className="header__btn">Profile</NavLink>
-            {loggedIn ? <button onClick={handleLoggedIn} className="header__btn">Logout</button> : <button onClick={(handleLoggedIn)} className="header__btn">Login</button>}
+            {loggedIn ? <NavLink to="/neighbors" onClick={handleLoggedIn} className="header__btn fixed">Logout</NavLink> : <NavLink to="/" onClick={(handleLoggedIn)} className="header__btn fixed">Login</NavLink>}
         </div>
 
         {/* <div className="header__loginbox">

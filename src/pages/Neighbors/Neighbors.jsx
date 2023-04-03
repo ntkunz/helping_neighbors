@@ -1,12 +1,13 @@
 import "./Neighbors.scss";
 import NeighborsComponent from "../../Components/NeighborsComponent/NeighborsComponent";
-import Neighbor from "../../Components/Neighbor/Neighbor";
+import { Navigate } from "react-router-dom";
 
-
-export default function Neighbors() {
+export default function Neighbors({loggedIn}) {
     return (
+        loggedIn ? 
         <div className="neighbors">
             <NeighborsComponent />
-        </div>
+        </div> :
+        <Navigate to="/" /> 
     )
 }
