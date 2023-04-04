@@ -6,18 +6,28 @@ export default function Neighbor({neighbor}) {
 
 const [ response, setResponse ] = useState([]);
 
+const [ Offering, setOffering ] = useState([]);
+const [ exchange, setExchange ] = useState([]);
+
 function getUserSkills() {
     axios
     .get(`http://localhost:8080/users/${neighbor.user_id}`)
     .then((response) => {
         console.log(response.data)
         setResponse(response.data);
-        return response.data;
+        response.data.forEach((skill) => {
+        if (skill.offer === 1) {
+            setOffering(skill.skill);
+            console.log(skill.skill)
+        } else {
+            setExchange(skill.skill);
+            console.log(skill.skill)
+        }})
     })
     .catch((error) => {
         console.log("error", error);
     });
-}
+};
 
 useEffect(() => {
     getUserSkills();
@@ -45,7 +55,6 @@ return (
                 <li className="neighbor__barter-skill">{skills.skill}</li>
             ))}
 
-            {/* <li className="neighbor__barter-skill">{response[1]}</li> */}
         </ul>
         </div>
 
