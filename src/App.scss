@@ -10,13 +10,7 @@
 
   &__routes {
     width: 100%;
-    margin-inline: max(0rem, 3rem);
-    margin-inline: 0;
-
-    @include tablet {
-      margin-inline: max(0rem, 3rem);
     }
-  }
 }
 
 

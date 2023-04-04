@@ -32,42 +32,6 @@ export default function App() {
     loggedIn ? navigate('/login') : navigate('/neighbors');
   }
 
-  const getUser = (event) => {
-    event.preventDefault();
-    navigate('/neighbors');
-    // axios
-    //   .post(`http://localhost:8080/login`, {
-    //     email: event.target.email.value,
-    //     password: event.target.password.value,
-    //   })
-    //   .then((response) => {
-    //     // if (response.data.token) {
-    //       setLoggedIn(true);
-    //       setUser(response.data);
-    //       navigate('/neighbors');
-    //     // }
-    //   })
-    //   .catch((error) => {
-    //     navigate('/neighbors')
-    //     console.log(error);
-    //   });
-  };
-
-//NOT WORKING YET
-  // function getUserInfo(id) {
-  //   axios
-  //     // .get('http://localhost:8080/users/${id}')
-  //     .get('${api}/users/${id}')
-      
-  //     .then((response) => {
-  //       setUserInfo(response.data);
-  //       })
-  //       .catch((error) => {
-  //         console.log("error", error);
-  //       });
-  // }
-
-
   return (
     <div className="App">
       

@@ -48,9 +48,11 @@ return (
         <div className="neighbor__header">
             <div className="neighbor__title">
                 <h4>{neighbor.first_name}</h4>
-                <p className="neighbor__member-since">Member Since <span className="neighbor__since">{neighbor.created_at}</span></p>
+                <p className="neighbor__member-since">Member Since</p> 
+                <p className="neighbor__since">{neighbor.created_at}</p>
             </div>
-            <div className="neighbor__img"></div>
+            <div className="neighbor__img-box"><img className="neighbor__img" src={neighbor.image_url} alt="user profile" /></div>
+            
         </div>
 
         <div className="neighbor__bio">
