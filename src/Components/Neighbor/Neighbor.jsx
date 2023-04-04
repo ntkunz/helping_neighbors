@@ -4,38 +4,42 @@ import axios from "axios";
 
 export default function Neighbor({neighbor}) {
 
-const [ response, setResponse ] = useState([]);
+// const [ response, setResponse ] = useState([]);
 
-const [ Offering, setOffering ] = useState([]);
+const [ offering, setOffering ] = useState([]);
 const [ exchange, setExchange ] = useState([]);
+
+// let offering = [];
+// let exchange = [];
 
 function getUserSkills() {
     axios
     .get(`http://localhost:8080/users/${neighbor.user_id}`)
     .then((response) => {
-        console.log(response.data)
-        setResponse(response.data);
+        const offeringSkills = [];
+        const exchangeSkills = [];
         response.data.forEach((skill) => {
-        if (skill.offer === 1) {
-            setOffering(skill.skill);
-            console.log(skill.skill)
-        } else {
-            setExchange(skill.skill);
-            console.log(skill.skill)
-        }})
+          if (skill.offer === 1) {
+            offeringSkills.push(skill.skill);
+          } else {
+            exchangeSkills.push(skill.skill);
+          }})
+        setOffering(offeringSkills);
+        setExchange(exchangeSkills);
     })
     .catch((error) => {
         console.log("error", error);
     });
 };
 
+
 useEffect(() => {
     getUserSkills();
     //eslint-disable-next-line
 }, []);
 
-
-console.log(response)
+    // {offering.length && console.log('offering: ', offering)}
+// console.log(response)
     // console.log(neighbor)
 return (
     <div className="neighbor">
@@ -51,19 +55,18 @@ return (
         <div className="neighbor__bio">
         <p className="neighbor__barter-title">Offering</p>
         <ul className="neighbor__barter-skills">
-            {response.map((skills) => (
-                <li className="neighbor__barter-skill">{skills.skill}</li>
+            {offering.length && offering.map((offer) => (
+                <li className="neighbor__barter-skill">{offer}</li>
             ))}
-
         </ul>
         </div>
 
          <div className="neighbor__bio">
         <p className="neighbor__barter-title">In Exchange For</p>
         <ul className="neighbor__barter-skills">
-            <li className="neighbor__barter-skill">Cooking</li>
-            <li className="neighbor__barter-skill">Pet Sitting</li>
-            <li className="neighbor__barter-skill">Running Errands</li>
+            {exchange.length && exchange.map((want) => (
+                <li className="neighbor__barter-skill">{want}</li>
+            ))}
         </ul>
         </div>
 
