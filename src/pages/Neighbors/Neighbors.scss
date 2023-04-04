@@ -6,6 +6,16 @@
     background-color: $color-two;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
     padding: clamp(.25rem, 75rem, 1rem);
     flex-wrap: wrap;
+    // height: 30rem;
+}
+
+.neighbor__link {
+    width: clamp(18.75rem, 25%, 25rem);
+
+    &:hover {
+        background-image: linear-gradient($color-two, $color-three);
+    };
 }

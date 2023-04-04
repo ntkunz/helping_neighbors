@@ -5,8 +5,6 @@
 .neighbor {
     background-color: $color-one;
     background-image: linear-gradient($color-one, $color-two-light);
-    // width: clamp(12.5rem, 15rem, 25.75rem);
-    width: min(30%, 90%);
     height: clamp(18rem, 24rem, 28rem);
     margin: .5rem;
     margin-inline: max(.5rem, .125rem);
@@ -44,16 +42,25 @@
     }
 
     &__img {
-        width: 3rem;
-        height: 3rem;
+        // width: max(5rem, 3rem);
+        // height: max(5rem, 3rem);
+        width: clamp(3rem, 4rem, 5rem);
+        height: clamp(3rem, 4rem, 5rem);
+        aspect-ratio: 1 / 1;
         border-radius: .25rem;
         background-color: purple;
         margin-top: max(.5rem, .125rem);
     }
 
+    &__bio {
+        display: block;
+        width: 100%;
+    }
+
     &__barter-title {
         width: 100%;
         display: block;
+        color: $color-four;
         padding-block: max(.25rem, 0);
         font-size: .75rem;
         font-size: clamp(.5rem, .75rem, 1.25rem);
@@ -80,15 +87,6 @@
         color: $color-six;
     }
 
-    // &__message-btn {
-    //     width: 100%;
-    //     border: none;
-    //     border-radius: .25rem;
-    //     height: 2rem;
-    //     background-color: $color-two;
-        
-    // }
-
     &__message-btn {
         border: none;
         padding: .5rem;
@@ -109,4 +107,8 @@
             background-image: linear-gradient($color-one, $color-two);
         }
     }
+}
+
+a {
+    text-decoration: none;
 }

@@ -13,6 +13,7 @@
         padding: 1rem 2rem 0;
         padding-inline: max(3.25rem, .5rem);
         justify-content: space-between;
+        align-items: flex-end;
         width: 100%;
     }
 
@@ -21,16 +22,11 @@
     &__title-btn{
         text-decoration: none;
         color: $color-four;
-        border-bottom: 10px solid $color-one;
-        border-radius: 5px;
-        transition: border-bottom, color .3s ease-in;
+        background-image: linear-gradient($color-one, $color-two);
 
         &:hover {
             color: $color-six;
-            border-bottom: 10px solid $color-two;
         }
-
-        
     }
 
     &__titlebox {
@@ -38,18 +34,19 @@
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
+        border-bottom: 10px solid $color-two;
     }
 
     &__title {
         @include pageHeaderLarge;
         display: block;
-        padding: 0 0 1rem;
+        padding: 0 1rem 0 1rem;
     }
 
     &__subtitle {
         @include sectionHeaderLarge;
         display: block;
-        padding: 0 0 0 .5rem;
+        padding: .75rem .25rem 0 .5rem;
     }
 
     //login button box
@@ -64,6 +61,7 @@
     &__navbox {
         display: flex;
         align-items: flex-end;
+        height: 4.75rem;
     }
 
     //header buttons
@@ -83,7 +81,7 @@
 
         &:hover {
             background-color: $color-four;
-            border-bottom: 10px solid $color-two;
+            // border-bottom: 10px solid $color-two;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             color: $color-five;
@@ -96,6 +94,10 @@
     background-image: linear-gradient($color-one, $color-two);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.fixed {
+    width: 5rem;
 }
 
 
