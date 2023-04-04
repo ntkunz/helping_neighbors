@@ -23,6 +23,9 @@ export default function App() {
   // let navigate = useNavigate();
   const id = useParams();
 
+  const api = process.env.REACT_APP_API_URL;
+
+
   function handleLoggedin(e) {
     e.preventDefault();
     setLoggedIn(!loggedIn);
@@ -30,25 +33,11 @@ export default function App() {
     // navigate('/dashboard');
   }
 
-  // .get(`${api}/inventories/${id.inventoryId}`)
-  // .then((data) => {
-  //   if (data) {
-  //     const inventoryItem = data.data;
-
-  //     setSelectWarehouse(inventoryItem.warehouse_name);
-  //     setItemName(inventoryItem.item_name);
-  //     setDesc(inventoryItem.description);
-  //     setCategory(inventoryItem.category);
-  //     setStatus(inventoryItem.status);
-  //     setQuantity(inventoryItem.quantity);
-  //   }
-    
-
-  // })
-
+//NOT WORKING YET
   function getUserInfo(id) {
     axios
-      .get('http://localhost:8080/users/${id}')
+      // .get('http://localhost:8080/users/${id}')
+      .get('${api}/users')
       
       .then((response) => {
         setUserInfo(response.data);

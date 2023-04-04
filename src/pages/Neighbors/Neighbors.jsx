@@ -20,7 +20,7 @@ useEffect(() => {
 function getNeighbors() {
     axios
     .get(`http://localhost:8080/users`)
-    // .get(`${api}/users`)
+    // .get('${api}/users')
     .then((response) => {
         setNeighbors(response.data);
     })

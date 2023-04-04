@@ -1,8 +1,32 @@
-import "./Neighbor.scss"
+import "./Neighbor.scss";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Neighbor({neighbor}) {
 
-    console.log(neighbor)
+const [ response, setResponse ] = useState([]);
+
+function getUserSkills() {
+    axios
+    .get(`http://localhost:8080/users/${neighbor.user_id}`)
+    .then((response) => {
+        console.log(response.data)
+        setResponse(response.data);
+        return response.data;
+    })
+    .catch((error) => {
+        console.log("error", error);
+    });
+}
+
+useEffect(() => {
+    getUserSkills();
+    //eslint-disable-next-line
+}, []);
+
+
+console.log(response)
+    // console.log(neighbor)
 return (
     <div className="neighbor">
         
@@ -17,8 +41,11 @@ return (
         <div className="neighbor__bio">
         <p className="neighbor__barter-title">Offering</p>
         <ul className="neighbor__barter-skills">
-            <li className="neighbor__barter-skill">Maintenance</li>
-            <li className="neighbor__barter-skill">Mechanical</li>
+            {response.map((skills) => (
+                <li className="neighbor__barter-skill">{skills.skill}</li>
+            ))}
+
+            {/* <li className="neighbor__barter-skill">{response[1]}</li> */}
         </ul>
         </div>
 
