@@ -37,7 +37,7 @@ export default function App() {
   function getUserInfo(id) {
     axios
       // .get('http://localhost:8080/users/${id}')
-      .get('${api}/users')
+      .get('${api}/users/${id}')
       
       .then((response) => {
         setUserInfo(response.data);
@@ -62,7 +62,7 @@ export default function App() {
           {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           {/* <Route path="/messages" element={<MessagesComponent  loggedIn={loggedIn}/>} /> */}
           {/* <Route path="/neighbors" element={<NeighborsComponent loggedIn={loggedIn} />} /> */}
-          <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} />} />
+          {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} userInfo={userInfo} />} /> : false }
           {/* <Route path="/profile" element={<Profile />} /> */}
           {/* <Route path="/profile/:id" element={<ProfileEdit />} /> */}
         </Routes>

@@ -14,7 +14,7 @@ const [ exchange, setExchange ] = useState([]);
 
 function getUserSkills() {
     axios
-    .get(`http://localhost:8080/users/${neighbor.user_id}`)
+    .get(`http://localhost:8080/users/skills/${neighbor.user_id}`)
     .then((response) => {
         const offeringSkills = [];
         const exchangeSkills = [];
