@@ -1,6 +1,6 @@
 import './App.scss';
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, useParams, Navigate, useNavigate } from "react-router-dom";
+import {  Routes, Route, useParams, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -17,10 +17,10 @@ import axios from 'axios';
 
 export default function App() {
 
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [userInfo, setUserInfo] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
 
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
   const id = useParams();
 
   const api = process.env.REACT_APP_API_URL;
@@ -29,46 +29,63 @@ export default function App() {
   function handleLoggedin(e) {
     e.preventDefault();
     setLoggedIn(!loggedIn);
-    getUserInfo(id);
-    // navigate('/dashboard');
+    loggedIn ? navigate('/login') : navigate('/neighbors');
   }
 
+  const getUser = (event) => {
+    event.preventDefault();
+    navigate('/neighbors');
+    // axios
+    //   .post(`http://localhost:8080/login`, {
+    //     email: event.target.email.value,
+    //     password: event.target.password.value,
+    //   })
+    //   .then((response) => {
+    //     // if (response.data.token) {
+    //       setLoggedIn(true);
+    //       setUser(response.data);
+    //       navigate('/neighbors');
+    //     // }
+    //   })
+    //   .catch((error) => {
+    //     navigate('/neighbors')
+    //     console.log(error);
+    //   });
+  };
+
 //NOT WORKING YET
-  function getUserInfo(id) {
-    axios
-      // .get('http://localhost:8080/users/${id}')
-      .get('${api}/users/${id}')
+  // function getUserInfo(id) {
+  //   axios
+  //     // .get('http://localhost:8080/users/${id}')
+  //     .get('${api}/users/${id}')
       
-      .then((response) => {
-        setUserInfo(response.data);
-        })
-        .catch((error) => {
-          console.log("error", error);
-        });
-  }
+  //     .then((response) => {
+  //       setUserInfo(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log("error", error);
+  //       });
+  // }
 
 
   return (
     <div className="App">
-      <BrowserRouter>
+      
         <Header 
           loggedIn={loggedIn} 
           handleLoggedIn={handleLoggedin}
         />
         <div className="App__routes">
         <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
-          {/* {loggedIn ? <Route path="/dashboard" element={<Dashboard />} /> : <Route path="/" element={<LoginPage />} />} */}
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          {/* <Route path="/messages" element={<MessagesComponent  loggedIn={loggedIn}/>} /> */}
-          {/* <Route path="/neighbors" element={<NeighborsComponent loggedIn={loggedIn} />} /> */}
-          {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} userInfo={userInfo} />} /> : false }
+          <Route path="/" element={loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />} />
+          {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
+            : 
+          <Route path="/login" element={<LoginPage loggedIn={loggedIn} handleLoggedIn={handleLoggedin}/> } />}
           {/* <Route path="/profile" element={<Profile />} /> */}
-          {/* <Route path="/profile/:id" element={<ProfileEdit />} /> */}
         </Routes>
         </div>
         <Footer />
-      </BrowserRouter>
+      
 
     </div>
   );

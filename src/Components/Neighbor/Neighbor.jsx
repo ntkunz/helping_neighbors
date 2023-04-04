@@ -38,6 +38,7 @@ useEffect(() => {
     //eslint-disable-next-line
 }, []);
 
+
     // {offering.length && console.log('offering: ', offering)}
 // console.log(response)
     // console.log(neighbor)

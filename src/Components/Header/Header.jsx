@@ -6,18 +6,6 @@ import { NavLink, Link, Navigate } from "react-router-dom";
 
 export default function Header( { loggedIn, handleLoggedIn } ) {
 
-    const [ messagePage , setMessagePage ] = useState(false);
-    const [ neighborsPage , setNeighborsPage ] = useState(false);
-    const [ profilePage , setProfilePage ] = useState(false);
-
-    function toggleActive(e) {
-        e.preventDefault();
-        setMessagePage(!messagePage);
-        setNeighborsPage(!neighborsPage);
-        setProfilePage(!profilePage);
-    }
-
-
     return(
 
 <header className="header">
@@ -33,7 +21,7 @@ export default function Header( { loggedIn, handleLoggedIn } ) {
             {/* <NavLink to="/messages" className="header__btn">Messages</NavLink> */}
             <NavLink to="/neighbors" className="header__btn">Explore Your Neighborhood</NavLink>
             <NavLink to="/profile" className="header__btn">Profile</NavLink>
-            {loggedIn ? <NavLink onClick={handleLoggedIn} className="header__btn fixed">Logout</NavLink> : <NavLink onClick={(handleLoggedIn)} className="header__btn fixed">Login</NavLink>}
+            {loggedIn ? <button onClick={handleLoggedIn} className="header__btn fixed">Logout</button> : <button onClick={(handleLoggedIn)} className="header__btn fixed">Login</button>}
             {/* <NavLink onClick={handleLoggedIn} className="header__btn fixed">Login</NavLink> */}
         </div>
 
