@@ -28,8 +28,15 @@ export default function App() {
 
   function handleLoggedin(e) {
     e.preventDefault();
-    setLoggedIn(!loggedIn);
-    loggedIn ? navigate('/login') : navigate('/neighbors');
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    axios.post(`${api}/users/login`, {email, password})
+      .then(res => {
+        console.log(res.data);
+        setLoggedIn(true);
+        setUser(res.data);
+        navigate('/neighbors');
+      })
   }
 
   return (

@@ -1,1 +1,48 @@
 @use '../../styles/global' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+}
+
+.form {
+    color: $color-five;
+    display: flex;
+    flex-direction: column;
+    align-items: space-around;
+
+    &__label {
+
+    }
+
+    &__input {
+        width: 15rem;
+        border-radius: .25rem;
+        border: 1px solid $color-five;
+        padding: .125rem;
+        margin: .5rem 0 2rem;
+    }
+
+    &__btn {
+        text-decoration: none;
+        color: $color-five;
+        font-weight: 600;
+        border: none;
+        padding: .5rem 1.5rem;
+        border-radius: .25rem;
+        flex-basis: 33%;
+        background-color: $color-two-light;
+        transition: all 0.125s ease-out;
+
+        &:hover {
+            background-color: $color-five;
+            color: $color-two;
+            cursor: pointer;
+        }
+    }
+}
+
