@@ -7,6 +7,9 @@
     width: 100%;
     background-color: $color-one;
     z-index: 1;
+    height: 7.5rem;
+    display: flex;
+    align-items: flex-end;
 
     &__container {
         display: flex;
@@ -23,9 +26,10 @@
         text-decoration: none;
         color: $color-four;
         background-image: linear-gradient($color-one, $color-two);
+        transition: all 0.125s ease-out;
 
         &:hover {
-            color: $color-six;
+            color: $color-five;
         }
     }
 
@@ -40,7 +44,7 @@
     &__title {
         @include pageHeaderLarge;
         display: block;
-        padding: 0 1rem 0 1rem;
+        padding: 0 1rem 0 1.35rem;
     }
 
     &__subtitle {
@@ -76,24 +80,24 @@
         flex-basis: auto;
         margin: 0 0 0 1rem;
         cursor: pointer;
-        transition: color .3s ease-in-out;
-        transition: background-color, border-bottom .1s ease-in-out;
+        transition: all 0.5s ease-in-out;
 
         &:hover {
-            background-color: $color-four;
-            // border-bottom: 10px solid $color-two;
+            background-image: none;
+            background-color: $color-five;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
-            color: $color-five;
+            color: $color-two;
         }
     }
 }
 
 .active {
-    border-bottom: 10px solid $color-two;
+    // border-bottom: 10px solid $color-two;
     background-image: linear-gradient($color-one, $color-two);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    text-decoration: underline;
 }
 
 .fixed {

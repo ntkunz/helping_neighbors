@@ -8,8 +8,8 @@
     flex-direction: row;
     justify-content: space-evenly;
     padding: clamp(.25rem, 75rem, 1rem);
+    padding-bottom: 0;
     flex-wrap: wrap;
-    // height: 30rem;
 }
 
 .neighbor__link {

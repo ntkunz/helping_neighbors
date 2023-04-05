@@ -3,10 +3,6 @@
 @use './styles/variables' as *;
 
 .App {
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: $color-one;
 
   &__routes {
     width: 100%;

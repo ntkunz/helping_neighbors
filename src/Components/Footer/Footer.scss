@@ -1,1 +1,55 @@
 @use '../../styles/global' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
+.footer {
+    background-color: $color-two;
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    
+    &__nav {
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        flex-basis: 100%;
+        align-items: flex-start;
+        justify-content: space-around;
+        padding: 2rem 0;
+        padding-inline: max(3.25rem, .5rem);
+    }
+
+    &__link {
+        text-decoration: none;
+        color: $color-four;
+        padding: .5rem 1.5rem;
+        border-radius: .25rem;
+        flex-basis: 33%;
+        transition: all 0.125s ease-out;
+
+        &:hover {
+            background-color: $color-five;
+            color: $color-two;
+        }
+    }
+
+    &__section {
+        color: $color-six;
+        padding: 0 3rem;
+    }
+
+    &__label {
+
+    }
+
+    &__paragraph{
+        margin: 2rem 0;
+        line-height: 1.5rem;
+    }
+}
+
+.first-paragraph {
+    font-weight: 600;
+    margin: 0 0 2rem;
+}

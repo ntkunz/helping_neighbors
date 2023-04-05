@@ -4,7 +4,7 @@
 
 .neighbor {
     background-color: $color-one;
-    background-image: linear-gradient($color-one, $color-two-light);
+    background-image: linear-gradient($color-one, $color-two);
     height: clamp(18rem, 24rem, 28rem);
     margin: .5rem;
     margin-inline: max(.5rem, .125rem);
@@ -66,7 +66,7 @@
         border-radius: .25rem;
         padding: .25rem;
         margin: .5rem 0;
-        background-image: linear-gradient($color-two-light, $color-one);
+        background-image: linear-gradient($color-one, $color-two-light);
     }
 
     &__barter-title {
