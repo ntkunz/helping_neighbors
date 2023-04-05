@@ -16,6 +16,7 @@
     width: clamp(18.75rem, 25%, 25rem);
 
     &:hover {
-        background-image: linear-gradient($color-two, $color-three);
+        background-image: linear-gradient($color-two, $color-five);
+        border-radius: .25rem;
     };
 }
