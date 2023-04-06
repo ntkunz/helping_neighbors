@@ -5,13 +5,13 @@ import { Navigate, Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Neighbors({loggedIn, userInfo}) {
+export default function Neighbors({loggedIn, user}) {
 
 const [ neighbors, setNeighbors ] = useState([]);
 
 const id = useParams();
 const api = process.env.REACT_APP_API_URL;
-
+let userEmail = user[0].email;
 
 useEffect(() => {
     getNeighbors();
@@ -21,10 +21,11 @@ useEffect(() => {
 //use this to get all neighbors
 function getNeighbors() {
     axios
-    .get(`http://localhost:8080/users`)
+    .get(`http://localhost:8080/users`, {userEmail})
     // .get('${api}/users')
     .then((response) => {
-        setNeighbors(response.data);
+        const onlyNeighbors = response.data.filter((neighbor) => neighbor.email !== userEmail);
+        setNeighbors(onlyNeighbors);
     })
     .catch((error) => {
         console.log("error", error);
@@ -35,7 +36,7 @@ function getNeighbors() {
 // '/login', {params: {name: 'ABCXYZ'}
 // function getNeighbors() {
 //     axios
-//     .get(`http://localhost:8080/users`, {params: {id: user.user_id}})
+//     .get(`http://localhost:8080/users`, {params: {location: user.location}})
 //     // .get('${api}/users')
 //     .then((response) => {
 //         setNeighbors(response.data);

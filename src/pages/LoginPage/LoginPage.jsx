@@ -1,9 +1,9 @@
 import "./LoginPage.scss";
 
-export default function LoginPage({loggedIn, handleLoggedIn}) {
+export default function LoginPage({ handleLogin }) {
     return (
         <div className="login">
-            <form className="form" onSubmit={handleLoggedIn} method="post">
+            <form className="form" onSubmit={handleLogin} method="post">
                 <p className="form__label">Email</p>
                 <input type="text" className="form__input" name="email" />    
                 <p className="form__label">Password</p>

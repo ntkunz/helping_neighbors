@@ -31,7 +31,7 @@
         text-decoration: none;
         color: $color-five;
         font-weight: 600;
-        border: none;
+        border: 1px solid $color-five;
         padding: .5rem 1.5rem;
         border-radius: .25rem;
         flex-basis: 33%;
@@ -41,6 +41,7 @@
         &:hover {
             background-color: $color-five;
             color: $color-two;
+            border-color: $color-two-light;
             cursor: pointer;
         }
     }

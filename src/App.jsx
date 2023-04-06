@@ -26,32 +26,48 @@ export default function App() {
   const api = process.env.REACT_APP_API_URL;
 
 
-  function handleLoggedin(e) {
+  function handleLogin(e) {
     e.preventDefault();
     const email = e.target.email.value;
-    const password = e.target.password.value;
-    axios.post(`${api}/users/login`, {email, password})
-      .then(res => {
-        console.log(res.data);
-        setLoggedIn(true);
+    // axios.post(`http://localhost:8080/users`, {email})
+    axios.post(`${api}/users`, {email})
+      .then((res) => {
+        setLoggedIn(loggedIn);
         setUser(res.data);
         navigate('/neighbors');
       })
   }
+
+  function handleLogout(e) {
+    e.preventDefault();
+if(loggedIn) {
+    setLoggedIn(!loggedIn);
+    setUser([]);
+    return navigate('/login');
+} else {
+    return navigate('/login');
+}
+}
 
   return (
     <div className="App">
       
         <Header 
           loggedIn={loggedIn} 
-          handleLoggedIn={handleLoggedin}
+          handleLogout={handleLogout}
         />
         <div className="App__routes">
         <Routes>
           <Route path="/" element={loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />} />
-          {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
+
+          <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
+          <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} handleLogout={handleLogout} /> } />
+
+          {/* {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
             : 
-          <Route path="/login" element={<LoginPage loggedIn={loggedIn} handleLoggedIn={handleLoggedin}/> } />}
+          <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} /> } />} */}
+
+
           {/* <Route path="/profile" element={<Profile />} /> */}
         </Routes>
         </div>
