@@ -1,5 +1,4 @@
 import "./Neighbors.scss";
-import NeighborsComponent from "../../Components/NeighborsComponent/NeighborsComponent";
 import Neighbor from "../../Components/Neighbor/Neighbor";
 import { Navigate, Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -18,12 +17,30 @@ useEffect(() => {
     //eslint-disable-next-line
 }, []);
 
-//use this to get all neighbors
+//THIS WORKS AND CAN BE USED TO RETURN ALL USERS------------------
+// function getNeighbors() {
+//     axios
+//     .get(`http://localhost:8080/users`, {userEmail})
+//     // .get('${api}/users')
+//     .then((response) => {
+//         const onlyNeighbors = response.data.filter((neighbor) => neighbor.email !== userEmail);
+//         setNeighbors(onlyNeighbors);
+//     })
+//     .catch((error) => {
+//         console.log("error", error);
+//     });
+// }
+
+////working on getting neighbors near user BASED OFF OF LOCATION
 function getNeighbors() {
+    //WORKING HERE BEFORE CHECKIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    const userLocation = user[0].location;
+    console.log('userLocation variable: ', userLocation)
     axios
-    .get(`http://localhost:8080/users`, {userEmail})
-    // .get('${api}/users')
+    .put(`http://localhost:8080/users`, userLocation)
+    // .get('${api}/users', {userLocation})
     .then((response) => {
+        console.log('response.data : ', response.data);
         const onlyNeighbors = response.data.filter((neighbor) => neighbor.email !== userEmail);
         setNeighbors(onlyNeighbors);
     })
@@ -32,19 +49,7 @@ function getNeighbors() {
     });
 }
 
-//working on getting neighbors near user with specific id
-// '/login', {params: {name: 'ABCXYZ'}
-// function getNeighbors() {
-//     axios
-//     .get(`http://localhost:8080/users`, {params: {location: user.location}})
-//     // .get('${api}/users')
-//     .then((response) => {
-//         setNeighbors(response.data);
-//     })
-//     .catch((error) => {
-//         console.log("error", error);
-//     });
-// }
+
 
     return (
         // neighbors.length && loggedIn ? 

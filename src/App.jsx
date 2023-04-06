@@ -29,7 +29,6 @@ export default function App() {
   function handleLogin(e) {
     e.preventDefault();
     const email = e.target.email.value;
-    // axios.post(`http://localhost:8080/users`, {email})
     axios.post(`${api}/users`, {email})
       .then((res) => {
         setLoggedIn(loggedIn);
