@@ -10,7 +10,6 @@ const api = process.env.REACT_APP_API_URL;
 
 async function createNewUser(e) {
     e.preventDefault();
-
     const user_id = v4();
     const first_name = e.target.first_name.value;
     const last_name = e.target.last_name.value;
