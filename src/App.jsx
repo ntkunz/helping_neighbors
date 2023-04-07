@@ -4,6 +4,7 @@ import {  Routes, Route, useParams, Navigate, useNavigate } from "react-router-d
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import NewUserPage from "./pages/NewUserPage/NewUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import axios from 'axios';
 
@@ -61,7 +62,7 @@ if(loggedIn) {
 
           <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
           <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} handleLogout={handleLogout} /> } />
-
+          <Route path="/signup" element={<NewUserPage loggedIn={loggedIn} user={user} />} />
           {/* {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
             : 
           <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} /> } />} */}
