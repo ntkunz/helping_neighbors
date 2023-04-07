@@ -8,7 +8,7 @@ const api = process.env.REACT_APP_API_URL;
 // console.log(process.env.HERE_API_KEY);
 // console.log(`here key: ${hereKey}`)
 
-function createNewUser(e) {
+async function createNewUser(e) {
     e.preventDefault();
 
     const user_id = v4();
@@ -25,28 +25,60 @@ function createNewUser(e) {
     const country = e.target.country.value;
     const address = `${house} ${street} ${city} ${province} ${country}`;
     const addressRequest = address.replaceAll(",", ' ').replaceAll(" ", '+').replaceAll(".", '+');
+    const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
+    console.log("coords: ", coords);
     const status = 'active';
-    const location = getNewUserGeo(addressRequest);
-    console.log(`location: ${location}`)
     const about = e.target.about.value;
-    // axios.post(`${api}/users/newuser`, {first_name, last_name, password, password_confirm, location, email, about})
-    // .then((res) => {
-    //     console.log(res.data);
-    // })
+    axios.post(`${api}/users/newuser`, {
+            user_id: user_id,
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            password: password,
+            image_url: image_url,
+            status: status,
+            coords: coords,
+            about: about,
+            address: address,
+    })
+    .then((res) => {
+        console.log(res.data);
+    })
+    .catch((err) => {
+        console.log('Error creating new user: ', err);
+    });
 }
 
-//BREAK address DOWN WORD BY WORD INTO AN ARRAY OF STRINGS THEN INPUT EACH STRING INTO A VARIABLE JOINED WITH + AND THEN USE THAT VARIABLE IN THE API CALL
-function getNewUserGeo(addressRequest) {
 
-    axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=2xyyJfskb70knqfTQ_avt7TgW3QSCDdByI3ntsBGKAk`)
-    // axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=${hereKey}`)
-    .then((res) => {
+
+//BREAK address DOWN WORD BY WORD INTO AN ARRAY OF STRINGS THEN INPUT EACH STRING INTO A VARIABLE JOINED WITH + AND THEN USE THAT VARIABLE IN THE API CALL
+async function getNewUserGeo(addressRequest) {
+    try {
+        const res = await axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=2xyyJfskb70knqfTQ_avt7TgW3QSCDdByI3ntsBGKAk`);
         // console.log(res.data.items[0].position.lng);
-        // const latLng = `${res.data.items[0].position.lng},${res.data.items[0].position.lat}`;
-        // return latLng;
-        return `${res.data.items[0].position.lng},${res.data.items[0].position.lat}`;
-    })
+        // const latLng = `POINT(${res.data.items[0].position.lng},${res.data.items[0].position.lat})`;
+        const latLng = [res.data.items[0].position.lng, res.data.items[0].position.lat];
+        console.log(latLng);
+        return latLng;
+        // return `${res.data.items[0].position.lng},${res.data.items[0].position.lat}`;
+    } catch(err) {
+        console.log('Error returning lat long from api ', err)
     }
+}
+
+
+
+// function getNewUserGeo(addressRequest) {
+
+//     axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=2xyyJfskb70knqfTQ_avt7TgW3QSCDdByI3ntsBGKAk`)
+//     // axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=${hereKey}`)
+//     .then((res) => {
+//         console.log(res.data.items[0].position.lng);
+//         const latLng = `POINT(${res.data.items[0].position.lng},${res.data.items[0].position.lat})`;
+//         return latLng;
+//         // return `${res.data.items[0].position.lng},${res.data.items[0].position.lat}`;
+//     })
+//     }
 
 // function handleLogin(e) {
 //     e.preventDefault();
@@ -105,7 +137,7 @@ function getNewUserGeo(addressRequest) {
                 <label className="new__label">Tell your neighbors about yourself
                     <input type="textarea" className="new__input textarea" name="about" />
                 </label>
-                <button calssName="new__btn">Start Meeting Your Neighborhs</button>
+                <button calssName="new__btn">Start Meeting Your Neighbors</button>
             </form>
         </div>
     )
