@@ -3,20 +3,10 @@
 @use './styles/variables' as *;
 
 .App {
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: $color-one;
 
   &__routes {
     width: 100%;
-    margin-inline: max(0rem, 3rem);
-    margin-inline: 0;
-
-    @include tablet {
-      margin-inline: max(0rem, 3rem);
     }
-  }
 }
 
 

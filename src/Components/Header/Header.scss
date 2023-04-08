@@ -7,13 +7,14 @@
     width: 100%;
     background-color: $color-one;
     z-index: 1;
+    height: 7.5rem;
+    display: flex;
 
     &__container {
         display: flex;
         padding: 1rem 2rem 0;
         padding-inline: max(3.25rem, .5rem);
         justify-content: space-between;
-        align-items: flex-end;
         width: 100%;
     }
 
@@ -21,26 +22,22 @@
 
     &__title-btn{
         text-decoration: none;
-        color: $color-four;
-        background-image: linear-gradient($color-one, $color-two);
+        color: $color-five;
+        transition: all 0.125s ease-out;
 
         &:hover {
-            color: $color-six;
+            color: $color-four;
         }
     }
 
     &__titlebox {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-start;
-        border-bottom: 10px solid $color-two;
     }
 
     &__title {
         @include pageHeaderLarge;
         display: block;
-        padding: 0 1rem 0 1rem;
+        padding: 0 1rem 0 1.35rem;
     }
 
     &__subtitle {
@@ -49,49 +46,65 @@
         padding: .75rem .25rem 0 .5rem;
     }
 
+    //tagline
+    &__tagline-box {
+        @include bodyCopy;
+        display: flex;
+        flex-grow: 1;
+        align-items: flex-end;
+        color: $color-five;
+        font-weight: 600;
+        padding: 0 0 0 1rem;
+        margin: 0 0 1rem;
+        font-size: clamp(1rem, 1.5vw, 1.25rem);
+    }
+
+    &__tagline {
+        margin: 0 1rem 0 0;
+    }
+
     //login button box
     &__loginbox {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        justify-content: flex-start;
     }
 
     //navigation menu box
     &__navbox {
         display: flex;
         align-items: flex-end;
-        height: 4.75rem;
     }
 
     //header buttons
     &__btn {
         @include bodyCopy;
-        color: $color-six;
-        background-image: linear-gradient($color-two, $color-one);
+        color: $color-one;
+        font-weight: 600;
+        background-color: $color-five;
         border: none;
-        border-bottom: 10px solid $color-one;
         border-radius: .25rem;
-        padding: .5rem 1rem;
+        padding: 1rem 1rem;
         flex-basis: auto;
         margin: 0 0 0 1rem;
         cursor: pointer;
-        transition: color .3s ease-in-out;
-        transition: background-color, border-bottom .1s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        text-decoration: underline;
+        font-size: .875rem;
+        letter-spacing: .025rem;
 
         &:hover {
-            background-color: $color-four;
-            // border-bottom: 10px solid $color-two;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             color: $color-five;
+            background-color: $color-two-light;
         }
     }
 }
 
 .active {
-    border-bottom: 10px solid $color-two;
-    background-image: linear-gradient($color-one, $color-two);
+    background-color: $color-two;
+    color: $color-six;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -100,49 +113,7 @@
     width: 5rem;
 }
 
-
-
-
-
-
-
-
-
-// .container {
-//     // background-color: $color-one;
-// }
-
-// .header {
-
-//     display: flex;
-
-//     &__title {
-//         padding: 1rem;
-//         @include pageHeader;
-//         display: block;
-//     }
-//     &__buttons {
-//         @include flexin;
-//         flex-wrap: wrap;
-//         background-color: $color-dark-blue;
-//         justify-content: space-around
-//     }
-
-//     &__btn {
-//         @include bodyCopy;
-//         color: $color-six;
-//         background-color: $blue-light;
-//         border: none;
-//         border-radius: 5px;
-//         padding: .5rem;
-//         flex-basis: auto;
-//         margin: 0 1rem;
-//         cursor: pointer;
-//         transition: all .1s ease-in-out;
-
-//         &:hover {
-//             background-color: $blue-medium;
-//             color: black;
-//         }
-//     }
-// }
+.loggedin {
+    background-color: $color-two;
+    color: $color-six;
+}

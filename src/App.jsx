@@ -1,9 +1,10 @@
 import './App.scss';
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, useParams, Navigate, useNavigate } from "react-router-dom";
+import {  Routes, Route, useParams, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
+import NewUserPage from "./pages/NewUserPage/NewUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import axios from 'axios';
 
@@ -17,58 +18,61 @@ import axios from 'axios';
 
 export default function App() {
 
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [userInfo, setUserInfo] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
 
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
   const id = useParams();
 
   const api = process.env.REACT_APP_API_URL;
 
 
-  function handleLoggedin(e) {
+  function handleLogin(e) {
     e.preventDefault();
-    setLoggedIn(!loggedIn);
-    getUserInfo(id);
-    // navigate('/dashboard');
+    const email = e.target.email.value;
+    axios.post(`${api}/users`, {email})
+      .then((res) => {
+        setLoggedIn(true);
+        setUser(res.data[0]);
+        navigate('/neighbors');
+      })
   }
 
-//NOT WORKING YET
-  function getUserInfo(id) {
-    axios
-      // .get('http://localhost:8080/users/${id}')
-      .get('${api}/users/${id}')
-      
-      .then((response) => {
-        setUserInfo(response.data);
-        })
-        .catch((error) => {
-          console.log("error", error);
-        });
+  function handleLogout(e) {
+    e.preventDefault();
+    if(loggedIn) {
+        setLoggedIn(!loggedIn);
+        setUser({});
+        return navigate('/login');
+    } else {
+        return navigate('/login');
+    }
   }
-
 
   return (
     <div className="App">
-      <BrowserRouter>
+      
         <Header 
           loggedIn={loggedIn} 
-          handleLoggedIn={handleLoggedin}
+          handleLogout={handleLogout}
         />
         <div className="App__routes">
         <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
-          {/* {loggedIn ? <Route path="/dashboard" element={<Dashboard />} /> : <Route path="/" element={<LoginPage />} />} */}
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          {/* <Route path="/messages" element={<MessagesComponent  loggedIn={loggedIn}/>} /> */}
-          {/* <Route path="/neighbors" element={<NeighborsComponent loggedIn={loggedIn} />} /> */}
-          {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} userInfo={userInfo} />} /> : false }
+          <Route path="/" element={loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />} />
+
+          <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
+          <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} handleLogout={handleLogout} /> } />
+          <Route path="/signup" element={<NewUserPage loggedIn={loggedIn} user={user} setUser={setUser} setLoggedIn={setLoggedIn} />} />
+          {/* {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
+            : 
+          <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} /> } />} */}
+
+
           {/* <Route path="/profile" element={<Profile />} /> */}
-          {/* <Route path="/profile/:id" element={<ProfileEdit />} /> */}
         </Routes>
         </div>
         <Footer />
-      </BrowserRouter>
+      
 
     </div>
   );

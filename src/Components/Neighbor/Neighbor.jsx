@@ -8,9 +8,7 @@ export default function Neighbor({neighbor}) {
 
 const [ offering, setOffering ] = useState([]);
 const [ exchange, setExchange ] = useState([]);
-
-// let offering = [];
-// let exchange = [];
+const [ strDate, setStrDate ] = useState("");
 
 function getUserSkills() {
     axios
@@ -24,6 +22,7 @@ function getUserSkills() {
           } else {
             exchangeSkills.push(skill.skill);
           }})
+        setStrDate(neighbor.created_at.substring(0, 10));
         setOffering(offeringSkills);
         setExchange(exchangeSkills);
     })
@@ -32,31 +31,30 @@ function getUserSkills() {
     });
 };
 
-
 useEffect(() => {
     getUserSkills();
     //eslint-disable-next-line
 }, []);
 
-    // {offering.length && console.log('offering: ', offering)}
-// console.log(response)
-    // console.log(neighbor)
+
 return (
     <div className="neighbor">
         
         <div className="neighbor__header">
             <div className="neighbor__title">
-                <h4>{neighbor.first_name}</h4>
-                <p className="neighbor__member-since">Member Since <span className="neighbor__since">{neighbor.created_at}</span></p>
+                <h3>{neighbor.first_name}</h3>
+                <p className="neighbor__member-since">Member Since</p> 
+                <p className="neighbor__since">{strDate}</p>
             </div>
-            <div className="neighbor__img"></div>
+            <div className="neighbor__img-box"><img className="neighbor__img" src={neighbor.image_url} alt="user profile" /></div>
+            
         </div>
 
         <div className="neighbor__bio">
         <p className="neighbor__barter-title">Offering</p>
         <ul className="neighbor__barter-skills">
             {offering.length && offering.map((offer) => (
-                <li className="neighbor__barter-skill">{offer}</li>
+                <li className="neighbor__barter-skill semibold">-{offer}</li>
             ))}
         </ul>
         </div>
@@ -65,15 +63,19 @@ return (
         <p className="neighbor__barter-title">In Exchange For</p>
         <ul className="neighbor__barter-skills">
             {exchange.length && exchange.map((want) => (
-                <li className="neighbor__barter-skill">{want}</li>
+                <li className="neighbor__barter-skill semibold">-{want}</li>
             ))}
         </ul>
         </div>
 
+        <div className="neighbor__bio">
+        <p className="neighbor__barter-title">About</p>
+            <p className="neighbor__barter-skill">{neighbor.about}</p>
+        </div>
 
-          <div className="neighbor__bio">
-        <p className="neighbor__barter-title">Contact</p>
-            <p className="neighbor__barter-skill">{neighbor.email}</p>
+        <div className="neighbor__bio">
+            <p className="neighbor__barter-title">Contact</p>
+            <p className="neighbor__barter-skill semibold">{neighbor.email}</p>
         </div>
 
          {/* <button className="neighbor__message-btn">Send a Message</button> */}

@@ -1,1 +1,96 @@
 @use '../../styles/global' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
+.login {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 3rem;
+    padding: 3rem;
+
+    &-info {
+        background-color: $color-one;
+        color: $color-six;
+        // padding: 1.5rem 2rem 2rem;
+        padding: 2rem;
+        border-radius: .375rem;
+        display: flex;
+        flex-basis: 70%;
+        max-width: 60rem;
+        flex-direction: column;
+        text-align: right;
+        align-items: flex-end;
+
+        &__qa {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 50rem;
+        }
+
+        &__quest {
+            @include subHeaderLarge;
+            color: $color-five;
+            padding: 1rem 0 0;
+            text-align: center
+        }
+
+        &__answer {
+            @include bodyCopyLarge;
+            padding: 0 0 1rem;
+            text-align: left;
+        }
+    }
+
+
+
+    &-form {
+        color: $color-five;
+        background-color: $color-one;
+        padding: 1.5rem 2rem 2rem;
+        border-radius: .375rem;
+        display: flex;
+        flex-direction: column;
+        // align-items: space-around;
+    
+        &__label {
+    
+        }
+    
+        &__input {
+            width: 15rem;
+            border-radius: .25rem;
+            border: 1px solid $color-five;
+            padding: .25rem;
+            margin: .5rem 0 1.5rem;
+        }
+    
+        &__btn {
+            @include bodyCopy;
+            text-decoration: none;
+            color: $color-six;
+            font-weight: 600;
+            margin: .5rem 0;
+            border: 1px solid $color-five;
+            padding: .5rem 1.5rem;
+            border-radius: .25rem;
+            flex-basis: 33%;
+            background-color: $color-two-light;
+            transition: all 0.125s ease-out;
+    
+            &:hover {
+                background-color: $color-five;
+                color: $color-one;
+                border-color: $color-two-light;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.signup {
+    text-align: center;
+}
+
+
