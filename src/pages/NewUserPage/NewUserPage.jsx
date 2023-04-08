@@ -1,7 +1,11 @@
 import "./NewUserPage.scss";
 import { v4 } from "uuid";
 import axios from "axios";
-export default function NewUserPage() {
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+export default function NewUserPage({ setUser, setLoggedIn }) {
+
+const navigate = useNavigate();
 
 const api = process.env.REACT_APP_API_URL;
 // const hereKey = process.env.HERE_API_KEY;
@@ -25,7 +29,7 @@ async function createNewUser(e) {
     const address = `${house} ${street} ${city} ${province} ${country}`;
     const addressRequest = address.replaceAll(",", ' ').replaceAll(" ", '+').replaceAll(".", '+');
     const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-    console.log("coords: ", coords);
+    // console.log("coords: ", coords);
     const status = 'active';
     const about = e.target.about.value;
     axios.post(`${api}/users/newuser`, {
@@ -41,7 +45,10 @@ async function createNewUser(e) {
             address: address,
     })
     .then((res) => {
-        console.log(res.data);
+        console.log("newUser: ", res.data);
+        setLoggedIn(true);
+        setUser(res.data);
+        navigate('/neighbors');
     })
     .catch((err) => {
         console.log('Error creating new user: ', err);
@@ -57,7 +64,7 @@ async function getNewUserGeo(addressRequest) {
         // console.log(res.data.items[0].position.lng);
         // const latLng = `POINT(${res.data.items[0].position.lng},${res.data.items[0].position.lat})`;
         const latLng = [res.data.items[0].position.lng, res.data.items[0].position.lat];
-        console.log(latLng);
+        // console.log(latLng);
         return latLng;
         // return `${res.data.items[0].position.lng},${res.data.items[0].position.lat}`;
     } catch(err) {

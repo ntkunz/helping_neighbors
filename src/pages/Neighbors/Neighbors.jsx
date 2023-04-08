@@ -10,7 +10,8 @@ const [ neighbors, setNeighbors ] = useState([]);
 
 const id = useParams();
 const api = process.env.REACT_APP_API_URL;
-let userEmail = user[0].email;
+// let userEmail = user[0].email;
+let userEmail =  user.email;
 
 useEffect(() => {
     getNeighbors();
@@ -31,10 +32,16 @@ useEffect(() => {
 //     });
 // }
 
-////working on getting neighbors near user BASED OFF OF LOCATION
+////THIS WORKS FOR GETTING USERS BASED OFF OF LOCATION
 function getNeighbors() {
+ 
+ console.log(user)
+ 
     //WORKING HERE BEFORE CHECKIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    const userLocation = user[0].location;
+ 
+ 
+    // const userLocation = user[0].location;
+    const userLocation = user.location;
     console.log('userLocation variable: ', userLocation)
     axios
     .put(`http://localhost:8080/users`, userLocation)

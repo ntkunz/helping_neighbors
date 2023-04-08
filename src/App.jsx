@@ -33,7 +33,7 @@ export default function App() {
     axios.post(`${api}/users`, {email})
       .then((res) => {
         setLoggedIn(loggedIn);
-        setUser(res.data);
+        setUser(res.data[0]);
         navigate('/neighbors');
       })
   }
@@ -62,7 +62,7 @@ if(loggedIn) {
 
           <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
           <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} handleLogout={handleLogout} /> } />
-          <Route path="/signup" element={<NewUserPage loggedIn={loggedIn} user={user} />} />
+          <Route path="/signup" element={<NewUserPage loggedIn={loggedIn} user={user} setUser={setUser} setLoggedIn={setLoggedIn} />} />
           {/* {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
             : 
           <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} /> } />} */}
