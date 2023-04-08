@@ -34,6 +34,7 @@
     &__personalize {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         flex-grow: 1;
         background-color: $color-one;
         padding: 2rem;
@@ -61,7 +62,7 @@
         @include bodyCopy;
         color: $color-six;
         text-align: left;
-        margin: -1rem 0 0;
+        margin: -2.5rem 0 0;
     }
 
     &__btn {
@@ -87,10 +88,7 @@
 
 
 .textarea {
-    // display: block;
-    // width: 100%;
-    // height: 10rem;
-    // padding: .5rem;
+    resize: none;
 }
 
 
