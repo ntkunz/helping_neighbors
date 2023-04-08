@@ -15,22 +15,24 @@
         flex-grow: 1;
         flex-basis: 100%;
         align-items: flex-start;
-        justify-content: space-around;
+        justify-content: center;
         padding: 2rem 0;
         padding-inline: max(3.25rem, .5rem);
     }
 
     &__link {
         text-decoration: none;
-        color: $color-four;
+        color: $color-one;
         padding: .5rem 1.5rem;
         border-radius: .25rem;
-        flex-basis: 33%;
+        margin: 0 .5rem;
+        // flex-basis: 33%;
+        background-color: $color-five;
         transition: all 0.125s ease-out;
 
         &:hover {
-            background-color: $color-five;
-            color: $color-two;
+            background-color: $color-one;
+            color: $color-five;
         }
     }
 

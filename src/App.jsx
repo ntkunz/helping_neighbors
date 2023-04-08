@@ -32,7 +32,7 @@ export default function App() {
     const email = e.target.email.value;
     axios.post(`${api}/users`, {email})
       .then((res) => {
-        setLoggedIn(loggedIn);
+        setLoggedIn(true);
         setUser(res.data[0]);
         navigate('/neighbors');
       })
@@ -40,14 +40,14 @@ export default function App() {
 
   function handleLogout(e) {
     e.preventDefault();
-if(loggedIn) {
-    setLoggedIn(!loggedIn);
-    setUser([]);
-    return navigate('/login');
-} else {
-    return navigate('/login');
-}
-}
+    if(loggedIn) {
+        setLoggedIn(!loggedIn);
+        setUser({});
+        return navigate('/login');
+    } else {
+        return navigate('/login');
+    }
+  }
 
   return (
     <div className="App">

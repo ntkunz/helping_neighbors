@@ -4,10 +4,11 @@
 
 .neighbor {
     background-color: $color-one;
-    background-image: linear-gradient($color-one, $color-two);
+    border: 6px solid $color-five;
+    // background-image: linear-gradient($color-one, $color-two);
     // height: clamp(18rem, 24rem, 28rem);
     margin: .5rem;
-    margin-inline: max(.5rem, .125rem);
+    margin-inline: max(.75rem, .125rem);
     border-radius: 6px;
     padding: 1rem 1rem 0;
     padding-top: min(.25rem, 1rem);
@@ -39,7 +40,7 @@
     }
 
     &__since {
-        color: $color-four;
+        color: $color-five;
         font-weight: 600;
         font-size: clamp(.5rem, .75rem, 1rem);
     }
@@ -56,7 +57,7 @@
         height: 4rem;
         overflow: hidden;
         border-radius: .25rem;
-        background-color: $color-four;
+        background-color: $color-five;
     }
 
     &__bio {
@@ -66,13 +67,15 @@
         border-radius: .25rem;
         padding: .25rem;
         margin: .5rem 0;
-        background-image: linear-gradient($color-one, $color-two-light);
+        // background-image: linear-gradient($color-one, $color-two-light);
+        // background-color: $color-five;
     }
 
     &__barter-title {
         width: 100%;
         display: block;
-        color: $color-four;
+        color: $color-five;
+        text-decoration: underline;
         padding-block: max(.25rem, 0);
         font-size: .75rem;
         font-size: clamp(.5rem, .75rem, 1.25rem);
@@ -115,7 +118,8 @@
         &:hover {
             cursor: pointer;
             color: $color-six;
-            background-image: linear-gradient($color-one, $color-two);
+
+            // background-image: linear-gradient($color-one, $color-two);
         }
     }
 }

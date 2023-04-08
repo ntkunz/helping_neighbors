@@ -35,9 +35,9 @@ export default function Footer() {
       <div className="footer">
       
       <section className="footer__nav">
-      <Link className="footer__link" onClick={handleAbout}><h3 className="footer__label">Why Helping Neighbors?</h3></Link>
-      <Link className="footer__link" onClick={handleTerms}><h3 className="footer__label">Terms</h3></Link>
-      <Link className="footer__link" onClick={handleContact}><h3 className="footer__label">Contact</h3></Link>
+        <Link className="footer__link" onClick={handleTerms}><h3 className="footer__label">Terms</h3></Link>
+        <Link className="footer__link" onClick={handleAbout}><h3 className="footer__label">Benefits</h3></Link>
+        <Link className="footer__link" onClick={handleContact}><h3 className="footer__label">Contact</h3></Link>
       </section>
 
       {about && 

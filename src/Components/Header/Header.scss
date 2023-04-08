@@ -71,40 +71,50 @@
     //header buttons
     &__btn {
         @include bodyCopy;
-        color: $color-six;
+        color: $color-one;
         font-weight: 600;
-        background-image: linear-gradient($color-two, $color-one);
+        // background-image: linear-gradient($color-five, $color-two);
+        background-color: $color-five;
         border: none;
-        border-bottom: 10px solid $color-one;
+        // border-bottom: 10px solid $color-one;
         border-radius: .25rem;
-        padding: .5rem 1rem;
+        padding: 1rem 1rem;
         flex-basis: auto;
         margin: 0 0 0 1rem;
         cursor: pointer;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        text-decoration: underline;
+        font-size: .875rem;
+        letter-spacing: .025rem;
 
         &:hover {
-            background-image: none;
-            background-color: $color-five;
+            // background-image: none;
+            // background-color: $color-five;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
-            color: $color-two;
+            color: $color-one;
+            background-image: linear-gradient($color-five, $color-two);
         }
     }
 }
 
 .active {
     // border-bottom: 10px solid $color-two;
-    background-image: linear-gradient($color-one, $color-two);
+    // background-image: linear-gradient($color-one, $color-two);
+    background-color: $color-two;
+    color: $color-six;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    text-decoration: underline;
 }
 
 .fixed {
     width: 5rem;
 }
 
+.loggedin {
+    background-color: $color-two;
+    color: $color-six;
+}
 
 
 

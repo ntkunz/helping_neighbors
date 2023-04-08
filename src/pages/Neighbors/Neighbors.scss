@@ -6,7 +6,7 @@
     background-color: $color-two;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
     padding: clamp(.75rem, 1.5rem, 3rem);
     padding-bottom: 0;
     flex-wrap: wrap;
@@ -17,7 +17,8 @@
     height: fit-content;
 
     &:hover {
-        background-image: linear-gradient($color-two, $color-five);
-        border-radius: .25rem;
+        // background-image: linear-gradient($color-two, $color-five);
+        // border-radius: .25rem;
+        // background-color: $color-six;
     };
 }

@@ -73,15 +73,14 @@ return (
         </ul>
         </div>
 
+        <div className="neighbor__bio">
+        <p className="neighbor__barter-title">About</p>
+            <p className="neighbor__barter-skill">{neighbor.about}</p>
+        </div>
 
         <div className="neighbor__bio">
             <p className="neighbor__barter-title">Contact</p>
             <p className="neighbor__barter-skill">{neighbor.email}</p>
-        </div>
-
-        <div className="neighbor__bio">
-        <p className="neighbor__barter-title">About</p>
-            <p className="neighbor__barter-skill">{neighbor.about}</p>
         </div>
 
          {/* <button className="neighbor__message-btn">Send a Message</button> */}
