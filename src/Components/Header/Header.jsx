@@ -18,9 +18,14 @@ export default function Header( { loggedIn, handleLogout } ) {
             </NavLink>
         </div>
 
+        <div className="header__tagline-box">
+            <p className="header__tagline">-Barter skills</p>
+            <p className="header__tagline">-Build community</p>
+        </div>
+
         <div className="header__navbox">
             {/* <NavLink to="/messages" className="header__btn">Messages</NavLink> */}
-            <NavLink to="/neighbors" className="header__btn">Meet Your Neighbors</NavLink>
+            {loggedIn ? <NavLink to="/neighbors" className="header__btn">Meet Your Neighbors</NavLink> : <NavLink to="/login" className="header__btn">Meet Your Neighbors</NavLink>}
             {loggedIn ? <NavLink to="/profile" className="header__btn">Profile</NavLink> : <NavLink to="/signup" className="header__btn">Profile</NavLink>}
             {loggedIn ? <button onClick={handleLogout} className="header__btn fixed">Logout</button> : <button onClick={(handleLogout)} className="header__btn fixed loggedin">Login</button>}
             {/* <NavLink to="/login" className="header__btn fixed">Login</NavLink> */}

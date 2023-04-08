@@ -8,9 +8,9 @@ export default function NewUserPage({ setUser, setLoggedIn }) {
 const navigate = useNavigate();
 
 const api = process.env.REACT_APP_API_URL;
-// const hereKey = process.env.HERE_API_KEY;
+const hereKey = process.env.HERE_API_KEY;
 // console.log(process.env.HERE_API_KEY);
-// console.log(`here key: ${hereKey}`)
+console.log(`here key: ${hereKey}`)
 
 async function createNewUser(e) {
     e.preventDefault();
@@ -29,7 +29,6 @@ async function createNewUser(e) {
     const address = `${house} ${street} ${city} ${province} ${country}`;
     const addressRequest = address.replaceAll(",", ' ').replaceAll(" ", '+').replaceAll(".", '+');
     const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-    // console.log("coords: ", coords);
     const status = 'active';
     const about = e.target.about.value;
     axios.post(`${api}/users/newuser`, {
@@ -45,7 +44,6 @@ async function createNewUser(e) {
             address: address,
     })
     .then((res) => {
-        console.log("newUser: ", res.data);
         setLoggedIn(true);
         setUser(res.data);
         navigate('/neighbors');
@@ -57,7 +55,7 @@ async function createNewUser(e) {
 
 
 
-//BREAK address DOWN WORD BY WORD INTO AN ARRAY OF STRINGS THEN INPUT EACH STRING INTO A VARIABLE JOINED WITH + AND THEN USE THAT VARIABLE IN THE API CALL
+//api call to return lat long from address
 async function getNewUserGeo(addressRequest) {
     try {
         const res = await axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=2xyyJfskb70knqfTQ_avt7TgW3QSCDdByI3ntsBGKAk`);
@@ -74,55 +72,31 @@ async function getNewUserGeo(addressRequest) {
 
 
 
-// function getNewUserGeo(addressRequest) {
-
-//     axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=2xyyJfskb70knqfTQ_avt7TgW3QSCDdByI3ntsBGKAk`)
-//     // axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=${hereKey}`)
-//     .then((res) => {
-//         console.log(res.data.items[0].position.lng);
-//         const latLng = `POINT(${res.data.items[0].position.lng},${res.data.items[0].position.lat})`;
-//         return latLng;
-//         // return `${res.data.items[0].position.lng},${res.data.items[0].position.lat}`;
-//     })
-//     }
-
-// function handleLogin(e) {
-//     e.preventDefault();
-//     const email = e.target.email.value;
-//     axios.post(`${api}/users`, {email})
-//       .then((res) => {
-//         setLoggedIn(loggedIn);
-//         setUser(res.data);
-//         navigate('/neighbors');
-//       })
-//   }
-
-
-
-
-
     return (
         <div className="new">
+            <h1 className="new__title">Sign up to start bartering your way to a better neighborhood</h1>
             <form onSubmit={createNewUser} method="post" className="new__form">
+                <div className="new__signup">
                 <label className="new__label"> First Name
-                    <input type="text" className="new__input" name="first_name" />
+                    <input type="text" className="new__input" name="first_name" placeholder="First name" />
                 </label>
                 <label className="new__label">Last Name
-                    <input type="text" className="new__input" name="last_name" />
+                    <input type="text" className="new__input" name="last_name" placeholder="Last name" />
                 </label>
                 <label className="new__label">Your Email
-                    <input type="text" className="new__input" name="email" />
+                    <input type="text" className="new__input" name="email" placeholder="your email@something.com" />
                 </label>
                 <label className="new__label">Password
-                    <input type="password" className="new__input" name="password" />
+                    <input type="password" className="new__input" name="password" placeholder="Password"/>
                 </label>
                 <label className="new__label">Confirm Password
-                    <input type="password" className="new__input" name="password_confirm" />
+                    <input type="password" className="new__input" name="password_confirm" placeholder="Password again"/>
                 </label>
-                {/* <label className="new__label">Address
-                    <input type="text" className="new__input" name="address" />
-                </label> */}
-                <label className="new__label">House Number
+                <label className="new__label">Address
+                    <input type="text" className="new__input" name="address" placeholder="123 Main St, Any Town, BC, Canada"/>
+                </label>
+                <p className="new__desc">Please include house number, city, and state/province</p>
+                {/* <label className="new__label">House Number
                     <input type="text" className="new__input" name="house" />
                 </label>
                 <label className="new__label">Street Name
@@ -131,19 +105,32 @@ async function getNewUserGeo(addressRequest) {
                 <label className="new__label">City
                     <input type="text" className="new__input" name="city" />
                 </label>
-                <label className="new__label">State or Province
+                <label className="new__label">State/Province
                     <input type="text" className="new__input" name="province" />
                 </label>
                 <label className="new__label">Country
                     <input type="text" className="new__input" name="country" />
-                </label>
-                <label className="new__label">Profile Picture (url only)
-                    <input type="text" className="new__input" name="image" />
-                </label>
+                </label> */}
+                </div>
+
+                <div className="new__personalize">
                 <label className="new__label">Tell your neighbors about yourself
-                    <input type="textarea" className="new__input textarea" name="about" />
+                    <textarea className="new__input textarea" name="about" rows="3" maxLength={300} resize="none" placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."/>
                 </label>
-                <button calssName="new__btn">Start Meeting Your Neighbors</button>
+                <label className="new__label">Skills you can offer
+                    <input type="text" className="new__input" name="skills" placeholder="ie Gardening, Landscaping, Construction"/>
+                </label>
+                <p className="new__desc">One or two words for each offering, separated by commas</p>
+                <label className="new__label">What you would like to barter for
+                    <input type="text" className="new__input" name="skills" placeholder="ie Cooking, Running Errands, Cat Sitting"/>
+                </label>
+                <p className="new__desc">One or two words for each offering, separated by commas</p>
+                <label className="new__label">Profile Picture (url only)
+                    <input type="text" className="new__input" name="image" placeholder="https://www.awebsite.com/images/myprofilepicure.png"/>
+                </label>
+                <button className="new__btn">Start Meeting Your Neighbors</button>
+                </div>
+                
             </form>
         </div>
     )

@@ -29,7 +29,7 @@ export default function LoginPage({ handleLogin }) {
             <div className="login-form">
                 <form className="login-form" onSubmit={handleLogin} method="post">
                     <p className="login-form__label">Email</p>
-                    <input type="text" className="login-form__input" name="email" />    
+                    <input type="text" className="login-form__input" name="email" placeholder="your email@something.com" />    
                     <p className="login-form__label">Password</p>
                     <input type="password" className="login-form__input" name="password" />    
                     <button className="login-form__btn">Submit</button>
