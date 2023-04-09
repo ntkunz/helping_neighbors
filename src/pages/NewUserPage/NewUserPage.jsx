@@ -1,16 +1,15 @@
 import "./NewUserPage.scss";
 import { v4 } from "uuid";
 import axios from "axios";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 export default function NewUserPage({ setUser, setLoggedIn }) {
 
 const navigate = useNavigate();
 
 const api = process.env.REACT_APP_API_URL;
-// const hereKey = process.env.HERE_API_KEY;
-// console.log(process.env.HERE_API_KEY);
-// console.log(`here key: ${hereKey}`)
+const geoKey = process.env.REACT_APP_HERE_API_KEY;
+const geoApi = process.env.REACT_APP_GEO_URL;
+
 
 async function createNewUser(e) {
     e.preventDefault();
@@ -20,7 +19,7 @@ async function createNewUser(e) {
     const email = e.target.email.value;
     const password = e.target.password.value;
     const password_confirm = e.target.password_confirm.value;
-    const image_url = e.target.image.value;
+    const image_url = 'https://picsum.photos/seed/picsum/300/300';
     const home = e.target.home.value;
     const city = e.target.city.value;
     const province = e.target.province.value;
@@ -64,7 +63,7 @@ async function createNewUser(e) {
 //api call to return lat long from address
 async function getNewUserGeo(addressRequest) {
     try {
-        const res = await axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${addressRequest}&apiKey=2xyyJfskb70knqfTQ_avt7TgW3QSCDdByI3ntsBGKAk`);
+        const res = await axios.get(`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`);
         return [res.data.items[0].position.lng, res.data.items[0].position.lat];
     } catch(err) {
         console.log('Error returning lat long from api ', err)
@@ -131,9 +130,9 @@ async function addSkills(arr, id, which) {
                         <input type="text" className="new__input" name="desires" placeholder="ie Cooking, Running Errands, Cat Sitting"/>
                     </label>
                     <p className="new__desc">One or two words for each offering, separated by commas</p>
-                    <label className="new__label">Profile Picture (url only)
+                    {/* <label className="new__label">Profile Picture (url only)
                         <input type="text" className="new__input" name="image" placeholder="https://picsum.photos/200/300?grayscale" value="https://picsum.photos/seed/picsum/300/300"/>
-                    </label>
+                    </label> */}
                     <button className="new__btn">Start Meeting Your Neighbors</button>
                 </div>
                 

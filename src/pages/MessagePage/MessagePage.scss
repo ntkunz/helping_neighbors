@@ -1,0 +1,12 @@
+@use '../../styles/global' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
+.message {
+    background-color: $color-two;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 3rem;
+    padding: 3rem 3rem 0;
+}
