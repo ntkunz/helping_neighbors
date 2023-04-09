@@ -29,17 +29,15 @@
     }
 
     &__member-since {
+        @include labelLarge;
         width: 100%;
-        font-size: clamp(.625rem, .75rem, 1.25rem);
         padding-top: max(.5rem, .125rem);
-        line-height: 1rem;
-        text-align: left;
     }
 
     &__since {
+        @include labelLarge;
         color: $color-five;
         font-weight: 600;
-        font-size: clamp(.5rem, .75rem, 1rem);
     }
 
     &__img {

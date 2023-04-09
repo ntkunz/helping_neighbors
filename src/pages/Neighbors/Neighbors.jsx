@@ -10,16 +10,14 @@ export default function Neighbors({ neighbors }) {
     return (
         // neighbors.length && loggedIn ? 
         <div className="neighbors">
+            {/* {neighbors === [] ?  */}
             {neighbors.map((neighbor) => (
                 <Link className="neighbor__link" key={neighbor.id} to={`/neighbor/${neighbor.user_id}`}>
-                {/* <Link className="neighbor__link" key={neighbor.id}  onClick={getNeighbor}> */}
-                    {/* <Neighbor key={neighbor.id} neighbor={neighbor} /> */}
                     <Neighbor neighbor={neighbor} />
                 </Link>
-
             ))}
+            {/* : <h3 className="neighbors__empty">There are no neighbors near you using the app. Please spread the word!</h3>} */}
         </div> 
-        // :
-        // <Navigate to="/" /> 
+
     )
 }

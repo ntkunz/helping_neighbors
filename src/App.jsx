@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import NewUserPage from "./pages/NewUserPage/NewUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import axios from 'axios';
 
 export default function App() {
@@ -71,8 +72,9 @@ export default function App() {
         <div className="App__routes">
         <Routes>
           <Route path="/" element={loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />} />
-          <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} getNeighbors={getNeighbors} neighbors={neighbors} />} />
+          <Route path="/neighbors" element={loggedIn ? <Neighbors loggedIn={loggedIn} user={user} getNeighbors={getNeighbors} neighbors={neighbors} /> : <Navigate to="/login" /> } />
           <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} handleLogout={handleLogout} /> } />
+          <Route path="/profile" element={loggedIn ? <ProfilePage neighbor={user} /> : <Navigate to="/login" />} />
           <Route path="/signup" element={<NewUserPage loggedIn={loggedIn} user={user} setUser={setUser} setLoggedIn={setLoggedIn} />} />
           <Route path="/neighbor/:id" element={<MessagePage user={user} neighbors={neighbors} />} />
           {/* {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
