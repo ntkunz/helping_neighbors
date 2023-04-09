@@ -9,30 +9,49 @@ export default function Message({ user, getNeighbor, neighbor, neighbors }) {
 
 const {id} = useParams(); 
 const [receiver, setReceiver] = useState([]);
+const [messages, setMessages] = useState([]);
 
 useEffect(() => {
-    // setReceiver(neighbors.filter((neighbor) => neighbor.user_id === id))
+    setReceiver([])
     const receiverArray = neighbors.filter((neighbor) => neighbor.user_id === id);
-    // const receiverArray = neighbors.filter((neighbor) => neighbor.user_id === id);
-    // setReceiver(receiverArray[0]);
     setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
-}, [])
+}, [neighbors])
 
-// useEffect(() => {
-    // getMessages(user.user_id, id)
-
-// console.log('receiver_id: ', receiver[0].user_id)
-// }, [receiver])
+useEffect(() => {
+    getMessages(user.user_id, id)
+    console.log('receiver_id: ', receiver.user_id)
+    console.log('user_id: ', id)
+}, [receiver])
 
 function sendMessage() {
     console.log("message sent");
+}
+
+function getMessages(senderId, receiverId) {
+    axios
+    .put(`http://localhost:8080/messages`, {
+        senderId: senderId, 
+        receiverId: receiverId
+    })
+    .then((response) => {
+        console.log('gettin messages')
+        console.log(response.data)
+        setMessages(response.data)
+    })
+    .catch((error) => {
+        console.log("error", error);
+    });
 }
 
 return (
     <div className="message">
         <div className="message_receiver">
             <Neighbor neighbor={receiver} />
-            neighbor goes here
+        </div>
+
+        <div className="message__output">
+            {messages.map((message) => message.message)}
+            messages here
         </div>
 
         <div className="message__message">
@@ -41,8 +60,7 @@ return (
             </form>
         </div>
     </div>
-
-
 )
+
 
 }

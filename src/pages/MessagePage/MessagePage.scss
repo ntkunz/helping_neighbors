@@ -9,4 +9,8 @@
     justify-content: center;
     gap: 3rem;
     padding: 3rem 3rem 0;
+
+    &__receiver {
+        flex-basis: 30%;
+    }
 }
