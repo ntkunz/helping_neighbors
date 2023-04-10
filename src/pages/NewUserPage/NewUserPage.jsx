@@ -9,19 +9,22 @@ export default function NewUserPage({ setUser, setLoggedIn }) {
 	const geoKey = process.env.REACT_APP_HERE_API_KEY;
 	const geoApi = process.env.REACT_APP_GEO_URL;
 
+	function capFirst(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
 	async function createNewUser(e) {
 		e.preventDefault();
 		const user_id = v4();
-		const first_name = e.target.first_name.value;
-		const last_name = e.target.last_name.value;
-		const email = e.target.email.value;
+		const first_name = capFirst(e.target.first_name.value);
+		const last_name = capFirst(e.target.last_name.value);
+		const email = e.target.email.value.toLowerCase();
 		const password = e.target.password.value;
 		const password_confirm = e.target.password_confirm.value;
-		// const image_url = 'https://picsum.photos/seed/picsum/300/300';
 		const image_url = "https://picsum.photos/300";
-		const home = e.target.home.value;
-		const city = e.target.city.value;
-		const province = e.target.province.value;
+		const home = capFirst(e.target.home.value);
+		const city = capFirst(e.target.city.value);
+		const province = capFirst(e.target.province.value);
 		const address = `${home} ${city} ${province}`;
 		const addressRequest = address
 			.replaceAll(",", " ")
