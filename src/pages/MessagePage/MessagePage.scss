@@ -13,6 +13,26 @@
     padding: 3rem 3rem 0;
     @include bodyCopyLarge;
 
+    &__title {
+        @include sectionHeader;
+        color: $color-five;
+        text-align: center;
+        margin: 2rem 0 0;
+    }
+
+    &__link {
+        text-decoration: underline;
+        transition: all .125s ease-in-out;
+        border-radius: .25rem;
+        color: $color-five;
+
+        &:hover {
+            // color: $color-six;
+            background-color: $color-two-light;
+            cursor: pointer;
+        }
+    }
+
     //container for recipient messager
     &__receiver {
         flex-basis: 20rem;

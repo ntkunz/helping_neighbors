@@ -30,6 +30,7 @@ export default function App() {
   function handleLogin(e) {
     e.preventDefault();
     const email = e.target.email.value;
+    console.log('sending api request with :', email)
     axios.post(`${api}/users`, {email})
       .then((res) => {
         setLoggedIn(true);
@@ -50,9 +51,9 @@ export default function App() {
   }
 
   function getNeighbors(location) {
-    const userLocation = location;
+    // const userLocation = location;
     axios
-    .put(`${api}/users`, userLocation)
+    .put(`${api}/users`, {userLocation: location})
     .then((response) => {
         const onlyNeighbors = response.data.filter((neighbor) => neighbor.email !== userEmail);
         setNeighbors(onlyNeighbors);

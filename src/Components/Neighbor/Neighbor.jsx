@@ -22,7 +22,7 @@ function getUserSkills() {
             } else {
                 exchangeSkills.push(skill.skill);
         }})
-        console.log('gettin neighbor skills')
+        // console.log('gettin neighbor skills')
         setStrDate(neighbor.created_at.substring(0, 10));
         setOffering(offeringSkills);
         setExchange(exchangeSkills);
