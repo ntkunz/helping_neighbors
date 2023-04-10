@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Neighbor from "../../Components/Neighbor/Neighbor";
+import dynamictimestamp from "../../utils/dynamictimestamp";
 
 export default function Message({ user, neighbors }) { 
 
@@ -57,7 +58,7 @@ function getMessages(senderId, receiverId) {
         console.log("error", error);
     })
     // ), 3000);
-    setTimeout(getMessages(senderId, receiverId), 4000)
+    // setTimeout(()=>{getMessages(senderId, receiverId)}, 2000)
 }
 
 return (
@@ -81,13 +82,9 @@ return (
                 {messages.map((message) => 
                     <div className="message__box">
                         <p className="message__text">{message.message}</p>
-                        {message.sender_id === user.user_id ? <p className="message__info">Sent {message.created_at.substring(0, 10)} by <span className="semibold">{user.first_name}</span></p> 
-                        : <p className="message__info">Sent {message.created_at.substring(0, 10)} by <span className="semibold">{receiver.first_name}</span></p>}
-                        {/* <p className="message__info">Message sent on {message.created_at.substring(0, 10)} by {message.sender_id}</p>
-                        <p className="message__info">Message sent on {message.created_at.substring(0, 10)} by {message.sender_id}</p> */}
-
-                    </div>
-                
+                        {message.sender_id === user.user_id ? <p className="message__info">Sent {dynamictimestamp(message.unix_timestamp)} by <span className="semibold">{user.first_name}</span></p> 
+                        : <p className="message__info">Sent {dynamictimestamp(message.unix_timestamp)} {message.unix_timestamp} by <span className="semibold">{receiver.first_name}</span></p>}
+                    </div>               
                 )}
             </div>
 
@@ -97,3 +94,4 @@ return (
 
 
 }
+
