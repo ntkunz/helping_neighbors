@@ -5,13 +5,15 @@ import axios from "axios";
 export default function Neighbor({ neighbor }) {
 	// const [ response, setResponse ] = useState([]);
 
+	const api = process.env.REACT_APP_API_URL;
+
 	const [offering, setOffering] = useState([]);
 	const [exchange, setExchange] = useState([]);
-	const [strDate, setStrDate] = useState("");
+	const [strDate, setStrDate] = useState("");	
 
 	function getUserSkills() {
 		axios
-			.get(`http://localhost:8080/users/skills/${neighbor.user_id}`)
+			.get(`${api}}/users/skills/${neighbor.user_id}`)
 			.then((response) => {
 				const offeringSkills = [];
 				const exchangeSkills = [];
