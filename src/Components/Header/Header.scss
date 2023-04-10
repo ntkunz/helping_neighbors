@@ -1,119 +1,118 @@
-@use '../../styles/global' as *;
-@use '../../styles/mixins' as *;
-@use '../../styles/variables' as *;
-
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
 
 .header {
-    width: 100%;
-    background-color: $color-one;
-    z-index: 1;
-    height: 7.5rem;
-    display: flex;
+	width: 100%;
+	background-color: $color-one;
+	z-index: 1;
+	height: 7.5rem;
+	display: flex;
 
-    &__container {
-        display: flex;
-        padding: 1rem 2rem 0;
-        padding-inline: max(3.25rem, .5rem);
-        justify-content: space-between;
-        width: 100%;
-    }
+	&__container {
+		display: flex;
+		padding: 1rem 2rem 0;
+		padding-inline: max(3.25rem, 0.5rem);
+		justify-content: space-between;
+		width: 100%;
+	}
 
-    //header title and subtitle
+	//header title and subtitle
 
-    &__title-btn{
-        text-decoration: none;
-        color: $color-five;
-        transition: all 0.125s ease-out;
+	&__title-btn {
+		text-decoration: none;
+		color: $color-five;
+		transition: all 0.125s ease-out;
 
-        &:hover {
-            color: $color-four;
-        }
-    }
+		&:hover {
+			color: $color-four;
+		}
+	}
 
-    &__titlebox {
-        display: flex;
-    }
+	&__titlebox {
+		display: flex;
+	}
 
-    &__title {
-        @include pageHeaderLarge;
-        display: block;
-        padding: 0 1rem 0 1.35rem;
-    }
+	&__title {
+		@include pageHeaderLarge;
+		display: block;
+		padding: 0 1rem 0 1.35rem;
+	}
 
-    &__subtitle {
-        @include sectionHeaderLarge;
-        display: block;
-        padding: .75rem .25rem 0 .5rem;
-    }
+	&__subtitle {
+		@include sectionHeaderLarge;
+		display: block;
+		padding: 0.75rem 0.25rem 0 0.5rem;
+	}
 
-    //tagline
-    &__tagline-box {
-        @include bodyCopy;
-        display: flex;
-        flex-grow: 1;
-        align-items: flex-end;
-        color: $color-five;
-        font-weight: 600;
-        padding: 0 0 0 1rem;
-        margin: 0 0 1rem;
-        font-size: clamp(1rem, 1.5vw, 1.25rem);
-    }
+	//tagline
+	&__tagline-box {
+		@include bodyCopy;
+		display: flex;
+		flex-grow: 1;
+		align-items: flex-end;
+		color: $color-five;
+		font-weight: 600;
+		padding: 0 0 0 1rem;
+		margin: 0 0 1rem;
+		font-size: clamp(1rem, 1.5vw, 1.25rem);
+	}
 
-    &__tagline {
-        margin: 0 1rem 0 0;
-    }
+	&__tagline {
+		margin: 0 1rem 0 0;
+	}
 
-    //login button box
-    &__loginbox {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-    }
+	//login button box
+	&__loginbox {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
 
-    //navigation menu box
-    &__navbox {
-        display: flex;
-        align-items: flex-end;
-    }
+	//navigation menu box
+	&__navbox {
+		display: flex;
+		align-items: flex-end;
+	}
 
-    //header buttons
-    &__btn {
-        @include bodyCopy;
-        color: $color-one;
-        font-weight: 600;
-        background-color: $color-five;
-        border: none;
-        border-radius: .25rem;
-        padding: 1rem 1rem;
-        flex-basis: auto;
-        margin: 0 0 0 1rem;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-        text-decoration: underline;
-        font-size: .875rem;
-        letter-spacing: .025rem;
+	//header buttons
+	&__btn {
+		@include bodyCopy;
+		color: $color-one;
+		font-weight: 600;
+		background-color: $color-five;
+		border: none;
+		border-radius: 0.25rem;
+		padding: 1rem 1rem;
+		flex-basis: auto;
+		margin: 0 0 0 1rem;
+		cursor: pointer;
+		transition: all 0.2s ease-in-out;
+		text-decoration: underline;
+		font-size: 0.875rem;
+		letter-spacing: 0.025rem;
 
-        &:hover {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            color: $color-five;
-            background-color: $color-two-light;
-        }
-    }
+		&:hover {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			color: $color-five;
+			background-color: $color-two-light;
+		}
+	}
 }
 
 .active {
-    background-color: $color-two;
-    color: $color-six;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+	background-color: $color-two;
+	color: $color-six;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 .fixed {
-    width: 5rem;
+	width: 5rem;
 }
 
 .loggedin {
-    background-color: $color-two;
-    color: $color-six;
+	background-color: $color-two;
+	color: $color-six;
 }

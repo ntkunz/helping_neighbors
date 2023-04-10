@@ -1,57 +1,56 @@
-@use '../../styles/global' as *;
-@use '../../styles/mixins' as *;
-@use '../../styles/variables' as *;
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
 
 .footer {
-    background-color: $color-two;
-    display: flex;
-    flex-grow: 1;
-    flex-wrap: wrap;
-    
-    &__nav {
-        text-align: center;
-        display: flex;
-        flex-direction: row;
-        flex-grow: 1;
-        flex-basis: 100%;
-        align-items: flex-start;
-        justify-content: center;
-        padding: 2rem 0;
-        padding-inline: max(3.25rem, .5rem);
-    }
+	background-color: $color-two;
+	display: flex;
+	flex-grow: 1;
+	flex-wrap: wrap;
 
-    &__link {
-        text-decoration: none;
-        color: $color-one;
-        padding: .5rem 1.5rem;
-        border-radius: .25rem;
-        margin: 0 .5rem;
-        // flex-basis: 33%;
-        background-color: $color-five;
-        transition: all 0.125s ease-out;
+	&__nav {
+		text-align: center;
+		display: flex;
+		flex-direction: row;
+		flex-grow: 1;
+		flex-basis: 100%;
+		align-items: flex-start;
+		justify-content: center;
+		padding: 2rem 0;
+		padding-inline: max(3.25rem, 0.5rem);
+	}
 
-        &:hover {
-            background-color: $color-one;
-            color: $color-five;
-        }
-    }
+	&__link {
+		text-decoration: none;
+		color: $color-one;
+		padding: 0.5rem 1.5rem;
+		border-radius: 0.25rem;
+		margin: 0 0.5rem;
+		// flex-basis: 33%;
+		background-color: $color-five;
+		transition: all 0.125s ease-out;
 
-    &__section {
-        color: $color-six;
-        padding: 0 3rem;
-    }
+		&:hover {
+			background-color: $color-one;
+			color: $color-five;
+		}
+	}
 
-    &__label {
+	&__section {
+		color: $color-six;
+		padding: 0 3rem;
+	}
 
-    }
+	&__label {
+	}
 
-    &__paragraph{
-        margin: 2rem 0;
-        line-height: 1.5rem;
-    }
+	&__paragraph {
+		margin: 2rem 0;
+		line-height: 1.5rem;
+	}
 }
 
 .first-paragraph {
-    font-weight: 600;
-    margin: 0 0 2rem;
+	font-weight: 600;
+	margin: 0 0 2rem;
 }
