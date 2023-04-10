@@ -1,147 +1,167 @@
-@use '../../styles/global' as *;
-@use '../../styles/mixins' as *;
-@use '../../styles/variables' as *;
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
 
 //messagePage container
 .message {
-    background-color: $color-two;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 3rem;
-    padding: 3rem 3rem 0;
-    @include bodyCopyLarge;
+	background-color: $color-two;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 3rem;
+	padding: 0 4rem 0;
+	width: 100%;
+	@include bodyCopyLarge;
 
-    &__title {
-        @include sectionHeader;
-        color: $color-five;
-        text-align: center;
-        margin: 2rem 0 0;
-    }
+	&__container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 3rem;
+		width: 100%;
+	}
 
-    &__link {
-        text-decoration: underline;
-        transition: all .125s ease-in-out;
-        border-radius: .25rem;
-        color: $color-five;
+	&__title {
+		@include sectionHeader;
+		color: $color-five;
+		text-align: center;
+		margin: 2rem 0 0;
+	}
 
-        &:hover {
-            // color: $color-six;
-            background-color: $color-two-light;
-            cursor: pointer;
-        }
-    }
+	&__link {
+		text-decoration: underline;
+		transition: all 0.125s ease-in-out;
+		border-radius: 0.25rem;
+		color: $color-five;
 
-    //container for recipient messager
-    &__receiver {
-        flex-basis: 20rem;
-        flex-grow: 1;
-        // padding: 1rem 0;
-    }
+		&:hover {
+			// color: $color-six;
+			background-color: $color-two-light;
+			cursor: pointer;
+		}
+	}
 
-    //container for message form and messages
-    //flex grow 9999 to make sure receiver doesn't grow
-    &__messages {
-        flex-basis: 30rem;
-        flex-grow: 9999;
-        background-color: $color-one;
-        border-radius: 6px;
-        padding: 1rem 1.5rem 0;
-        // display: flex;
-        // flex-wrap: wrap;
-        color: $color-six;
-    }
+	//container for recipient messager
+	&__receiver {
+		flex-basis: 20rem;
+		flex-grow: 1;
+		// padding: 1rem 0;
+	}
 
-    //container form to send message 
-    &__message {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+	//container for message form and messages
+	//flex grow 9999 to make sure receiver doesn't grow
+	&__messages {
+		flex-basis: 30rem;
+		flex-grow: 9999;
+		background-color: $color-one;
+		border-radius: 6px;
+		padding: 1rem 1.5rem 0;
+		color: $color-six;
+	}
 
-    //form to send message
-    &__form {
-        width: 100%;
-        margin: 0 0 2rem;
-    }
+	//container form to send message
+	&__message {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
 
-    //textarea input for message
-    &__input {
-        height: 6rem;
-        width: 100%;
-        overflow-y: scroll;
-        border-radius: .25rem;
-        padding: .5rem;
-        outline: .125rem solid $color-two;
-        border: none;
+	//form to send message
+	&__form {
+		width: 100%;
+		margin: 0 0 2rem;
+	}
 
-        &:focus, &:active {
-            border: 1px solid $color-six;
-        }
-    }
+	//textarea input for message
+	&__input {
+		height: 6rem;
+		width: 100%;
+		overflow-y: scroll;
+		border-radius: 0.25rem;
+		padding: 0.5rem;
+		outline: 0.125rem solid $color-two;
+		border: none;
 
-    //message button
-    &__btn {
-        width: min(18rem, 100%);
-        margin: 1rem auto 0;
-        padding: .5rem .5rem;
-        border-radius: .25rem;
-        background-color: $color-five;
-        color: $color-one;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all .25s ease-in-out;
-        border: none;
-        text-decoration: underline;
+		&:focus,
+		&:active {
+			border: 1px solid $color-six;
+		}
+	}
 
-        &:hover {
-            background-color: $color-two;
-            color: $color-five;
-        }
-    }
+	//message button
+	&__btn {
+		width: min(18rem, 100%);
+		margin: 1rem auto 0;
+		padding: 0.5rem 0.5rem;
+		border-radius: 0.25rem;
+		background-color: $color-five;
+		color: $color-one;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.25s ease-in-out;
+		border: none;
+		text-decoration: underline;
 
-    //container for previous messages 
-    &__output{
-        width: 100%;
-        padding: 1rem 0;
-        margin-bottom: 1rem;
-        height: 25rem;
-        overflow-y: scroll;
-    }
+		&:hover {
+			background-color: $color-two;
+			color: $color-five;
+		}
+	}
 
-    &__neighbor {
-        margin: 0 0 1rem;
-    }
+	//container for previous messages
+	&__output {
+		width: 100%;
+		padding: 1rem 0;
+		margin-bottom: 1rem;
+		// height: 15rem;
+		overflow-y: scroll;
+	}
 
-    //box around output date and sender and message
-    &__box {
-        display: flex;
-        flex-direction: column;
-        // align-items: flex-end;
-    }
+	&__neighbor {
+		margin: 0 0 1rem;
+	}
 
-    //timestamp and messagee
-    &__info {
-        @include labelLarge;
-        font-weight: 400;
-        margin-bottom: 1rem;
-        color: $color-five;
-        width: fit-content;
-        padding: .125rem .5rem;
-        // background-color: $color-two;
-    }
+	//box around output date and sender and message
+	&__box {
+		display: flex;
+		flex-direction: column;
+		// align-items: flex-end;
+	}
 
-    //content from messages
-    &__text{
-        // flex-basis: 100%;
-        width: 100%;
-        padding: .5rem;
-        background-color: white;
-        border-radius: .25rem;
-    }
+	//timestamp and messagee
+	&__info {
+		@include labelLarge;
+		font-weight: 400;
+		margin-bottom: 1rem;
+		color: $color-five;
+		width: fit-content;
+		padding: 0 0.5rem 0.125rem;
+		// background-color: $color-two;
+	}
+
+	//content from messages
+	&__text {
+		// flex-basis: 100%;
+		width: 100%;
+		padding: 0.5rem;
+		border-radius: 0.25rem;
+	}
 }
 
 .semibold {
-    font-weight: 600;
+	font-weight: 600;
+}
+
+.sent {
+	background-color: $color-two-light;
+	color: $color-six;
+}
+
+.received {
+	background-color: white;
+	color: $color-five;
+	text-align: right;
+	align-self: flex-end;
 }
