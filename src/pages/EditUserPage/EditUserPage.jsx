@@ -2,6 +2,8 @@ import "./EditUserPage.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+
 export default function EditUserPage({ user, setUser }) {
 	const navigate = useNavigate();
 
@@ -25,11 +27,12 @@ export default function EditUserPage({ user, setUser }) {
 	const [desires, setDesires] = useState('');
 
 	useEffect(() => {
-		getUserSkills();
+		getSkills();
 	}, []);
 
 
-	function getUserSkills() {
+	function getSkills() {
+		console.log('userId: ', user.user_id)
 		axios
 			.get(`${api}/users/skills/${user.user_id}`)
 			.then((response) => {
@@ -44,7 +47,7 @@ export default function EditUserPage({ user, setUser }) {
 				});
 				// console.log('gettin neighbor skills')
 				// setStrDate(neighbor.created_at.substring(0, 10));
-				console.log('offeringSkills', offeringSkills)
+				// console.log('offeringSkills', offeringSkills)
 				setOffers(offeringSkills.join(', '));
 				setDesires(exchangeSkills.join(', '));
 			})
@@ -141,12 +144,17 @@ export default function EditUserPage({ user, setUser }) {
 		}
 	}
 
+	function sayClick() {
+		console.log('click')
+	}
+
 	return (
 		<div className="edit">
 			<h1 className="edit__title">
-				Sign up to start bartering your way to a better neighborhood
+				Edit your profile and barter on my friend
 			</h1>
-			<form onSubmit={editUser} method="post" className="edit__form">
+			{/* <form onSubmit={editUser} method="post" className="edit__form"> */}
+			<form onSubmit={sayClick} method="post" className="edit__form">
 				<div className="edit__signup">
 					<label className="edit__label">
 						{" "}
@@ -182,7 +190,7 @@ export default function EditUserPage({ user, setUser }) {
 							onChange={(e)=>setEmail(e.target.value)}
 						/>
 					</label>
-					<label className="edit__label">
+					{/* <label className="edit__label">
 						Password
 						<input
 							type="password"
@@ -199,7 +207,7 @@ export default function EditUserPage({ user, setUser }) {
 							name="password_confirm"
 							placeholder="Password again"
 						/>
-					</label>
+					</label> */}
 					<label className="edit__label">
 						Home Address
 						<input

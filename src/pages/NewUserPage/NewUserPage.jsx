@@ -54,6 +54,9 @@ export default function NewUserPage({ setUser, setLoggedIn }) {
 					coords: coords,
 					about: about,
 					address: address,
+					home: home,
+					city: city,
+					province: province,
 				}),
 			]);
 			setLoggedIn(true);
