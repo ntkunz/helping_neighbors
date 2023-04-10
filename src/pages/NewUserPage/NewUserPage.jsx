@@ -19,7 +19,8 @@ async function createNewUser(e) {
     const email = e.target.email.value;
     const password = e.target.password.value;
     const password_confirm = e.target.password_confirm.value;
-    const image_url = 'https://picsum.photos/seed/picsum/300/300';
+    // const image_url = 'https://picsum.photos/seed/picsum/300/300';
+    const image_url = 'https://picsum.photos/300';
     const home = e.target.home.value;
     const city = e.target.city.value;
     const province = e.target.province.value;
