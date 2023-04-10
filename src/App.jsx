@@ -1,40 +1,41 @@
 import './App.scss';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {  Routes, Route, useParams, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NewUserPage from "./pages/NewUserPage/NewUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
+import MessagePage from "./pages/MessagePage/MessagePage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import axios from 'axios';
-
-// import NeighborsComponent from "./Components/NeighborsComponent/NeighborsComponent";
-// import Dashboard from "./pages/Dashboard/Dashboard";
-// import Messages from "./pages/Messages/Messages";
-// import MessagesComponent from "./Components/MessagesComponent/MessagesComponent";
-// import Profile from "./pages/Profile/Profile";
-// import ProfileEdit from "./pages/ProfileEdit/ProfileEdit";
-
 
 export default function App() {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({});
+  const [userEmail, setUserEmail] = useState([]);
+  const [ neighbors, setNeighbors ] = useState([]);
 
   let navigate = useNavigate();
   const id = useParams();
 
   const api = process.env.REACT_APP_API_URL;
 
+  useEffect(() => {
+    getNeighbors(user.location)
+    navigate('/neighbors');
+  }, [userEmail]);
 
   function handleLogin(e) {
     e.preventDefault();
     const email = e.target.email.value;
+    console.log('sending api request with :', email)
     axios.post(`${api}/users`, {email})
       .then((res) => {
         setLoggedIn(true);
         setUser(res.data[0]);
-        navigate('/neighbors');
+        setUserEmail(res.data[0].email);
       })
   }
 
@@ -49,6 +50,19 @@ export default function App() {
     }
   }
 
+  function getNeighbors(location) {
+    // const userLocation = location;
+    axios
+    .put(`${api}/users`, {userLocation: location})
+    .then((response) => {
+        const onlyNeighbors = response.data.filter((neighbor) => neighbor.email !== userEmail);
+        setNeighbors(onlyNeighbors);
+    })
+    .catch((error) => {
+        console.log("error", error);
+    });
+  }
+
   return (
     <div className="App">
       
@@ -59,10 +73,11 @@ export default function App() {
         <div className="App__routes">
         <Routes>
           <Route path="/" element={loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />} />
-
-          <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
+          <Route path="/neighbors" element={loggedIn ? <Neighbors loggedIn={loggedIn} user={user} getNeighbors={getNeighbors} neighbors={neighbors} /> : <Navigate to="/login" /> } />
           <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} handleLogout={handleLogout} /> } />
+          <Route path="/profile" element={loggedIn ? <ProfilePage neighbor={user} /> : <Navigate to="/login" />} />
           <Route path="/signup" element={<NewUserPage loggedIn={loggedIn} user={user} setUser={setUser} setLoggedIn={setLoggedIn} />} />
+          <Route path="/neighbor/:id" element={<MessagePage user={user} neighbors={neighbors} />} />
           {/* {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
             : 
           <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} /> } />} */}

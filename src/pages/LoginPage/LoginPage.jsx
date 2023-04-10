@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 export default function LoginPage({ handleLogin }) {
     return (
 
-        <div className="login">
+        <div className="login__container">
 
+            <h1 className="login__title">Sign in or sign up to start bartering your way to a better neighborhood</h1>
+            <div className="login">
             <div className="login-info">
                 <div className="login-info__qa">
                     <h2 className="login-info__quest">Why Helping Neighbors?</h2>
@@ -25,7 +27,6 @@ export default function LoginPage({ handleLogin }) {
                 </div>
             </div>
 
-
             <div className="login-form">
                 <form className="login-form" onSubmit={handleLogin} method="post">
                     <p className="login-form__label">Email</p>
@@ -36,6 +37,7 @@ export default function LoginPage({ handleLogin }) {
                     <Link className="login-form__btn signup" to="/signup">Sign Up</Link>
                 </form>
             </div>
+        </div>
         </div>
     );
 }

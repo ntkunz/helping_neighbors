@@ -17,11 +17,12 @@ function getUserSkills() {
         const offeringSkills = [];
         const exchangeSkills = [];
         response.data.forEach((skill) => {
-          if (skill.offer === 1) {
-            offeringSkills.push(skill.skill);
-          } else {
-            exchangeSkills.push(skill.skill);
-          }})
+            if (skill.offer === 1) {
+                offeringSkills.push(skill.skill);
+            } else {
+                exchangeSkills.push(skill.skill);
+        }})
+        // console.log('gettin neighbor skills')
         setStrDate(neighbor.created_at.substring(0, 10));
         setOffering(offeringSkills);
         setExchange(exchangeSkills);
@@ -34,7 +35,7 @@ function getUserSkills() {
 useEffect(() => {
     getUserSkills();
     //eslint-disable-next-line
-}, []);
+}, [neighbor]);
 
 
 return (

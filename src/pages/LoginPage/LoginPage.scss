@@ -9,10 +9,16 @@
     gap: 3rem;
     padding: 3rem;
 
+    &__title {
+        @include sectionHeader;
+        color: $color-five;
+        text-align: center;
+        margin: 2rem 0 0;
+    }
+
     &-info {
         background-color: $color-one;
         color: $color-six;
-        // padding: 1.5rem 2rem 2rem;
         padding: 2rem;
         border-radius: .375rem;
         display: flex;
@@ -68,7 +74,7 @@
     
         &__btn {
             @include bodyCopy;
-            text-decoration: none;
+            text-decoration: underline;
             color: $color-six;
             font-weight: 600;
             margin: .5rem 0;
@@ -91,6 +97,7 @@
 
 .signup {
     text-align: center;
+    margin-top: 2rem;
 }
 
 
