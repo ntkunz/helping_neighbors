@@ -211,7 +211,7 @@ export default function NewUserPage({ setUser, setLoggedIn }) {
 						/>
 					</label>
 					<p className="new__desc">
-						One or two words for each offering, separated by commas
+						One or two words for each thing you'd like to barter for, separated by commas
 					</p>
 					{/* <label className="new__label">Profile Picture (url only)
                         <input type="text" className="new__input" name="image" placeholder="https://picsum.photos/200/300?grayscale" value="https://picsum.photos/seed/picsum/300/300"/>

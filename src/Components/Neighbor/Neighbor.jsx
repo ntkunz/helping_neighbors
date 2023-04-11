@@ -27,8 +27,8 @@ export default function Neighbor({ neighbor }) {
 				});
 				// console.log('gettin neighbor skills')
 				setStrDate(neighbor.created_at.substring(0, 10));
-				console.log('offering skills :', offeringSkills);
-				console.log('exchangeSkills :', exchangeSkills);
+				// console.log('offering skills :', offeringSkills);
+				// console.log('exchangeSkills :', exchangeSkills);
 				setOffering(offeringSkills);
 				setExchange(exchangeSkills);
 			})

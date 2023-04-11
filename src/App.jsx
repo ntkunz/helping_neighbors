@@ -32,7 +32,7 @@ export default function App() {
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
-	}, [userEmail]);
+	}, [userEmail, user]);
 
 	function handleLogin(e) {
 		e.preventDefault();
@@ -112,7 +112,7 @@ export default function App() {
 						path="/profile"
 						element={
 							loggedIn ? (
-								<EditUserPage user={user} setUser={setUser} />
+								<EditUserPage user={user} setUser={setUser} setNeighbors={setNeighbors} />
 							) : (
 								<Navigate to="/login" />
 							)
