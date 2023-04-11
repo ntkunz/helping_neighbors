@@ -26,7 +26,6 @@
 		padding: 0.5rem 1.5rem;
 		border-radius: 0.25rem;
 		margin: 0 0.5rem;
-		// flex-basis: 33%;
 		background-color: $color-five;
 		transition: all 0.125s ease-out;
 
@@ -40,7 +39,16 @@
 
 	&__section {
 		color: $color-six;
-		padding: 0 3rem;
+		margin: 0 3rem;
+		padding: 1rem 2rem;
+		position: fixed;
+		bottom: 5.5rem;
+		border-radius: .25rem;
+		left: 0;
+		z-index: 1;
+		background-color: $color-one;
+		outline: solid 1px $color-five;
+		// visibility: hidden;
 	}
 
 	&__label {
@@ -57,7 +65,8 @@
 	margin: 0 0 2rem;
 }
 
-.active {
+.footer__active {
 	background-color: $color-one;
 	color: $color-five;
+	// display: inline-block;
 }
