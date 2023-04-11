@@ -11,6 +11,7 @@ import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NewUserPage from "./pages/NewUserPage/NewUserPage";
+import EditUserPage from "./pages/EditUserPage/EditUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
@@ -28,10 +29,13 @@ export default function App() {
 
 	const api = process.env.REACT_APP_API_URL;
 
+	// possibly async getNeighbors to not navigate until neighbors are back
+	// other option is a set timeout for a tiiiiny bit
+	// or 
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
-	}, [userEmail]);
+	}, [userEmail, user]);
 
 	function handleLogin(e) {
 		e.preventDefault();
@@ -111,7 +115,7 @@ export default function App() {
 						path="/profile"
 						element={
 							loggedIn ? (
-								<ProfilePage neighbor={user} />
+								<EditUserPage user={user} setUser={setUser} setNeighbors={setNeighbors} />
 							) : (
 								<Navigate to="/login" />
 							)

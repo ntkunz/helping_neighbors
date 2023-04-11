@@ -14,30 +14,33 @@
 
 /*font styles - mixins*/
 @mixin pageHeader {
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    letter-spacing: .075rem;
     font-weight: 600;
     margin: 0;
 }
 
 @mixin pageHeaderLarge {
-    font-size: 3.25rem;
-    line-height: 2.75rem;
-    letter-spacing: .25rem;
+    // font-size: 3.25rem;
+    // line-height: 2.75rem;
+    font-size: 2.75rem;
+    line-height: 3.75rem;
+    letter-spacing: .1rem;
     font-weight: bold;
     margin: 0;
 }
 
 @mixin sectionHeader {
     font-size: 1.75rem;
-    line-height: 2rem;
+    line-height: 1.75rem;
     font-weight: 600;
     margin: 0;
 }
 
 @mixin sectionHeaderLarge {
-    font-size: 3rem;
-    line-height: 1.25rem;
+    font-size: 2.25rem;
+    line-height: 2.25rem;
     font-weight: 600;
     margin: 0;
 }
