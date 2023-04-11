@@ -38,7 +38,7 @@
 	}
 
 	&__section {
-		color: $color-six;
+		color: $color-five;
 		margin: 0 3rem;
 		padding: 1rem 2rem;
 		position: fixed;
@@ -48,10 +48,18 @@
 		z-index: 1;
 		background-color: $color-one;
 		outline: solid 1px $color-five;
-		// visibility: hidden;
+		align-self: center;
+		transition: all 0.125s ease-out;
+		
+		&:hover {
+			background-color: $color-two;
+			color: $color-six;
+			cursor: pointer;
+		}
 	}
 
-	&__label {
+	&__close {
+		color: $color-six;
 	}
 
 	&__paragraph {
