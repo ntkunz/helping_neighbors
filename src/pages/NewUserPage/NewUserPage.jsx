@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function NewUserPage({ setUser, setLoggedIn }) {
+	
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;

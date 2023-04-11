@@ -88,6 +88,10 @@
 		font-size: max(1rem, 0.75rem);
 	}
 
+	&__placeholder {
+		height: 100vh;
+	}
+
 	&:hover {
 		box-shadow: 0px 0px 3px 4px $color-four;
 	}
