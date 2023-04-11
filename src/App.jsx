@@ -29,6 +29,9 @@ export default function App() {
 
 	const api = process.env.REACT_APP_API_URL;
 
+	// possibly async getNeighbors to not navigate until neighbors are back
+	// other option is a set timeout for a tiiiiny bit
+	// or 
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
