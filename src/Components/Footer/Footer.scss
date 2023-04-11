@@ -34,6 +34,8 @@
 			background-color: $color-one;
 			color: $color-five;
 		}
+
+		
 	}
 
 	&__section {
@@ -53,4 +55,9 @@
 .first-paragraph {
 	font-weight: 600;
 	margin: 0 0 2rem;
+}
+
+.active {
+	background-color: $color-one;
+	color: $color-five;
 }

@@ -15,17 +15,17 @@ export default function Neighbors({ neighbors, user }) {
 			</h1>
 
 			<div className="neighbors">
-				{/* {neighbors === [] ?  */}
-				{neighbors.map((neighbor) => (
-					<Link
+				{neighbors.length > 1 ? ( 
+				neighbors.map((neighbor) => (
+					<Link 
 						className="neighbor__link"
 						key={neighbor.id}
 						to={`/neighbor/${neighbor.user_id}`}
 					>
 						<Neighbor neighbor={neighbor} />
 					</Link>
-				))}
-				{/* : <h3 className="neighbors__empty">There are no neighbors near you using the app. Please spread the word!</h3>} */}
+				))
+				) : <h2 className="neighbors__empty">There are no neighbors near you using the app. Please spread the word!</h2>} 
 			</div>
 		</div>
 	);

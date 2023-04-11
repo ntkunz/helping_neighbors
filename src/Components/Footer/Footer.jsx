@@ -1,5 +1,5 @@
 import "./Footer.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -12,7 +12,6 @@ export default function Footer() {
 		setAbout(!about);
 		setTerms(false);
 		setContact(false);
-		e.target.scroll({ top: 100, behavior: "smooth" });
 	}
 
 	function handleTerms(e) {
@@ -32,19 +31,28 @@ export default function Footer() {
 	return (
 		<div className="footer">
 			<section className="footer__nav">
-				<Link className="footer__link" onClick={handleTerms}>
+				<Link
+					className={terms ? "footer__link active" : "footer__link"}
+					onClick={handleTerms}
+				>
 					<h3 className="footer__label">Terms</h3>
 				</Link>
-				<Link className="footer__link" onClick={handleAbout}>
+				<Link
+					className={about ? "footer__link active" : "footer__link"}
+					onClick={handleAbout}
+				>
 					<h3 className="footer__label">Benefits</h3>
 				</Link>
-				<Link className="footer__link" onClick={handleContact}>
+				<Link
+					className={contact ? "footer__link active" : "footer__link"}
+					onClick={handleContact}
+				>
 					<h3 className="footer__label">Contact</h3>
 				</Link>
 			</section>
 
 			{about && (
-				<div className="footer__section" id="why">
+				<div className="footer__section">
 					<p className="footer__paragraph first-paragraph">
 						There are many reasons why being a helping neighbor feels good, and
 						just as many reasons why having helping neighbors nearby will help
@@ -74,7 +82,7 @@ export default function Footer() {
 			)}
 
 			{terms && (
-				<div className="footer__section" id="why">
+				<div className="footer__section">
 					<p className="footer__paragraph first-paragraph">
 						We are excited to provide a platform for our neighbors to connect
 						and exchange services
@@ -89,6 +97,17 @@ export default function Footer() {
 						let's work together to create a positive and welcoming environment
 						for everyone. Enjoy meeting your neighbors and building a strong and
 						supportive community!
+					</p>
+				</div>
+			)}
+
+			{contact && (
+				<div className="footer__section">
+					<p className="footer__paragraph first-paragraph">
+						Contact us text
+					</p>
+					<p className="footer__paragraph">
+						More info for the contact us part!
 					</p>
 				</div>
 			)}
