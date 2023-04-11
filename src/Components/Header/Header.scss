@@ -5,14 +5,12 @@
 .header {
 	width: 100%;
 	background-color: $color-one;
-	z-index: 1;
 	height: 7.5rem;
 	display: flex;
 
 	&__container {
 		display: flex;
-		padding: 1rem 2rem 0;
-		padding-inline: max(3.25rem, 0.5rem);
+		padding: 1rem 3rem 0;
 		justify-content: space-between;
 		width: 100%;
 	}
@@ -20,12 +18,14 @@
 	//header title and subtitle
 	&__titlebox {
 		display: flex;
+		align-items: flex-end;
 	}
 
 	&__title-btn {
 		text-decoration: none;
 		color: $color-five;
 		transition: all 0.125s ease-out;
+		padding: 0 0 0.5rem;
 
 		&:hover {
 			color: $color-four;
@@ -35,25 +35,23 @@
 	&__title {
 		@include pageHeaderLarge;
 		display: block;
-		padding: 0 1rem 0 1.35rem;
 	}
 
 	&__subtitle {
 		@include sectionHeaderLarge;
 		display: block;
-		padding: 0.75rem 0.25rem 0 0.5rem;
 	}
 
 	//tagline
 	&__tagline-box {
 		@include bodyCopy;
+		font-size: .75rem;
 		display: flex;
 		flex-grow: 1;
 		align-items: flex-end;
 		color: $color-four;
 		font-weight: 600;
-		padding: 0 0 0 1rem;
-		margin: 0 0 1rem;
+		padding: 0 0 .625rem 2rem;
 		font-size: clamp(1rem, 1.5vw, 1.25rem);
 	}
 
