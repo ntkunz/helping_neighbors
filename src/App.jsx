@@ -34,13 +34,13 @@ export default function App() {
 		getNeighbors(user.location);
 		navigate("/neighbors");
 	// }, [user, userEmail]);
-	}, [user]);
+	}, [user, userEmail]);
 
-	function handleLogin(e) {
+	async function handleLogin(e) {
 		e.preventDefault();
 		const email = e.target.email.value;
 		console.log("sending api request with :", email);
-		axios.post(`${api}/users`, { email }).then((res) => {
+		await axios.post(`${api}/users`, { email }).then((res) => {
 			setLoggedIn(true);
 			setUser(res.data[0]);
 			setUserEmail(res.data[0].email);
