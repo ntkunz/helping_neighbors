@@ -14,7 +14,7 @@ export default function Neighbors({ neighbors, user }) {
 			</h1>
 
 			<div className="neighbors">
-				{neighbors.length > 1 ? ( 
+				{neighbors.length > 0 ? ( 
 				neighbors.map((neighbor) => (
 					<Link 
 						className="neighbor__link"
