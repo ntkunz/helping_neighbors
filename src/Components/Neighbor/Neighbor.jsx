@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Neighbor({ neighbor }) {
-	console.log('neighbor.image: ', neighbor.image)
-
-	// const neighborImage = neighbor.image.toString('base64')
 
 	const api = process.env.REACT_APP_API_URL;
 
@@ -13,8 +10,6 @@ export default function Neighbor({ neighbor }) {
 	const [exchange, setExchange] = useState([]);
 	const [strDate, setStrDate] = useState("");	
 
-	//working on setting user image from buffer
-	const [neighborImage, setNeighborImage] = useState("");
 	
 
 	function getUserSkills() {
@@ -33,10 +28,6 @@ export default function Neighbor({ neighbor }) {
 				setStrDate(neighbor.created_at.substring(0, 10));
 				setOffering(offeringSkills);
 				setExchange(exchangeSkills);
-
-
-				///working on setting user image from buffer
-				setNeighborImage(neighbor.image.data);
 			})
 			.catch((error) => {
 				console.log("error", error);
@@ -48,10 +39,10 @@ export default function Neighbor({ neighbor }) {
 		//eslint-disable-next-line
 	}, [neighbor]);
 
+
 	return (
 		<>
 		{strDate !== "" ? (
-			// <>
 		<div className="neighbor">
 			<div className="neighbor__header">
 				<div className="neighbor__title">
@@ -64,9 +55,6 @@ export default function Neighbor({ neighbor }) {
 						id="neighbor__img"
 						className="neighbor__img"
 						// src={neighbor.image_url}
-						
-						//working on setting user image from buffer
-						src={`data:image/png;base64,${neighborImage}`}
 						alt="user profile"
 					/>
 				</div>
@@ -102,7 +90,6 @@ export default function Neighbor({ neighbor }) {
 				<p className="neighbor__barter-skill semibold">{neighbor.email}</p>
 			</div>
 		</div>
-		// </>
 		) : <div className="neighbor__placeholder"></div>}
 		</>
 	);

@@ -21,67 +21,74 @@ export default function NewUserPage({
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	async function createNewUser(e) {
-		e.preventDefault();
-		const user_id = v4();
-		const first_name = capFirst(e.target.first_name.value);
-		const last_name = capFirst(e.target.last_name.value);
-		const email = e.target.email.value.toLowerCase();
-		const password = e.target.password.value;
-		// const password_confirm = e.target.password_confirm.value;
-		const image_url = "https://picsum.photos/300";
-		const home = capFirst(e.target.home.value);
-		const city = capFirst(e.target.city.value);
-		const province = capFirst(e.target.province.value);
-		const address = `${home} ${city} ${province}`;
-		const addressRequest = address
-			.replaceAll(",", " ")
-			.replaceAll(" ", "+")
-			.replaceAll(".", "+");
-		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		const status = "active";
-		const about = e.target.about.value;
-		const offers = e.target.offers.value;
-		const offersSplit = offers.split(",");
-		const offersArray = offersSplit.map((offer) => offer.trim(" "));
-		const addOffers = await addSkills(offersArray, user_id, true);
-		const desires = e.target.desires.value;
-		const desiresSplit = desires.split(",");
-		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
-		const addDesires = await addSkills(desiresArray, user_id, false);
-		try {
-			const response = await Promise.all([
-				axios.post(`${api}/users/newuser`, {
-					user_id: user_id,
-					first_name: first_name,
-					last_name: last_name,
-					email: email,
-					password: password,
-					image_url: image_url,
-					image: image,
-					status: status,
-					coords: coords,
-					about: about,
-					address: address,
-					home: home,
-					city: city,
-					province: province,
-				}),
-			]);
+	// async function createNewUser(e) {
+	// 	e.preventDefault();
+	// 	const user_id = v4();
+	// 	const first_name = capFirst(e.target.first_name.value);
+	// 	const last_name = capFirst(e.target.last_name.value);
+	// 	const email = e.target.email.value.toLowerCase();
+	// 	const password = e.target.password.value;
+	// 	// const password_confirm = e.target.password_confirm.value;
+	// 	const image_url = "https://picsum.photos/300";
+	// 	const home = capFirst(e.target.home.value);
+	// 	const city = capFirst(e.target.city.value);
+	// 	const province = capFirst(e.target.province.value);
+	// 	const address = `${home} ${city} ${province}`;
+	// 	const addressRequest = address
+	// 		.replaceAll(",", " ")
+	// 		.replaceAll(" ", "+")
+	// 		.replaceAll(".", "+");
+	// 	const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
+	// 	const status = "active";
+	// 	const about = e.target.about.value;
+	// 	const offers = e.target.offers.value;
+	// 	const offersSplit = offers.split(",");
+	// 	const offersArray = offersSplit.map((offer) => offer.trim(" "));
+	// 	const addOffers = await addSkills(offersArray, user_id, true);
+	// 	const desires = e.target.desires.value;
+	// 	const desiresSplit = desires.split(",");
+	// 	const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
+	// 	const addDesires = await addSkills(desiresArray, user_id, false);
+	// 	try {
+	// 		const response = await Promise.all([
+	// 			axios.post(`${api}/users/newuser`, {
+	// 				user_id: user_id,
+	// 				first_name: first_name,
+	// 				last_name: last_name,
+	// 				email: email,
+	// 				password: password,
+	// 				image_url: image_url,
+	// 				image: image,
+	// 				status: status,
+	// 				coords: coords,
+	// 				about: about,
+	// 				address: address,
+	// 				home: home,
+	// 				city: city,
+	// 				province: province,
+	// 			}),
+	// 		]);
 
-			//working on image upload	
-			// submitImage(image, response[0].data.user_id);
-			setLoggedIn(true);
-			setUserEmail(email);
-			console.log("New user created: ", response[0].data);
-			setUser(response[0].data);
-			navigate("/neighbors");
-		} catch (err) {
-			console.log("Error creating new user: ", err);
-		}
-	}
+	// 		//working on image upload	
+	// 		submitImage(image, response[0].data.user_id);
+	// 		setLoggedIn(true);
+	// 		setUserEmail(email);
+	// 		console.log("New user created: ", response[0].data);
+	// 		setUser(response[0].data);
+	// 		navigate("/neighbors");
+	// 	} catch (err) {
+	// 		console.log("Error creating new user: ", err);
+	// 	}
+	// }
+
 
 	//api call to return lat long from address
+
+
+function createNewUser(e) {
+	e.preventDefault();
+	console.log('image: ', image);
+}
 	async function getNewUserGeo(addressRequest) {
 		try {
 			const res = await axios.get(
@@ -110,29 +117,63 @@ export default function NewUserPage({
 		}
 	}
 
-	// function imageChange(e) {
-	// 	const image = e.target.files[0];
-	// 	const reader = new FileReader();
-	// 	reader.onloadend = () => {
-	// 		setImage(reader.result);
-	// 		// console.log('reader.result: ', reader.result);
-	// 	};
-	// 	reader.readAsDataURL(image);
-	// 	console.log('image; ', image);
-	// }
+
+	//-----------------------ALL IMAGE TINKERING BELOW THIS LINE-----------------------
+	async function imageChange(e) {
+		const image = e.target.files[0];
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			setImage(reader.result);
+			console.log('reader.result: ', reader.result);
+			// const imageRead = reader.readAsDataURL(image);
+		};
+		// console.log('reader: ', reader.readAsDataURL(image));
+		// console.log('image; ', image);
+		// const imageRead = reader.readAsDataURL(image);
+		// console.log('imageRead: ', imageRead);
+		// setImage(imageRead);
+	}
+
+
+
 
 	// async function submitImage(img, id) {
 	// 	try {
 	// 		const response = await
-	// 				axios.put(`${api}/users/image`, {
+	// 				axios.post(`${api}/users/image`, {
 	// 					user_id: id,
 	// 					image: img
 	// 				})
 	// 		return response;
 	// 	} catch (err) {
-	// 		console.log("Error adding skills: ", err);
+	// 		console.log("Error submit Image: ", err);
 	// 	}
 	// }
+
+		const [statusResponse, setStatusResponse] = useState('')
+		const [img , setImg] = useState(null)
+
+	const handleSubmit = async (e) => {
+		e.preventDefault()
+		let formData = new FormData()
+		formData.append('file', img.data)
+		formData.append("user_id", `8a075c14-dd19-48c1-b931-aab8bf66ad52`)
+		console.log('formData: ', img)
+		const response = await axios.post(`${api}/users/image`, formData)
+		if (response) setStatusResponse(response.statusText)
+	  }
+	
+	  const handleFileChange = (e) => {
+		const img = {
+		  preview: URL.createObjectURL(e.target.files[0]),
+		  data: e.target.files[0],
+		}
+		console.log('img: ', img)
+		setImg(img)
+	  }
+	
+
+
 
 	return (
 		<div className="new">
@@ -260,14 +301,37 @@ export default function NewUserPage({
 			</form>
 
 {/* add image form goes here!!! */}
-
+<form onSubmit={handleSubmit}>
+        <input type='file' name='file' onChange={handleFileChange}></input>
+        <button type='submit'>Submit</button>
+      </form>
+	  <img src={img} alt='' />
 
 		</div>
 	);
 }
 
 
-// <form encType="urlencoded" method="post" onChange={imageChange}>
+// {/* <form encType="urlencoded" method="post" onChange={imageChange}>
+// <div className="form-group">
+// 	<input type="file" className="form-control-file" name="uploaded_file" />
+// 	{/* <input
+// 		type="text"
+// 		class="form-control"
+// 		placeholder="Number of speakers"
+// 		name="nspeakers"
+// 	/> */}
+// 	<input
+// 		type="submit"
+// 		value="Upload Profile Photo"
+// 		className="btn btn-default"
+// 	/>
+// </div>
+// </form> */}
+
+
+
+// <form onChange={imageChange}>
 // <div className="form-group">
 // 	<input type="file" className="form-control-file" name="uploaded_file" />
 // 	{/* <input
