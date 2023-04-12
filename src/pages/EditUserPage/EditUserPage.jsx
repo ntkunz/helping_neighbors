@@ -19,7 +19,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
-	// const [active, setActive] = useState(user.status);
+	const [active, setActive] = useState(user.status);
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState('');
 	const [desires, setDesires] = useState('');
@@ -271,11 +271,9 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 					<p className="edit__desc">
 						One or two words for each thing you'd like to barter for, separated by commas
 					</p>
-					{/* <label className="edit__label">Profile Picture (url only)
-                        <input type="text" className="edit__input" name="image" placeholder="https://picsum.photos/200/300?grayscale" value="https://picsum.photos/seed/picsum/300/300"/>
-                    </label> */}
+
 					<button className="edit__btn">Edit Your Profile</button>
-					{/* <Link className="edit__btn" onClick={()=>navigate(-1)}>Back</Link> */}
+
 				</div>
 			</form>
 		</div>
