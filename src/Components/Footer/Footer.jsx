@@ -1,6 +1,7 @@
 import "./Footer.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import closeIcon from "../../assets/icons/close-24px.svg";
 
 export default function Footer() {
 	const [about, setAbout] = useState(false);
@@ -12,7 +13,6 @@ export default function Footer() {
 		setAbout(!about);
 		setTerms(false);
 		setContact(false);
-		e.target.scroll({ top: 100, behavior: "smooth" });
 	}
 
 	function handleTerms(e) {
@@ -32,19 +32,30 @@ export default function Footer() {
 	return (
 		<div className="footer">
 			<section className="footer__nav">
-				<Link className="footer__link" onClick={handleTerms}>
+				<Link
+					className={terms ? "footer__link active" : "footer__link"}
+					onClick={handleTerms}
+				>
 					<h3 className="footer__label">Terms</h3>
 				</Link>
-				<Link className="footer__link" onClick={handleAbout}>
+				<Link
+					className={about ? "footer__link active" : "footer__link"}
+					onClick={handleAbout}
+				>
 					<h3 className="footer__label">Benefits</h3>
 				</Link>
-				<Link className="footer__link" onClick={handleContact}>
+				<Link
+					className={contact ? "footer__link active" : "footer__link"}
+					onClick={handleContact}
+				>
 					<h3 className="footer__label">Contact</h3>
 				</Link>
 			</section>
 
 			{about && (
-				<div className="footer__section" id="why">
+				<div className="footer__section">
+					<Link className="footer__close" onClick={handleAbout} >
+						<img className="footer__icon"  src={closeIcon} alt="icon to close footer informaion" />
 					<p className="footer__paragraph first-paragraph">
 						There are many reasons why being a helping neighbor feels good, and
 						just as many reasons why having helping neighbors nearby will help
@@ -70,11 +81,14 @@ export default function Footer() {
 					{/* <p className="footer__paragraph">Having a good relationship with your neighbors can provide numerous health benefits. One of the primary benefits of knowing your neighbors is that it can increase your sense of community and social support, which has been linked to better mental health. Studies have shown that people who feel connected to their community are less likely to experience anxiety and depression, and more likely to have a sense of purpose and belonging. By knowing your neighbors, you can build a support system that can provide emotional, practical, and social support when needed.</p>
           <p className="footer__paragraph">Knowing your neighbors can also lead to increased physical activity, which is essential for maintaining good health. For instance, if you have a friendly relationship with your neighbors, you may be more likely to go for a walk or a run together, or participate in other physical activities. This can help to improve your cardiovascular health, increase your energy levels, and reduce your risk of chronic health conditions such as obesity and diabetes. Additionally, spending time outdoors with your neighbors can also provide a mental health boost, as exposure to nature has been linked to reduced stress and improved mood.</p>
           <p className="footer__paragraph">Finally, knowing your neighbors can help to promote a safer and more secure neighborhood, which can contribute to better overall health outcomes. When neighbors know and trust each other, they are more likely to look out for one another, report suspicious activity, and take steps to prevent crime. This can help to reduce stress and anxiety related to safety concerns, and promote a sense of wellbeing and security within the community. Additionally, a safer neighborhood can also encourage residents to spend more time outdoors, which as mentioned earlier, can lead to better physical and mental health outcomes.</p> */}
+				</Link>
 				</div>
 			)}
 
 			{terms && (
-				<div className="footer__section" id="why">
+				<div className="footer__section">
+					<Link className="footer__close"  onClick={handleTerms}>
+						<img className="footer__icon"  src={closeIcon} alt="icon to close footer informaion" />
 					<p className="footer__paragraph first-paragraph">
 						We are excited to provide a platform for our neighbors to connect
 						and exchange services
@@ -90,6 +104,21 @@ export default function Footer() {
 						for everyone. Enjoy meeting your neighbors and building a strong and
 						supportive community!
 					</p>
+				</Link>
+				</div>
+			)}
+
+			{contact && (
+				<div className="footer__section">
+					<Link className="footer__close"  onClick={handleContact}>
+						<img className="footer__icon"  src={closeIcon} alt="icon to close footer informaion" />
+					<p className="footer__paragraph first-paragraph">
+						Contact us text
+					</p>
+					<p className="footer__paragraph">
+						More info for the contact us part!
+					</p>
+					</Link>
 				</div>
 			)}
 		</div>

@@ -35,7 +35,8 @@ export default function App() {
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
-	}, [userEmail, user]);
+	// }, [user, userEmail]);
+	}, [user]);
 
 	function handleLogin(e) {
 		e.preventDefault();
@@ -125,10 +126,10 @@ export default function App() {
 						path="/signup"
 						element={
 							<NewUserPage
-								loggedIn={loggedIn}
-								user={user}
 								setUser={setUser}
 								setLoggedIn={setLoggedIn}
+								setUserEmail={setUserEmail}
+								setNeighbors={setNeighbors}
 							/>
 						}
 					/>

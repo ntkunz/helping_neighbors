@@ -6,21 +6,20 @@ import Neighbor from "../../Components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 
 export default function Message({ user, neighbors }) {
+
 	const api = process.env.REACT_APP_API_URL;
+
 	const { id } = useParams();
+	
 	const [receiver, setReceiver] = useState([]);
 	const [messages, setMessages] = useState([]);
 
 	useEffect(() => {
-		// setReceiver([]);
-		// const receiverArray = neighbors.filter((neighbor) => neighbor.user_id === id);
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
 	}, [neighbors]);
 
 	useEffect(() => {
 		getMessages(user.user_id, id);
-		// console.log('receiver_id: ', receiver.user_id)
-		// console.log('user_id: ', id)
 	}, [receiver]);
 
 	function sendMessage(e) {
@@ -49,12 +48,9 @@ export default function Message({ user, neighbors }) {
 				receiverId: receiverId,
 			})
 			.then((response) => {
-				// console.log('gettin messages')
-				// console.log(response.data)
 				const sortedMessages = response.data.sort(function(x, y){
 					return y.unix_timestamp - x.unix_timestamp;
 				})
-				console.log("messages", sortedMessages)
 				setMessages(response.data);
 			})
 			.catch((error) => {
@@ -87,7 +83,6 @@ export default function Message({ user, neighbors }) {
 								name="message"
 								placeholder="Insert your message here"
 							/>
-							{/* <button className="message__button" type="submit">Send to {receiver.first_name}</button> */}
 							<button className="message__btn" type="submit">
 								Send Message
 							</button>
@@ -100,7 +95,6 @@ export default function Message({ user, neighbors }) {
 						</h3>
 						{messages.map((message) => (
 							<div className="message__box">
-								{/* <p className="message__text">{message.message}</p> */}
 								{message.sender_id === user.user_id ? (
 									<>
 									<p className="message__text sent">{message.message}</p>

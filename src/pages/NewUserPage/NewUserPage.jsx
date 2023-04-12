@@ -2,7 +2,8 @@ import "./NewUserPage.scss";
 import { v4 } from "uuid";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-export default function NewUserPage({ setUser, setLoggedIn }) {
+export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNeighbors }) {
+	
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
@@ -20,7 +21,7 @@ export default function NewUserPage({ setUser, setLoggedIn }) {
 		const last_name = capFirst(e.target.last_name.value);
 		const email = e.target.email.value.toLowerCase();
 		const password = e.target.password.value;
-		const password_confirm = e.target.password_confirm.value;
+		// const password_confirm = e.target.password_confirm.value;
 		const image_url = "https://picsum.photos/300";
 		const home = capFirst(e.target.home.value);
 		const city = capFirst(e.target.city.value);
@@ -60,6 +61,8 @@ export default function NewUserPage({ setUser, setLoggedIn }) {
 				}),
 			]);
 			setLoggedIn(true);
+			setUserEmail(email);
+			console.log("New user created: ", response[0].data)
 			setUser(response[0].data);
 			navigate("/neighbors");
 		} catch (err) {

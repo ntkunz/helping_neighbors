@@ -32,7 +32,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	}, []);
 
 	function getSkills() {
-		console.log('userId: ', user.user_id)
+		// console.log('userId: ', user.user_id)
 		axios
 			.get(`${api}/users/skills/${user.user_id}`)
 			.then((response) => {
@@ -45,6 +45,9 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 						exchangeSkills.push(skill.skill);
 					}
 				});
+				// setOffers(offeringSkills);
+				// setDesires(exchangeSkills);
+				console.log("offeringSkills: ", offeringSkills)
 				setOffers(offeringSkills.join(', '));
 				setDesires(exchangeSkills.join(', '));
 			})
@@ -60,6 +63,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	async function editUser(e) {
 		e.preventDefault();
 		const user_id = user.user_id;
+		await removeSkills(user_id);		
 		// const user_id = v4();
 		// const first_name = capFirst(e.target.first_name.value);
 		// const last_name = capFirst(e.target.last_name.value);
@@ -80,16 +84,17 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		// const status = "active";
 		// const about = e.target.about.value;
 		// const offers = e.target.offers.value;
+
 		const offersSplit = offers.split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
-		const addOffers = await editSkills(offersArray, user_id, true);
+		// const addOffers = await editSkills(offersArray, user_id, true);
+		await editSkills(offersArray, user_id, true);
 		// const desires = e.target.desires.value;
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
-		const addDesires = await editSkills(desiresArray, user_id, false);
+		// const addDesires = await editSkills(desiresArray, user_id, false);
+		await editSkills(desiresArray, user_id, false);
 		const image_url = user.image_url;
-
-
 
 		try {
 			const response = await Promise.all([
@@ -110,8 +115,8 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 				}),
 			]);
 			// setLoggedIn(true);
-			setUser(response[0].data);
 			setNeighbors([]);
+			setUser(response[0].data);
 			console.log(response)
 			navigate("/");
 		} catch (err) {
@@ -131,11 +136,20 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		}
 	}
 
+	async function removeSkills(id) {
+		try {
+			const response = await axios.delete(`${api}/userskills/${id}`);
+			return response;
+		} catch (err) {
+			console.log("Error removing skills: ", err);
+		}
+	}
+
 	async function editSkills(arr, id, which) {
 		try {
 			const response = await Promise.all(
 				arr.map((item) =>
-					axios.post(`${api}/userskills/editskills`, {
+					axios.post(`${api}/userskills`, {
 						user_id: id,
 						skill: item,
 						offer: which,

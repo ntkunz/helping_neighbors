@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Neighbor({ neighbor }) {
-	// const [ response, setResponse ] = useState([]);
 
 	const api = process.env.REACT_APP_API_URL;
 
@@ -12,7 +11,6 @@ export default function Neighbor({ neighbor }) {
 	const [strDate, setStrDate] = useState("");	
 
 	function getUserSkills() {
-		console.log('neighbor id: ', neighbor.user_id)
 		axios
 			.get(`${api}/users/skills/${neighbor.user_id}`)
 			.then((response) => {
@@ -25,10 +23,7 @@ export default function Neighbor({ neighbor }) {
 						exchangeSkills.push(skill.skill);
 					}
 				});
-				// console.log('gettin neighbor skills')
 				setStrDate(neighbor.created_at.substring(0, 10));
-				// console.log('offering skills :', offeringSkills);
-				// console.log('exchangeSkills :', exchangeSkills);
 				setOffering(offeringSkills);
 				setExchange(exchangeSkills);
 			})
@@ -43,6 +38,9 @@ export default function Neighbor({ neighbor }) {
 	}, [neighbor]);
 
 	return (
+		<>
+		{strDate !== "" ? (
+			// <>
 		<div className="neighbor">
 			<div className="neighbor__header">
 				<div className="neighbor__title">
@@ -88,8 +86,9 @@ export default function Neighbor({ neighbor }) {
 				<p className="neighbor__barter-title">Contact</p>
 				<p className="neighbor__barter-skill semibold">{neighbor.email}</p>
 			</div>
-
-			{/* <button className="neighbor__message-btn">Send a Message</button> */}
 		</div>
+		// </>
+		) : <div className="neighbor__placeholder"></div>}
+		</>
 	);
 }

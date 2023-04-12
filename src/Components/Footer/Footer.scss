@@ -34,11 +34,22 @@
 			background-color: $color-one;
 			color: $color-five;
 		}
+
+		
 	}
 
 	&__section {
 		color: $color-six;
-		padding: 0 3rem;
+		margin: 0 3rem;
+		padding: 1rem 2rem;
+		position: fixed;
+		bottom: 5.5rem;
+		border-radius: .25rem;
+		left: 0;
+		z-index: 1;
+		background-color: $color-one;
+		outline: solid 1px $color-five;
+		// visibility: hidden;
 	}
 
 	&__label {
@@ -53,4 +64,9 @@
 .first-paragraph {
 	font-weight: 600;
 	margin: 0 0 2rem;
+}
+
+.active {
+	background-color: $color-one;
+	color: $color-five;
 }
