@@ -217,9 +217,12 @@ export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNei
 							className="new__input textarea"
 							name="about"
 							rows="3"
-							maxLength={300}
+							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 						/>
+					<p className="edit__desc">
+						Limit 240 characters
+					</p>
 					</label>
 					<label className="new__label">
 						Skills you can offer

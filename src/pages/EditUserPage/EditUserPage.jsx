@@ -237,11 +237,14 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							className="edit__input textarea"
 							name="about"
 							rows="3"
-							maxLength={300}
+							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 							value={about}
 							onChange={(e)=>setAbout(e.target.value)}
 						/>
+					<p className="edit__desc">
+						Limit 240 characters
+					</p>
 					</label>
 					<label className="edit__label">
 						Skills you can offer
