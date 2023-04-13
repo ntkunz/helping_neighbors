@@ -1,0 +1,115 @@
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
+
+.header {
+	width: 100%;
+	background-color: $color-one;
+	height: 7.5rem;
+	display: flex;
+
+	&__container {
+		display: flex;
+		padding: 1rem 3rem 0;
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	//header title and subtitle
+	&__titlebox {
+		display: flex;
+		align-items: flex-end;
+	}
+
+	&__title-btn {
+		text-decoration: none;
+		color: $color-five;
+		transition: all 0.125s ease-out;
+		padding: 0 0 0.5rem;
+
+		&:hover {
+			color: $color-four;
+		}
+	}
+
+	&__title {
+		@include pageHeaderLarge;
+		display: block;
+	}
+
+	&__subtitle {
+		@include sectionHeaderLarge;
+		display: block;
+	}
+
+	//tagline
+	&__tagline-box {
+		@include bodyCopy;
+		font-size: .75rem;
+		display: flex;
+		flex-grow: 1;
+		align-items: flex-end;
+		color: $color-four;
+		font-weight: 600;
+		padding: 0 0 .625rem 2rem;
+		font-size: clamp(1rem, 1.5vw, 1.25rem);
+	}
+
+	&__tagline {
+		margin: 0 1rem 0 0;
+	}
+
+	//login button box
+	&__loginbox {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	//navigation menu box
+	&__navbox {
+		display: flex;
+		align-items: flex-end;
+	}
+
+	//header buttons
+	&__btn {
+		@include bodyCopy;
+		color: $color-one;
+		font-weight: 600;
+		background-color: $color-five;
+		border: none;
+		border-radius: 0.25rem;
+		padding: 1rem 1rem;
+		flex-basis: auto;
+		margin: 0 0 0 1rem;
+		cursor: pointer;
+		transition: all 0.2s ease-in-out;
+		text-decoration: underline;
+		font-size: 0.875rem;
+		letter-spacing: 0.025rem;
+
+		&:hover {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+			color: $color-five;
+			background-color: $color-two-light;
+		}
+	}
+}
+
+.active {
+	background-color: $color-two;
+	color: $color-six;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.fixed {
+	width: 5rem;
+}
+
+.loggedin {
+	background-color: $color-two;
+	color: $color-six;
+}

@@ -1,0 +1,172 @@
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
+
+//messagePage container
+.message {
+	background-color: $color-two;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 3rem;
+	padding: 0 3rem 0;
+	width: 100%;
+	@include bodyCopyLarge;
+
+	&__container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 3rem;
+		width: 100%;
+	}
+
+	&__title {
+		@include sectionHeader;
+		color: $color-five;
+		text-align: center;
+		margin: 2rem 0 0;
+	}
+
+	&__link {
+		text-decoration: underline;
+		transition: all 0.125s ease-in-out;
+		border-radius: 0.25rem;
+		color: $color-five;
+
+		&:hover {
+			background-color: $color-one;
+			cursor: pointer;
+		}
+	}
+
+	//container for recipient messager
+	&__receiver {
+		flex-basis: 20rem;
+		flex-grow: 1;
+		// padding: 1rem 0;
+	}
+
+	//container for message form and messages
+	//flex grow 9999 to make sure receiver doesn't grow
+	&__messages {
+		flex-basis: 30rem;
+		flex-grow: 9999;
+		background-color: $color-one;
+		border-radius: 6px;
+		padding: 1rem 1.5rem 0;
+		color: $color-six;
+	}
+
+	//container form to send message
+	&__message {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	//form to send message
+	&__form {
+		width: 100%;
+		margin: 0 0 2rem;
+	}
+
+	//textarea input for message
+	&__input {
+		height: 6rem;
+		width: 100%;
+		overflow-y: scroll;
+		resize: none;
+		border-radius: 0.25rem;
+		padding: 0.5rem;
+		outline: 0.125rem solid $color-two;
+		border: none;
+
+		&:focus,
+		&:active {
+			border: 1px solid $color-six;
+		}
+	}
+
+	//message button
+	&__btn {
+		width: min(18rem, 100%);
+		margin: 1rem auto 0;
+		padding: 0.5rem 0.5rem;
+		border-radius: 0.25rem;
+		background-color: $color-five;
+		color: $color-one;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.25s ease-in-out;
+		border: none;
+		text-decoration: underline;
+
+		&:hover {
+			background-color: $color-two;
+			color: $color-five;
+		}
+	}
+
+	//container for previous messages
+	&__output {
+		width: 100%;
+		// padding: 1rem 0;
+		margin-bottom: 1rem;
+		max-height: 25rem;
+		min-height: 10rem;
+		overflow-y: scroll;
+		border-radius: .25rem;
+		outline: 0.125rem solid $color-two;
+		background-color: white;
+	}
+
+	&__neighbor {
+		// margin: 0 0 1rem;
+		padding: .5rem;
+	}
+
+	//box around output date and sender and message
+	&__box {
+		display: flex;
+		flex-direction: column;
+		// align-items: flex-end;
+	}
+
+	//timestamp and messagee
+	&__info {
+		@include labelLarge;
+		font-weight: 400;
+		margin-bottom: 1rem;
+		color: $color-five;
+		width: fit-content;
+		padding: 0 0.5rem 0.125rem;
+		// background-color: $color-two;
+	}
+
+	//content from messages
+	&__text {
+		// flex-basis: 100%;
+		width: 100%;
+		padding: 0.5rem;
+		border-radius: 0.25rem;
+	}
+}
+
+.semibold {
+	font-weight: 600;
+}
+
+.sent {
+	background-color: $color-one;
+	color: $color-six;
+}
+
+.received {
+	background-color: $color-two-light;
+	color: $color-five;
+	text-align: right;
+	align-self: flex-end;
+}

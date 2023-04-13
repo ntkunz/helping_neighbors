@@ -1,0 +1,25 @@
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
+
+.neighbors {
+	background-color: $color-two;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 3rem;
+	padding: 3rem 3rem 0;
+	flex-wrap: wrap;
+
+	&__title {
+		@include sectionHeader;
+		color: $color-five;
+		text-align: center;
+		margin: 2rem 0 0;
+	}
+}
+
+.neighbor__link {
+	width: clamp(18.75rem, 25%, 32rem);
+	height: fit-content;
+}

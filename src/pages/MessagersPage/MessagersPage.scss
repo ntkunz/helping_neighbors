@@ -1,0 +1,80 @@
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
+
+.messager {
+	background-color: $color-two;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 3rem;
+	padding: 0 4rem 0;
+	margin: 1rem 3rem 0;
+
+	&__title {
+		@include sectionHeader;
+		color: $color-five;
+		text-align: center;
+		margin: 2rem 0 0;
+	}
+
+	&__link {
+		text-decoration: underline;
+		transition: all 0.125s ease-in-out;
+		border-radius: 0.25rem;
+		color: $color-five;
+
+		&:hover {
+			background-color: $color-one;
+			cursor: pointer;
+		}
+	}
+
+	&__list {
+		margin: 3rem 2rem 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		flex-wrap: wrap;
+		padding: 0 3rem;
+		gap: 3rem;
+	}
+
+	&__neighbor {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		margin: 0 0 1rem;
+		background-color: $color-one;
+		border-radius: 0.25rem;
+		box-shadow: 0px 0px 2px 1px $color-four;
+		transition: box-shadow 0.125s ease-in-out;
+
+		:hover {
+			box-shadow: 0px 0px 3px 4px $color-four;
+			border-radius: 0.25rem;
+			cursor: pointer;
+		}
+	}
+
+	&__neighbor-link {
+		color: $color-six;
+		padding: 1rem;
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	&__neighbor-img {
+		width: 2rem;
+		height: 2rem;
+		border-radius: 0.25rem;
+		margin: 0 1rem 0 0;
+
+		&:hover {
+			box-shadow: none;
+		}
+	}
+}

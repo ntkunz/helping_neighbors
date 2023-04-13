@@ -1,0 +1,12 @@
+@use './styles/global' as *;
+@use './styles/mixins' as *;
+@use './styles/variables' as *;
+
+.App {
+
+  &__routes {
+    width: 100%;
+    }
+}
+
+

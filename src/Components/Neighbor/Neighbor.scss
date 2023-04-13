@@ -1,0 +1,107 @@
+@use "../../styles/global" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
+
+.neighbor {
+	background-color: $color-one;
+	border-radius: 8px;
+	padding: .25rem 1.5rem 0;
+	display: flex;
+	flex-wrap: wrap;
+	color: $color-six;
+	box-shadow: 0px 0px 2px 1px $color-four;
+	transition: box-shadow 0.125s ease-in-out;
+	height: 35rem;
+
+	&__header {
+		display: flex;
+		flex-direction: row;
+		flex-grow: 1;
+		width: 100%;
+		justify-content: space-between;
+		padding-top: 1rem;
+	}
+
+	&__title {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		text-transform: capitalize;
+		@include bodyCopyLarge;
+	}
+
+	&__member-since {
+		@include labelLarge;
+		width: 100%;
+		padding-top: max(0.5rem, 0.125rem);
+	}
+
+	&__since {
+		@include labelLarge;
+		color: $color-five;
+		font-weight: 600;
+	}
+
+	&__img {
+		width: 110%;
+		height: 110%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	&__img-box {
+		width: 5rem;
+		height: 5rem;
+		overflow: hidden;
+		border-radius: 0.25rem;
+		background-color: $color-five;
+	}
+
+	&__bio {
+		display: block;
+		width: 100%;
+		padding: 0.25rem 0 0.75rem;
+		// margin: 0.5rem 0 1rem;
+	}
+
+	&__barter-title {
+		@include bodyCopyLarge;
+		color: $color-six;
+		margin: 0;
+	}
+
+	&__barter-skills {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		padding: 0;
+	}
+
+	&__barter-skill {
+		@include bodyCopyLarge;
+		list-style-type: none;
+		margin: 0 0.75rem 0 0;
+		padding: 0;
+		font-size: max(1rem, 0.75rem);
+	}
+
+	&__placeholder {
+		height: 100vh;
+	}
+
+	&:hover {
+		box-shadow: 0px 0px 3px 4px $color-four;
+	}
+}
+
+a {
+	text-decoration: none;
+}
+
+.semibold {
+	font-weight: 600;
+	color: $color-five;
+	text-transform: capitalize;
+}
