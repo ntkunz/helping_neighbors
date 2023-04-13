@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 
-
 export default function EditUserPage({ user, setUser, setNeighbors }) {
-
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
@@ -21,8 +19,8 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	const [province, setProvince] = useState(user.province);
 	const [active, setActive] = useState(user.status);
 	const [about, setAbout] = useState(user.about);
-	const [offers, setOffers] = useState('');
-	const [desires, setDesires] = useState('');
+	const [offers, setOffers] = useState("");
+	const [desires, setDesires] = useState("");
 
 	useEffect(() => {
 		getSkills();
@@ -41,8 +39,8 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 						exchangeSkills.push(skill.skill);
 					}
 				});
-				setOffers(offeringSkills.join(', '));
-				setDesires(exchangeSkills.join(', '));
+				setOffers(offeringSkills.join(", "));
+				setDesires(exchangeSkills.join(", "));
 			})
 			.catch((error) => {
 				console.log("error", error);
@@ -53,10 +51,11 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
+	//submit the edit user form
 	async function editUser(e) {
 		e.preventDefault();
 		const user_id = user.user_id;
-		await removeSkills(user_id); //remove all user skills from table to add updated ones		
+		await removeSkills(user_id); //remove all user skills from table to add updated ones
 		const address = `${home} ${city} ${province}`;
 		const addressRequest = address
 			.replaceAll(",", " ")
@@ -91,7 +90,6 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 			]);
 			setNeighbors([]);
 			setUser(response[0].data);
-			console.log(response)
 			navigate("/");
 		} catch (err) {
 			console.log("Error creating new user: ", err);
@@ -110,6 +108,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		}
 	}
 
+	//function to remove skills from user
 	async function removeSkills(id) {
 		try {
 			const response = await axios.delete(`${api}/userskills/${id}`);
@@ -119,6 +118,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		}
 	}
 
+	//function to add skills to user
 	async function editSkills(arr, id, which) {
 		try {
 			const response = await Promise.all(
@@ -138,9 +138,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 
 	return (
 		<div className="edit">
-			<h1 className="edit__title">
-				Edit your profile and barter on my friend
-			</h1>
+			<h1 className="edit__title">Edit your profile and barter on my friend</h1>
 			<form onSubmit={editUser} method="post" className="edit__form">
 				<div className="edit__signup">
 					<label className="edit__label">
@@ -152,7 +150,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="first_name"
 							placeholder="First name"
 							value={first_name}
-							onChange={(e)=>setFirstName(capFirst(e.target.value))}
+							onChange={(e) => setFirstName(capFirst(e.target.value))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -163,7 +161,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="last_name"
 							placeholder="Last name"
 							value={last_name}
-							onChange={(e)=>setLastName(capFirst(e.target.value))}
+							onChange={(e) => setLastName(capFirst(e.target.value))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -174,27 +172,9 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="email"
 							placeholder="your email@something.com"
 							value={email}
-							onChange={(e)=>setEmail(e.target.value.toLowerCase())}
+							onChange={(e) => setEmail(e.target.value.toLowerCase())}
 						/>
 					</label>
-					{/* <label className="edit__label">
-						Password
-						<input
-							type="password"
-							className="edit__input"
-							name="password"
-							placeholder="Password"
-						/>
-					</label>
-					<label className="edit__label">
-						Confirm
-						<input
-							type="password"
-							className="edit__input"
-							name="password_confirm"
-							placeholder="Password again"
-						/>
-					</label> */}
 					<label className="edit__label">
 						Home Address
 						<input
@@ -203,7 +183,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="home"
 							placeholder="123 Main St"
 							value={home}
-							onChange={(e)=>setHome(capFirst(e.target.value))}
+							onChange={(e) => setHome(capFirst(e.target.value))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -214,7 +194,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="city"
 							placeholder="Any Town"
 							value={city}
-							onChange={(e)=>setCity(capFirst(e.target.value))}
+							onChange={(e) => setCity(capFirst(e.target.value))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -225,7 +205,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="province"
 							placeholder="British Columbia"
 							value={province}
-							onChange={(e)=>setProvince(capFirst(e.target.value))}
+							onChange={(e) => setProvince(capFirst(e.target.value))}
 						/>
 					</label>
 				</div>
@@ -240,11 +220,9 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 							value={about}
-							onChange={(e)=>setAbout(e.target.value)}
+							onChange={(e) => setAbout(e.target.value)}
 						/>
-					<p className="edit__desc">
-						Limit 240 characters
-					</p>
+						<p className="edit__desc">Limit 240 characters</p>
 					</label>
 					<label className="edit__label">
 						Skills you can offer
@@ -254,7 +232,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="offers"
 							placeholder="ie Gardening, Landscaping, Construction"
 							value={offers}
-							onChange={(e)=>setOffers(capFirst(e.target.value))}
+							onChange={(e) => setOffers(capFirst(e.target.value))}
 						/>
 					</label>
 					<p className="edit__desc">
@@ -268,15 +246,15 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							name="desires"
 							placeholder="ie Cooking, Running Errands, Cat Sitting"
 							value={desires}
-							onChange={(e)=>setDesires(capFirst(e.target.value))}
+							onChange={(e) => setDesires(capFirst(e.target.value))}
 						/>
 					</label>
 					<p className="edit__desc">
-						One or two words for each thing you'd like to barter for, separated by commas
+						One or two words for each thing you'd like to barter for, separated
+						by commas
 					</p>
 
 					<button className="edit__btn">Edit Your Profile</button>
-
 				</div>
 			</form>
 		</div>
