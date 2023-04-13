@@ -78,7 +78,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 					last_name: last_name,
 					email: email,
 					password: password,
-					image_url: image_url,
+					// image_url: image_url,
 					status: active,
 					coords: coords,
 					about: about,
