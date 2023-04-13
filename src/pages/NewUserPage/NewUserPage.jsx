@@ -257,6 +257,9 @@ export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNei
 					<label className="new__label upload">
 						Upload a profile picture
 						<input type='file' name='file' onChange={handleFileChange}></input>
+						<p className="edit__desc">
+						File size limit: 1mb
+					</p>
 					</label>
 
 					<button className="new__btn">Start Meeting Your Neighbors</button>

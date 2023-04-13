@@ -81,7 +81,7 @@ export default function Neighbor({ neighbor }) {
 			</div>
 
 			<div className="neighbor__bio">
-				<p className="neighbor__barter-title">About</p>
+				<p className="neighbor__barter-title semibold">About</p>
 				<p className="neighbor__barter-skill">{neighbor.about}</p>
 			</div>
 
