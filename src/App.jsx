@@ -30,19 +30,17 @@ export default function App() {
 	const api = process.env.REACT_APP_API_URL;
 
 	// possibly async getNeighbors to not navigate until neighbors are back
-	// other option is a set timeout for a tiiiiny bit
-	// or 
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
 	// }, [user, userEmail]);
-	}, [user]);
+	}, [user, userEmail]);
 
-	function handleLogin(e) {
+	async function handleLogin(e) {
 		e.preventDefault();
 		const email = e.target.email.value;
 		console.log("sending api request with :", email);
-		axios.post(`${api}/users`, { email }).then((res) => {
+		await axios.post(`${api}/users`, { email }).then((res) => {
 			setLoggedIn(true);
 			setUser(res.data[0]);
 			setUserEmail(res.data[0].email);
@@ -61,7 +59,6 @@ export default function App() {
 	}
 
 	function getNeighbors(location) {
-		// const userLocation = location;
 		axios
 			.put(`${api}/users`, { userLocation: location })
 			.then((response) => {

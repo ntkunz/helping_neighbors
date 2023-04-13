@@ -3,7 +3,6 @@ import Neighbor from "../../Components/Neighbor/Neighbor";
 import { Link } from "react-router-dom";
 
 export default function Neighbors({ neighbors, user }) {
-	// const api = process.env.REACT_APP_API_URL;
 
 	return (
 		// neighbors.length && loggedIn ?
@@ -15,7 +14,7 @@ export default function Neighbors({ neighbors, user }) {
 			</h1>
 
 			<div className="neighbors">
-				{neighbors.length > 1 ? ( 
+				{neighbors.length > 0 ? ( 
 				neighbors.map((neighbor) => (
 					<Link 
 						className="neighbor__link"

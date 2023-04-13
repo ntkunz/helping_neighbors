@@ -1,14 +1,19 @@
 import "./NewUserPage.scss";
 import { v4 } from "uuid";
 import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNeighbors }) {
-	
+
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
 	const geoKey = process.env.REACT_APP_HERE_API_KEY;
 	const geoApi = process.env.REACT_APP_GEO_URL;
+
+	const [image, setImage] = useState({});
+	const [statusResponse, setStatusResponse] = useState('')
+	const [img , setImg] = useState(null)
 
 	function capFirst(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
@@ -51,6 +56,7 @@ export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNei
 					email: email,
 					password: password,
 					image_url: image_url,
+					image: image,
 					status: status,
 					coords: coords,
 					about: about,
@@ -60,15 +66,19 @@ export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNei
 					province: province,
 				}),
 			]);
+
+			//working on image upload	
+			submitImage(response[0].data.user_id);
 			setLoggedIn(true);
 			setUserEmail(email);
-			console.log("New user created: ", response[0].data)
+			console.log("New user created: ", response[0].data);
 			setUser(response[0].data);
 			navigate("/neighbors");
 		} catch (err) {
 			console.log("Error creating new user: ", err);
 		}
 	}
+
 
 	//api call to return lat long from address
 	async function getNewUserGeo(addressRequest) {
@@ -98,6 +108,25 @@ export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNei
 			console.log("Error adding skills: ", err);
 		}
 	}
+
+	//add image upload
+	const submitImage = async (userId) => {
+		let formData = new FormData()
+		formData.append('file', img.data)
+		formData.append("user_id", userId)
+		const response = await axios.post(`${api}/users/image`, formData)
+		if (response) setStatusResponse(response.statusText)
+	  }
+	
+	  const handleFileChange = (e) => {
+		const img = {
+		  preview: URL.createObjectURL(e.target.files[0]),
+		  data: e.target.files[0],
+		}
+		console.log('img: ', img)
+		setImg(img)
+	  }
+	
 
 	return (
 		<div className="new">
@@ -188,9 +217,12 @@ export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNei
 							className="new__input textarea"
 							name="about"
 							rows="3"
-							maxLength={300}
+							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 						/>
+					<p className="edit__desc">
+						Limit 240 characters
+					</p>
 					</label>
 					<label className="new__label">
 						Skills you can offer
@@ -214,11 +246,22 @@ export default function NewUserPage({ setUser, setLoggedIn, setUserEmail, setNei
 						/>
 					</label>
 					<p className="new__desc">
-						One or two words for each thing you'd like to barter for, separated by commas
+						One or two words for each thing you'd like to barter for, separated
+						by commas
 					</p>
 					{/* <label className="new__label">Profile Picture (url only)
                         <input type="text" className="new__input" name="image" placeholder="https://picsum.photos/200/300?grayscale" value="https://picsum.photos/seed/picsum/300/300"/>
                     </label> */}
+
+					{/* add image here */}
+					<label className="new__label upload">
+						Upload a profile picture
+						<input type='file' name='file' onChange={handleFileChange}></input>
+						<p className="edit__desc">
+						File size limit: 1mb
+					</p>
+					</label>
+
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>
 			</form>

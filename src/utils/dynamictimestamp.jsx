@@ -1,10 +1,7 @@
 const dynamictimestamp = (timestamp) => {
-    // const timeAgoInSeconds = ((Date.now() - timestamp) / 1000) - (31536000 * 53 + (2592000 * 3));
-    // const timeAgoInSeconds = ((Date.now() - timestamp) / 10000000000);
+    
     const timeAgoInSeconds = ((Math.round(Date.now() / 1000) - timestamp));
-    // const timeAgoInSeconds = (Date.now() - timestamp);
-    console.log("datenow: ", Date.now())
-    console.log("timestamp: ", timestamp)
+
     let timeOutput = "";
     if (timeAgoInSeconds < 60) {
         timeOutput = "Just Now";

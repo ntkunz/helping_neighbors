@@ -5,10 +5,12 @@ import axios from "axios";
 export default function Neighbor({ neighbor }) {
 
 	const api = process.env.REACT_APP_API_URL;
+	const imgUrl = process.env.REACT_APP_IMG_URL;
 
 	const [offering, setOffering] = useState([]);
 	const [exchange, setExchange] = useState([]);
 	const [strDate, setStrDate] = useState("");	
+	
 
 	function getUserSkills() {
 		axios
@@ -37,10 +39,10 @@ export default function Neighbor({ neighbor }) {
 		//eslint-disable-next-line
 	}, [neighbor]);
 
+
 	return (
 		<>
 		{strDate !== "" ? (
-			// <>
 		<div className="neighbor">
 			<div className="neighbor__header">
 				<div className="neighbor__title">
@@ -50,8 +52,9 @@ export default function Neighbor({ neighbor }) {
 				</div>
 				<div className="neighbor__img-box">
 					<img
+						id="neighbor__img"
 						className="neighbor__img"
-						src={neighbor.image_url}
+						src={`${imgUrl}${neighbor.image_url}`}
 						alt="user profile"
 					/>
 				</div>
@@ -78,7 +81,7 @@ export default function Neighbor({ neighbor }) {
 			</div>
 
 			<div className="neighbor__bio">
-				<p className="neighbor__barter-title">About</p>
+				<p className="neighbor__barter-title semibold">About</p>
 				<p className="neighbor__barter-skill">{neighbor.about}</p>
 			</div>
 
@@ -87,7 +90,6 @@ export default function Neighbor({ neighbor }) {
 				<p className="neighbor__barter-skill semibold">{neighbor.email}</p>
 			</div>
 		</div>
-		// </>
 		) : <div className="neighbor__placeholder"></div>}
 		</>
 	);

@@ -12,9 +12,6 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	const geoKey = process.env.REACT_APP_HERE_API_KEY;
 	const geoApi = process.env.REACT_APP_GEO_URL;
 
-	const [offering, setOffering] = useState([]);
-	const [exchange, setExchange] = useState([]);
-
 	const [first_name, setFirstName] = useState(user.first_name);
 	const [last_name, setLastName] = useState(user.last_name);
 	const [email, setEmail] = useState(user.email);
@@ -32,7 +29,6 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	}, []);
 
 	function getSkills() {
-		// console.log('userId: ', user.user_id)
 		axios
 			.get(`${api}/users/skills/${user.user_id}`)
 			.then((response) => {
@@ -45,9 +41,6 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 						exchangeSkills.push(skill.skill);
 					}
 				});
-				// setOffers(offeringSkills);
-				// setDesires(exchangeSkills);
-				console.log("offeringSkills: ", offeringSkills)
 				setOffers(offeringSkills.join(', '));
 				setDesires(exchangeSkills.join(', '));
 			})
@@ -63,37 +56,19 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	async function editUser(e) {
 		e.preventDefault();
 		const user_id = user.user_id;
-		await removeSkills(user_id);		
-		// const user_id = v4();
-		// const first_name = capFirst(e.target.first_name.value);
-		// const last_name = capFirst(e.target.last_name.value);
-		// const email = e.target.email.value.toLowerCase();
-		// const password = e.target.password.value;
-		// const password_confirm = e.target.password_confirm.value;
-		// const image_url = "https://picsum.photos/300";
-		// const home = capFirst(e.target.home.value);
-		// const city = capFirst(e.target.city.value);
-		// const province = capFirst(e.target.province.value);
+		await removeSkills(user_id); //remove all user skills from table to add updated ones		
 		const address = `${home} ${city} ${province}`;
-		console.log('address: ', address)
 		const addressRequest = address
 			.replaceAll(",", " ")
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		// const status = "active";
-		// const about = e.target.about.value;
-		// const offers = e.target.offers.value;
-
 		const offersSplit = offers.split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
-		// const addOffers = await editSkills(offersArray, user_id, true);
-		await editSkills(offersArray, user_id, true);
-		// const desires = e.target.desires.value;
+		await editSkills(offersArray, user_id, true); //add offers to user skills table
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
-		// const addDesires = await editSkills(desiresArray, user_id, false);
-		await editSkills(desiresArray, user_id, false);
+		await editSkills(desiresArray, user_id, false); //add barters to user skills table
 		const image_url = user.image_url;
 
 		try {
@@ -114,7 +89,6 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 					province: province,
 				}),
 			]);
-			// setLoggedIn(true);
 			setNeighbors([]);
 			setUser(response[0].data);
 			console.log(response)
@@ -162,16 +136,11 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		}
 	}
 
-	// function sayClick() {
-	// 	console.log('click')
-	// }
-
 	return (
 		<div className="edit">
 			<h1 className="edit__title">
 				Edit your profile and barter on my friend
 			</h1>
-			{/* <form onSubmit={editUser} method="post" className="edit__form"> */}
 			<form onSubmit={editUser} method="post" className="edit__form">
 				<div className="edit__signup">
 					<label className="edit__label">
@@ -268,11 +237,14 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							className="edit__input textarea"
 							name="about"
 							rows="3"
-							maxLength={300}
+							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 							value={about}
 							onChange={(e)=>setAbout(e.target.value)}
 						/>
+					<p className="edit__desc">
+						Limit 240 characters
+					</p>
 					</label>
 					<label className="edit__label">
 						Skills you can offer
@@ -302,11 +274,9 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 					<p className="edit__desc">
 						One or two words for each thing you'd like to barter for, separated by commas
 					</p>
-					{/* <label className="edit__label">Profile Picture (url only)
-                        <input type="text" className="edit__input" name="image" placeholder="https://picsum.photos/200/300?grayscale" value="https://picsum.photos/seed/picsum/300/300"/>
-                    </label> */}
+
 					<button className="edit__btn">Edit Your Profile</button>
-					{/* <Link className="edit__btn" onClick={()=>navigate(-1)}>Back</Link> */}
+
 				</div>
 			</form>
 		</div>

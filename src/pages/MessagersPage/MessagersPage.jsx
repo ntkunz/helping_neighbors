@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 
 
 export default function MessagersPage({ neighbors }) {
+
+	const imgUrl = process.env.REACT_APP_IMG_URL;
+
     return (
         <div className="Messager">
         <h1 className="messager__title">
@@ -23,7 +26,7 @@ export default function MessagersPage({ neighbors }) {
                     >
                         Message {neighbor.first_name}
                         <img
-                            src={neighbor.image_url}
+                            src={`${imgUrl}${neighbor.image_url}`}
                             alt="random user profile picture"
                             className="messager__neighbor-img"
                         />

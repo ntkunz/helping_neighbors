@@ -4,9 +4,10 @@
 
 .footer {
 	background-color: $color-two;
-	display: flex;
-	flex-grow: 1;
-	flex-wrap: wrap;
+	// display: flex;
+	// flex-direction: column;
+	// flex-wrap: wrap;
+	// justify-content: space-between;
 
 	&__nav {
 		text-align: center;
@@ -26,7 +27,6 @@
 		padding: 0.5rem 1.5rem;
 		border-radius: 0.25rem;
 		margin: 0 0.5rem;
-		// flex-basis: 33%;
 		background-color: $color-five;
 		transition: all 0.125s ease-out;
 
@@ -34,39 +34,44 @@
 			background-color: $color-one;
 			color: $color-five;
 		}
+	}
 
-		
+	&__info {
+		flex-grow: 1;
 	}
 
 	&__section {
-		color: $color-six;
 		margin: 0 3rem;
-		padding: 1rem 2rem;
+		padding: 1rem 0 0;
 		position: fixed;
 		bottom: 5.5rem;
 		border-radius: .25rem;
-		left: 0;
 		z-index: 1;
 		background-color: $color-one;
 		outline: solid 1px $color-five;
-		// visibility: hidden;
 	}
 
-	&__label {
+	&__icon {
+		margin: 0 2rem 0;
+	}
+
+	&__info {
+		color: $color-six;
+		padding: 1rem 2rem 0rem;
+	}
+
+	&__active {
+		background-color: $color-one;
+		color: $color-five;
 	}
 
 	&__paragraph {
-		margin: 2rem 0;
+		margin: 2rem;
 		line-height: 1.5rem;
 	}
 }
 
 .first-paragraph {
 	font-weight: 600;
-	margin: 0 0 2rem;
-}
-
-.active {
-	background-color: $color-one;
-	color: $color-five;
+	margin: 0 2rem;
 }

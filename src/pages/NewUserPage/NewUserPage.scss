@@ -89,3 +89,9 @@
 .textarea {
 	resize: none;
 }
+
+.upload {
+	display: flex;
+	justify-content: flex-start;
+	gap: 3rem;
+}
