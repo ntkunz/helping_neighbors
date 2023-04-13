@@ -22,10 +22,4 @@
 .neighbor__link {
 	width: clamp(18.75rem, 25%, 32rem);
 	height: fit-content;
-
-	&:hover {
-		// background-image: linear-gradient($color-two, $color-five);
-		// border-radius: .25rem;
-		// background-color: $color-six;
-	}
 }

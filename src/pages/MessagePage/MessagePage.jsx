@@ -6,11 +6,10 @@ import Neighbor from "../../Components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 
 export default function Message({ user, neighbors }) {
-
 	const api = process.env.REACT_APP_API_URL;
 
 	const { id } = useParams();
-	
+
 	const [receiver, setReceiver] = useState([]);
 	const [messages, setMessages] = useState([]);
 
@@ -31,7 +30,6 @@ export default function Message({ user, neighbors }) {
 				message: document.querySelector(".message__input").value,
 			})
 			.then((response) => {
-				// console.log('message response :',response.data);
 				getMessages(user.user_id, id);
 				document.querySelector(".message__input").value = "";
 			})
@@ -48,9 +46,9 @@ export default function Message({ user, neighbors }) {
 				receiverId: receiverId,
 			})
 			.then((response) => {
-				const sortedMessages = response.data.sort(function(x, y){
+				const sortedMessages = response.data.sort(function (x, y) {
 					return y.unix_timestamp - x.unix_timestamp;
-				})
+				});
 				setMessages(response.data);
 			})
 			.catch((error) => {
@@ -59,7 +57,6 @@ export default function Message({ user, neighbors }) {
 		// ), 3000);
 		// setTimeout(()=>{getMessages(senderId, receiverId)}, 2000)
 	}
-
 
 	return (
 		<div className="message__container">
@@ -97,19 +94,19 @@ export default function Message({ user, neighbors }) {
 							<div className="message__box">
 								{message.sender_id === user.user_id ? (
 									<>
-									<p className="message__text sent">{message.message}</p>
-									<p className="message__info sent">
-										Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
-										<span className="semibold">{user.first_name}</span>
-									</p>
+										<p className="message__text sent">{message.message}</p>
+										<p className="message__info sent">
+											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
+											<span className="semibold">{user.first_name}</span>
+										</p>
 									</>
 								) : (
 									<>
-									<p className="message__text received">{message.message}</p>
-									<p className="message__info received">
-										Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
-										<span className="semibold">{receiver.first_name}</span>
-									</p>
+										<p className="message__text received">{message.message}</p>
+										<p className="message__info received">
+											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
+											<span className="semibold">{receiver.first_name}</span>
+										</p>
 									</>
 								)}
 							</div>

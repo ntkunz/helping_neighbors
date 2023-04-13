@@ -14,7 +14,6 @@ import NewUserPage from "./pages/NewUserPage/NewUserPage";
 import EditUserPage from "./pages/EditUserPage/EditUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import axios from "axios";
 
@@ -29,17 +28,16 @@ export default function App() {
 
 	const api = process.env.REACT_APP_API_URL;
 
-	// possibly async getNeighbors to not navigate until neighbors are back
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
-	// }, [user, userEmail]);
+		// }, [user, userEmail]);
 	}, [user, userEmail]);
 
+	//handle login and set user state
 	async function handleLogin(e) {
 		e.preventDefault();
 		const email = e.target.email.value;
-		console.log("sending api request with :", email);
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			setLoggedIn(true);
 			setUser(res.data[0]);
@@ -47,6 +45,7 @@ export default function App() {
 		});
 	}
 
+	//handle logout and clear user state
 	function handleLogout(e) {
 		e.preventDefault();
 		if (loggedIn) {
@@ -58,6 +57,7 @@ export default function App() {
 		}
 	}
 
+	//get neighbor's location within 1/2 km, filter out user, and set state
 	function getNeighbors(location) {
 		axios
 			.put(`${api}/users`, { userLocation: location })
@@ -113,7 +113,11 @@ export default function App() {
 						path="/profile"
 						element={
 							loggedIn ? (
-								<EditUserPage user={user} setUser={setUser} setNeighbors={setNeighbors} />
+								<EditUserPage
+									user={user}
+									setUser={setUser}
+									setNeighbors={setNeighbors}
+								/>
 							) : (
 								<Navigate to="/login" />
 							)
@@ -134,16 +138,11 @@ export default function App() {
 						path="/neighbor/:id"
 						element={<MessagePage user={user} neighbors={neighbors} />}
 					/>
-          <Route path="/neighbor" 
-            element={<MessagersPage user={user} neighbors={neighbors} />}
-          />
-          <Route  path="*" element={<Navigate to="/" />} />
-
-					{/* {loggedIn ? <Route path="/neighbors" element={<Neighbors loggedIn={loggedIn} user={user} />} />
-            : 
-          <Route path="/login" element={<LoginPage loggedIn={loggedIn} setUser={setUser} handleLogin={handleLogin} /> } />} */}
-
-					{/* <Route path="/profile" element={<Profile />} /> */}
+					<Route
+						path="/neighbor"
+						element={<MessagersPage user={user} neighbors={neighbors} />}
+					/>
+					<Route path="*" element={<Navigate to="/" />} />
 				</Routes>
 			</div>
 			<Footer />
