@@ -222,7 +222,6 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 							value={about}
 							onChange={(e) => setAbout(e.target.value)}
 						/>
-						<p className="edit__desc">Limit 240 characters</p>
 					</label>
 					<label className="edit__label">
 						Skills you can offer

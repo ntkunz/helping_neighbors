@@ -220,7 +220,6 @@ export default function NewUserPage({
 							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 						/>
-						<p className="edit__desc">Limit 240 characters</p>
 					</label>
 					<label className="new__label">
 						Skills you can offer
@@ -250,8 +249,8 @@ export default function NewUserPage({
 					<label className="new__label upload">
 						Upload a profile picture
 						<input type="file" name="file" onChange={handleFileChange}></input>
-						<p className="edit__desc">File size limit: 1mb</p>
 					</label>
+					<p className="edit__desc">File size limit: 1mb</p>
 
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>

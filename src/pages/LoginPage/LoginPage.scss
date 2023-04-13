@@ -4,10 +4,17 @@
 
 .login {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
+	align-items: center;
 	justify-content: center;
 	gap: 3rem;
 	padding: 3rem;
+
+	@include desktop {
+		flex-direction: row;
+		justify-content: center;
+		align-items: flex-start;
+	}
 
 	&__title {
 		@include sectionHeader;
@@ -27,6 +34,9 @@
 		flex-direction: column;
 		text-align: right;
 		align-items: flex-end;
+		@include desktop{
+			height: 25.5rem;
+		}
 
 		&__qa {
 			display: flex;
@@ -56,7 +66,13 @@
 		border-radius: 0.375rem;
 		display: flex;
 		flex-direction: column;
+		height: 25.5rem;
+		order: -1;
 
+		@include desktop {
+			order: 0;
+		}
+		
 		&__label {
 		}
 

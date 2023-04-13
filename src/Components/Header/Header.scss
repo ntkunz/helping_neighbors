@@ -5,14 +5,23 @@
 .header {
 	width: 100%;
 	background-color: $color-one;
-	height: 7.5rem;
+
 	display: flex;
 
 	&__container {
 		display: flex;
 		padding: 1rem 3rem 0;
-		justify-content: space-between;
+		justify-content: center;
+		align-items: center;
 		width: 100%;
+		flex-direction: column;
+
+	@include desktop {
+		flex-direction: row;
+		height: 7.5rem;
+		justify-content: space-between;
+		align-items: flex-end;
+	}
 	}
 
 	//header title and subtitle
