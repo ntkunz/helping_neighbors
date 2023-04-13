@@ -31,7 +31,7 @@ export default function NewUserPage({
 		const last_name = capFirst(e.target.last_name.value);
 		const email = e.target.email.value.toLowerCase();
 		const password = e.target.password.value;
-		const image_url = "https://picsum.photos/300";
+		// const image_url = "https://picsum.photos/300";
 		const home = capFirst(e.target.home.value);
 		const city = capFirst(e.target.city.value);
 		const province = capFirst(e.target.province.value);
@@ -59,7 +59,7 @@ export default function NewUserPage({
 					last_name: last_name,
 					email: email,
 					password: password,
-					image_url: image_url,
+					// image_url: image_url,
 					image: image,
 					status: status,
 					coords: coords,
