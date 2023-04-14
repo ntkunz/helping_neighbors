@@ -11,7 +11,7 @@
 		@include sectionHeader;
 		color: $color-five;
 		text-align: center;
-		margin: 2rem 0 0;
+		margin: 2rem 1rem 0;
 	}
 
 	&__form {
@@ -19,9 +19,13 @@
 		display: flex;
 		gap: 3rem;
 		width: 100%;
-		flex-direction: row;
+		flex-direction: column;
 		padding: 3rem;
 		align-items: space-around;
+
+		@include desktop {
+			flex-direction: row;
+		}
 	}
 
 	&__signup {

@@ -55,7 +55,7 @@ export default function Message({ user, neighbors }) {
 				console.log("error", error);
 			});
 		// ), 3000);
-		// setTimeout(()=>{getMessages(senderId, receiverId)}, 2000)
+		setTimeout(()=>{getMessages(senderId, receiverId)}, 2000)
 	}
 
 	return (
