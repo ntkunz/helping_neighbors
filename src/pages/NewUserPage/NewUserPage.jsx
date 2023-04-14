@@ -31,7 +31,7 @@ export default function NewUserPage({
 		const last_name = capFirst(e.target.last_name.value);
 		const email = e.target.email.value.toLowerCase();
 		const password = e.target.password.value;
-		const image_url = "https://picsum.photos/300";
+		// const image_url = "https://picsum.photos/300";
 		const home = capFirst(e.target.home.value);
 		const city = capFirst(e.target.city.value);
 		const province = capFirst(e.target.province.value);
@@ -59,7 +59,7 @@ export default function NewUserPage({
 					last_name: last_name,
 					email: email,
 					password: password,
-					image_url: image_url,
+					// image_url: image_url,
 					image: image,
 					status: status,
 					coords: coords,
@@ -220,7 +220,6 @@ export default function NewUserPage({
 							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 						/>
-						<p className="edit__desc">Limit 240 characters</p>
 					</label>
 					<label className="new__label">
 						Skills you can offer
@@ -250,8 +249,8 @@ export default function NewUserPage({
 					<label className="new__label upload">
 						Upload a profile picture
 						<input type="file" name="file" onChange={handleFileChange}></input>
-						<p className="edit__desc">File size limit: 1mb</p>
 					</label>
+					<p className="edit__desc">File size limit: 1mb</p>
 
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>

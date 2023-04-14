@@ -11,6 +11,7 @@ export default function Neighbor({ neighbor }) {
 	const [exchange, setExchange] = useState([]);
 	const [strDate, setStrDate] = useState("");	
 	
+	console.log(neighbor.image_url)
 
 	function getUserSkills() {
 		axios
