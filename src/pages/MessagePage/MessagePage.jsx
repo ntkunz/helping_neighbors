@@ -15,10 +15,12 @@ export default function Message({ user, neighbors }) {
 
 	useEffect(() => {
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
+		//eslint-disable-next-line
 	}, [neighbors]);
 
 	useEffect(() => {
 		getMessages(user.user_id, id);
+		//eslint-disable-next-line
 	}, [receiver]);
 
 	function sendMessage(e) {
@@ -49,7 +51,8 @@ export default function Message({ user, neighbors }) {
 				const sortedMessages = response.data.sort(function (x, y) {
 					return y.unix_timestamp - x.unix_timestamp;
 				});
-				setMessages(response.data);
+				// setMessages(response.data);
+				setMessages(sortedMessages);
 			})
 			.catch((error) => {
 				console.log("error", error);
