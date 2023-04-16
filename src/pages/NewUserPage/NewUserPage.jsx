@@ -15,8 +15,6 @@ export default function NewUserPage({
 	const geoKey = process.env.REACT_APP_HERE_API_KEY;
 	const geoApi = process.env.REACT_APP_GEO_URL;
 
-	const [image, setImage] = useState({});
-	const [statusResponse, setStatusResponse] = useState("");
 	const [img, setImg] = useState(null);
 
 	function capFirst(string) {
@@ -31,7 +29,6 @@ export default function NewUserPage({
 		const last_name = capFirst(e.target.last_name.value);
 		const email = e.target.email.value.toLowerCase();
 		const password = e.target.password.value;
-		// const image_url = "https://picsum.photos/300";
 		const home = capFirst(e.target.home.value);
 		const city = capFirst(e.target.city.value);
 		const province = capFirst(e.target.province.value);
@@ -46,11 +43,11 @@ export default function NewUserPage({
 		const offers = e.target.offers.value;
 		const offersSplit = offers.split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
-		const addOffers = await addSkills(offersArray, user_id, true);
+		await addSkills(offersArray, user_id, true);
 		const desires = e.target.desires.value;
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
-		const addDesires = await addSkills(desiresArray, user_id, false);
+		await addSkills(desiresArray, user_id, false);
 		try {
 			const response = await Promise.all([
 				axios.post(`${api}/users/newuser`, {
@@ -59,8 +56,6 @@ export default function NewUserPage({
 					last_name: last_name,
 					email: email,
 					password: password,
-					// image_url: image_url,
-					image: image,
 					status: status,
 					coords: coords,
 					about: about,
@@ -116,7 +111,7 @@ export default function NewUserPage({
 		formData.append("file", img.data);
 		formData.append("user_id", userId);
 		const response = await axios.post(`${api}/users/image`, formData);
-		if (response) setStatusResponse(response.statusText);
+		if (response) console.log(response.statusText);
 	};
 
 	//set image function

@@ -1,8 +1,8 @@
 import "./Header.scss";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Header({ loggedIn, handleLogout }) {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	return (
 		<header className="header">

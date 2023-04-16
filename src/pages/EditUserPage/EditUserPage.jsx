@@ -1,7 +1,7 @@
 import "./EditUserPage.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Navigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function EditUserPage({ user, setUser, setNeighbors }) {
 	const navigate = useNavigate();
@@ -13,17 +13,18 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	const [first_name, setFirstName] = useState(user.first_name);
 	const [last_name, setLastName] = useState(user.last_name);
 	const [email, setEmail] = useState(user.email);
-	const [password, setPassword] = useState(user.password);
+	// const [password, setPassword] = useState(user.password);
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
-	const [active, setActive] = useState(user.status);
+	// const [active, setActive] = useState(user.status);
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
 
 	useEffect(() => {
 		getSkills();
+		//eslint-disable-next-line
 	}, []);
 
 	function getSkills() {
@@ -68,7 +69,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
 		await editSkills(desiresArray, user_id, false); //add barters to user skills table
-		const image_url = user.image_url;
+		// const image_url = user.image_url;
 
 		try {
 			const response = await Promise.all([
@@ -77,9 +78,8 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 					first_name: first_name,
 					last_name: last_name,
 					email: email,
-					password: password,
-					// image_url: image_url,
-					status: active,
+					// password: password,
+					// status: active,
 					coords: coords,
 					about: about,
 					address: address,
