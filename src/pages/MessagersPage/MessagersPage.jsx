@@ -22,7 +22,7 @@ export default function MessagersPage({ neighbors }) {
 							Message {neighbor.first_name}
 							<img
 								src={`${imgUrl}${neighbor.image_url}`}
-								alt="random user profile picture"
+								alt="user profile"
 								className="messager__neighbor-img"
 							/>
 						</Link>
