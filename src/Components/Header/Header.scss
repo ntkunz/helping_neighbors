@@ -95,6 +95,11 @@
 		display: flex;
 		align-items: flex-end;
 		width: 100%;
+		justify-content: center;
+		@include desktop {
+			justify-content: flex-end;
+			width: fit-content;
+		}
 	}
 
 	//header buttons
@@ -116,14 +121,17 @@
 		// letter-spacing: 0.025rem;
 		@include tablet {
 			@include bodyCopy;
+			flex-grow: 0;
 			font-weight: 600;
 			letter-spacing: 0.025rem;
 			font-size: 0.875rem;
-			padding: 1rem;
+			padding: .5rem;
 			margin: 0 0 0 1rem;
+			width: fit-content;
 		}
 		@include desktop {
 			flex-grow: 0;
+			padding: 1rem;
 		}
 
 		&:hover {
