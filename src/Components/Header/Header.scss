@@ -94,6 +94,7 @@
 	&__navbox {
 		display: flex;
 		align-items: flex-end;
+		width: 100%;
 	}
 
 	//header buttons
@@ -102,15 +103,16 @@
 		color: $color-one;
 		background-color: $color-five;
 		border: none;
-		flex-grow: 1;
 		border-radius: 0.25rem;
-		padding: .25rem;
+		padding: .375rem;
 		flex-basis: auto;
-		margin: 0 0 0 .25rem;
+		margin: 0 .125rem;
 		cursor: pointer;
 		transition: all 0.2s ease-in-out;
 		text-decoration: underline;
+		text-align: center;
 		font-size: 0.75rem;
+		flex-grow: 1;
 		// letter-spacing: 0.025rem;
 		@include tablet {
 			@include bodyCopy;
