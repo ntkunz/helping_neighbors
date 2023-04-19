@@ -18,7 +18,7 @@ export default function Neighbors({ neighbors, user }) {
 							key={neighbor.id}
 							to={`/neighbor/${neighbor.user_id}`}
 						>
-							<Neighbor neighbor={neighbor} />
+							<Neighbor key={neighbor.id} neighbor={neighbor} />
 						</Link>
 					))
 				) : (

@@ -10,8 +10,6 @@ export default function Neighbor({ neighbor }) {
 	const [offering, setOffering] = useState([]);
 	const [exchange, setExchange] = useState([]);
 	const [strDate, setStrDate] = useState("");	
-	
-	console.log(neighbor.image_url)
 
 	//get the skills of the neighbor *later pass this up to where retrieving the neighbors
 	function getUserSkills() {
