@@ -90,18 +90,15 @@ export default function Message({ user, neighbors }) {
 					</div>
 
 					<div className="message__output">
-						{/* <h3 className="message__neighbor">
-							Messages with {receiver.first_name}
-						</h3> */}
 						{messages.map((message) => (
 							<div className="message__box">
 								{message.sender_id === user.user_id ? (
 									<>
-										<p className="message__text sent">{message.message}</p>
 										<p className="message__info sent">
 											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
 											<span className="semibold">{user.first_name}</span>
 										</p>
+										<p className="message__text sent">{message.message}</p>
 									</>
 								) : (
 									<>
