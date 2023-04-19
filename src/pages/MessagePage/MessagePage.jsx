@@ -64,7 +64,7 @@ export default function Message({ user, neighbors }) {
 	return (
 		<div className="message__container">
 			<h1 className="message__title">
-				Message {receiver.first_name} to arrange a barter, or{" "}
+				{user.first_name}, message {receiver.first_name} to arrange a barter, or{" "}
 				<Link to="/neighbors" className="message__link">
 					explore other neighbors
 				</Link>
@@ -90,9 +90,9 @@ export default function Message({ user, neighbors }) {
 					</div>
 
 					<div className="message__output">
-						<h3 className="message__neighbor">
+						{/* <h3 className="message__neighbor">
 							Messages with {receiver.first_name}
-						</h3>
+						</h3> */}
 						{messages.map((message) => (
 							<div className="message__box">
 								{message.sender_id === user.user_id ? (
