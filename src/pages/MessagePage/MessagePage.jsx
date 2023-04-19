@@ -19,15 +19,17 @@ export default function Message({ user, neighbors }) {
 	}, [neighbors]);
 
 	useEffect(() => {
-		getMessages(user.user_id, receiver.user_id);
-		// getMessages(user.user_id, id);
+		//only retrieve messages once receiver is set to avoid 400 error
+		if (receiver.user_id) {
+			getMessages(user.user_id, receiver.user_id);
+		}
 		//eslint-disable-next-line
 	}, [receiver]);
 
 	function sendMessage(e) {
 		e.preventDefault();
 		const message = document.querySelector(".message__input").value;
-		if (message.value === "") {
+		if (message === "") {
 			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
@@ -35,11 +37,10 @@ export default function Message({ user, neighbors }) {
 		axios
 			.post(`${api}/messages`, {
 				senderId: user.user_id,
-				receiverId: id,
+				receiverId: receiver.user_id,
 				message: document.querySelector(".message__input").value,
 			})
 			.then((response) => {
-				getMessages(user.user_id, id);
 				document.querySelector(".message__input").value = "";
 			})
 			.catch((error) => {
@@ -48,7 +49,6 @@ export default function Message({ user, neighbors }) {
 	}
 
 	function getMessages(senderId, receiverId) {
-		// setInterval((
 		axios
 			.put(`${api}/messages`, {
 				senderId: senderId,
@@ -64,8 +64,7 @@ export default function Message({ user, neighbors }) {
 			.catch((error) => {
 				console.log("error", error);
 			});
-		// ), 3000);
-		setTimeout(()=>{getMessages(senderId, receiverId)}, 2000)
+		setTimeout(()=>{getMessages(user.user_id, receiver.user_id)}, 2000)
 	}
 
 	return (
