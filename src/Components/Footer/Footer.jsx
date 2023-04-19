@@ -31,28 +31,7 @@ export default function Footer() {
 
 	return (
 		<div className="footer">
-			<section className="footer__nav">
-				<Link
-					className={terms ? "footer__link footer__active" : "footer__link"}
-					onClick={handleTerms}
-				>
-					<h3 className="footer__label">Terms</h3>
-				</Link>
-				<Link
-					className={about ? "footer__link footer__active" : "footer__link"}
-					onClick={handleAbout}
-				>
-					<h3 className="footer__label">Benefits</h3>
-				</Link>
-				<Link
-					className={contact ? "footer__link footer__active" : "footer__link"}
-					onClick={handleContact}
-				>
-					<h3 className="footer__label">Contact</h3>
-				</Link>
-			</section>
-
-			{about && (
+						{about && (
 				<Link className="footer__info" onClick={handleAbout}>
 					<div className="footer__section">
 						<img
@@ -135,6 +114,29 @@ export default function Footer() {
 					</div>
 				</Link>
 			)}
+
+			<section className="footer__nav">
+				<Link
+					className={terms ? "footer__link footer__active" : "footer__link"}
+					onClick={handleTerms}
+				>
+					<h3 className="footer__label">Terms</h3>
+				</Link>
+				<Link
+					className={about ? "footer__link footer__active" : "footer__link"}
+					onClick={handleAbout}
+				>
+					<h3 className="footer__label">Benefits</h3>
+				</Link>
+				<Link
+					className={contact ? "footer__link footer__active" : "footer__link"}
+					onClick={handleContact}
+				>
+					<h3 className="footer__label">Contact</h3>
+				</Link>
+			</section>
+
+
 		</div>
 	);
 }
