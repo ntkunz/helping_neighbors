@@ -22,11 +22,11 @@ export default function Header({ loggedIn, handleLogout }) {
 				<div className="header__navbox">
 					{loggedIn ? (
 						<NavLink to="/neighbors" className="header__btn">
-							Meet Your Neighbors
+							Your Neighbors
 						</NavLink>
 					) : (
 						<NavLink to="/login" className="header__btn">
-							Meet Your Neighbors
+							Your Neighbors
 						</NavLink>
 					)}
 					{loggedIn ? (

@@ -38,7 +38,8 @@ export default function LoginPage({ handleLogin }) {
 				</div>
 
 				<div className="login-form">
-					<form className="login-form" onSubmit={handleLogin} method="post">
+					<form className="login-form__form" onSubmit={handleLogin} method="post">
+					<div className="login-form__box">
 						<p className="login-form__label">Email</p>
 						<input
 							type="text"
@@ -52,10 +53,13 @@ export default function LoginPage({ handleLogin }) {
 							className="login-form__input"
 							name="password"
 						/>
+					</div>
+					<div className="login-form__box">
 						<button className="login-form__btn">Sign In</button>
 						<Link className="login-form__btn signup" to="/signup">
 							Sign Up
 						</Link>
+						</div>
 					</form>
 				</div>
 			</div>

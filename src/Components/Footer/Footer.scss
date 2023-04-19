@@ -8,13 +8,18 @@
 	&__nav {
 		text-align: center;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
+		gap: .5rem;
+		align-items: center;
 		flex-grow: 1;
 		flex-basis: 100%;
-		align-items: flex-start;
 		justify-content: center;
 		padding: 2rem 0;
 		padding-inline: max(3.25rem, 0.5rem);
+		@include tablet {
+			flex-direction: row;
+			align-items: flex-start;
+		}
 	}
 
 	&__link {
@@ -37,14 +42,19 @@
 	}
 
 	&__section {
-		margin: 0 3rem;
-		padding: 1rem 0 0;
-		position: fixed;
+		margin: 0 1rem;
+		padding: 1rem 0 .5rem;
 		bottom: 5.5rem;
 		border-radius: .25rem;
 		z-index: 1;
 		background-color: $color-one;
 		outline: solid 1px $color-five;
+		@include tablet {
+			margin: 0 3rem;
+		}
+		&:hover {
+			background-color: $color-two-light;
+		}
 	}
 
 	&__icon {

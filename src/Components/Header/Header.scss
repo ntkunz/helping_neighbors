@@ -5,23 +5,30 @@
 .header {
 	width: 100%;
 	background-color: $color-one;
-
 	display: flex;
 
 	&__container {
 		display: flex;
-		padding: 1rem 3rem 0;
+		padding: $box-padding-mobile;
+		padding-bottom: 0;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
 		flex-direction: column;
+		@include tablet {
+			padding: $box-padding-tablet;
+			padding-bottom: 0;
 
-	@include desktop {
-		flex-direction: row;
-		height: 7.5rem;
-		justify-content: space-between;
-		align-items: flex-end;
-	}
+			justify-content: space-between;
+		}
+		@include desktop {	
+			flex-direction: row;
+			height: 7.5rem;
+			justify-content: space-between;
+			align-items: flex-end;
+			padding: $box-padding-desktop;
+			padding-bottom: 0;
+		}
 	}
 
 	//header title and subtitle
@@ -56,16 +63,24 @@
 		@include bodyCopy;
 		font-size: .75rem;
 		display: flex;
+		flex-direction: column;
 		flex-grow: 1;
-		align-items: flex-end;
+		align-items: center;
 		color: $color-four;
 		font-weight: 600;
-		padding: 0 0 .625rem 2rem;
+		padding: $box-padding-mobile;
 		font-size: clamp(1rem, 1.5vw, 1.25rem);
+		@include tablet {
+			flex-direction: row;
+			align-items: flex-end;
+			padding: 0 0 .625rem 2rem;
+		}
 	}
 
 	&__tagline {
+		@include tablet {
 		margin: 0 1rem 0 0;
+		}
 	}
 
 	//login button box
@@ -79,24 +94,45 @@
 	&__navbox {
 		display: flex;
 		align-items: flex-end;
+		width: 100%;
+		justify-content: center;
+		@include desktop {
+			justify-content: flex-end;
+			width: fit-content;
+		}
 	}
 
 	//header buttons
 	&__btn {
-		@include bodyCopy;
+		@include label;
 		color: $color-one;
-		font-weight: 600;
 		background-color: $color-five;
 		border: none;
 		border-radius: 0.25rem;
-		padding: 1rem 1rem;
+		padding: .375rem;
 		flex-basis: auto;
-		margin: 0 0 0 1rem;
+		margin: 0 .125rem;
 		cursor: pointer;
 		transition: all 0.2s ease-in-out;
 		text-decoration: underline;
-		font-size: 0.875rem;
-		letter-spacing: 0.025rem;
+		text-align: center;
+		font-size: 0.75rem;
+		flex-grow: 1;
+		// letter-spacing: 0.025rem;
+		@include tablet {
+			@include bodyCopy;
+			flex-grow: 0;
+			font-weight: 600;
+			letter-spacing: 0.025rem;
+			font-size: 0.875rem;
+			padding: .5rem;
+			margin: 0 0 0 1rem;
+			width: fit-content;
+		}
+		@include desktop {
+			flex-grow: 0;
+			padding: 1rem;
+		}
 
 		&:hover {
 			border-bottom-left-radius: 0;
