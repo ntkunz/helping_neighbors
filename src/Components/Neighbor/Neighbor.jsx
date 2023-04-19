@@ -67,7 +67,7 @@ export default function Neighbor({ neighbor }) {
 				<ul className="neighbor__barter-skills">
 					{offering.length &&
 						offering.map((offer) => (
-							<li className="neighbor__barter-skill semibold">-{offer}</li>
+							<li className="neighbor__barter-skill semibold" key={offer}>-{offer}</li>
 						))}
 				</ul>
 			</div>
@@ -77,7 +77,7 @@ export default function Neighbor({ neighbor }) {
 				<ul className="neighbor__barter-skills">
 					{exchange.length &&
 						exchange.map((want) => (
-							<li className="neighbor__barter-skill semibold">-{want}</li>
+							<li className="neighbor__barter-skill semibold" key={want}>-{want}</li>
 						))}
 				</ul>
 			</div>

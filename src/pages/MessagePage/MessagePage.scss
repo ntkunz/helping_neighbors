@@ -176,3 +176,11 @@
 	align-self: flex-end;
 }
 
+.error {
+	background-color: $color-error;
+	color: $color-one;
+	display: none;
+	margin: .25rem;
+	padding: .125rem .25rem;
+	border-radius: .25rem;
+}

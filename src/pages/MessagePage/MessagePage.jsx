@@ -19,12 +19,19 @@ export default function Message({ user, neighbors }) {
 	}, [neighbors]);
 
 	useEffect(() => {
-		getMessages(user.user_id, id);
+		getMessages(user.user_id, receiver.user_id);
+		// getMessages(user.user_id, id);
 		//eslint-disable-next-line
 	}, [receiver]);
 
 	function sendMessage(e) {
 		e.preventDefault();
+		const message = document.querySelector(".message__input").value;
+		if (message.value === "") {
+			document.querySelector(".error").style.display = "inline-block";
+			return;
+		}
+		document.querySelector(".error").style.display = "none";
 		axios
 			.post(`${api}/messages`, {
 				senderId: user.user_id,
@@ -86,12 +93,13 @@ export default function Message({ user, neighbors }) {
 							<button className="message__btn" type="submit">
 								Send Message
 							</button>
+							<p className="error">Message must not be blank</p>
 						</form>
 					</div>
 
 					<div className="message__output">
 						{messages.map((message) => (
-							<div className="message__box">
+							<div className="message__box" key={message.id}>
 								{message.sender_id === user.user_id ? (
 									<>
 										<p className="message__info sent">
