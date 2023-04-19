@@ -13,6 +13,7 @@ export default function Neighbor({ neighbor }) {
 	
 	console.log(neighbor.image_url)
 
+	//get the skills of the neighbor *later pass this up to where retrieving the neighbors
 	function getUserSkills() {
 		axios
 			.get(`${api}/users/skills/${neighbor.user_id}`)
@@ -26,15 +27,17 @@ export default function Neighbor({ neighbor }) {
 						exchangeSkills.push(skill.skill);
 					}
 				});
+				//format date of neighbor creation
 				setStrDate(neighbor.created_at.substring(0, 10));
 				setOffering(offeringSkills);
 				setExchange(exchangeSkills);
 			})
 			.catch((error) => {
-				console.log("error", error);
+				console.log("error getting user skills", error);
 			});
 	}
 
+	//get skills of neighbor when component mounts
 	useEffect(() => {
 		getUserSkills();
 		//eslint-disable-next-line

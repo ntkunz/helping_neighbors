@@ -7,7 +7,6 @@ export default function NewUserPage({
 	setUser,
 	setLoggedIn,
 	setUserEmail,
-	setNeighbors,
 }) {
 	const navigate = useNavigate();
 
@@ -43,11 +42,14 @@ export default function NewUserPage({
 		const offers = e.target.offers.value;
 		const offersSplit = offers.split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
+		//add skills to user_skills table
 		await addSkills(offersArray, user_id, true);
 		const desires = e.target.desires.value;
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
+		//add barters to user_skills table
 		await addSkills(desiresArray, user_id, false);
+		//add user to users table
 		try {
 			const response = await Promise.all([
 				axios.post(`${api}/users/newuser`, {
@@ -65,6 +67,7 @@ export default function NewUserPage({
 					province: province,
 				}),
 			]);
+			//upload image to users api once user_id is created
 			submitImage(response[0].data.user_id);
 			setLoggedIn(true);
 			setUserEmail(email);
@@ -75,7 +78,7 @@ export default function NewUserPage({
 		}
 	}
 
-	//api call to return lat long from address
+	//api call to return lat long from address as lat and long
 	async function getNewUserGeo(addressRequest) {
 		try {
 			const res = await axios.get(
@@ -105,7 +108,7 @@ export default function NewUserPage({
 		}
 	}
 
-	//add image upload
+	//upload image to users api
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
@@ -114,7 +117,7 @@ export default function NewUserPage({
 		if (response) console.log(response.statusText);
 	};
 
-	//set image function
+	//set image function with url and file
 	const handleFileChange = (e) => {
 		const img = {
 			preview: URL.createObjectURL(e.target.files[0]),
