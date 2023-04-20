@@ -76,6 +76,10 @@
 	&__form {
 		width: 100%;
 		margin: 0 0 2rem;
+		text-align: center;
+		@include tablet {
+			text-align: left;
+		}
 	}
 
 	//textarea input for message
@@ -137,23 +141,19 @@
 	&__box {
 		display: flex;
 		flex-direction: column;
-		// align-items: flex-end;
 	}
 
 	//timestamp and messagee
 	&__info {
 		@include labelLarge;
 		font-weight: 400;
-		margin-bottom: 1rem;
 		color: $color-five;
 		width: fit-content;
 		padding: 0 0.5rem 0.125rem;
-		// background-color: $color-two;
 	}
 
 	//content from messages
 	&__text {
-		// flex-basis: 100%;
 		width: 100%;
 		padding: 0.5rem;
 		border-radius: 0.25rem;
@@ -174,4 +174,13 @@
 	color: $color-five;
 	text-align: right;
 	align-self: flex-end;
+}
+
+.error {
+	background-color: $color-error;
+	color: $color-one;
+	display: none;
+	margin: .25rem;
+	padding: .125rem .25rem;
+	border-radius: .25rem;
 }
