@@ -22,9 +22,11 @@ export default function Message({ user, neighbors }) {
 		//only retrieve messages once receiver is set to avoid 400 error
 		if (receiver.user_id) {
 			getMessages(user.user_id, receiver.user_id);
+			//set interval to retrieve messages every 2 seconds
 			const messageInt = setInterval(() => {
 				getMessages(user.user_id, receiver.user_id);
 			}, 2000);
+			//clear interval when component unmounts
 			return () => {
 				clearInterval(messageInt);
 			};
