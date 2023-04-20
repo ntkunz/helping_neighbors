@@ -31,7 +31,6 @@ export default function App() {
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
-		// }, [user, userEmail]);
 	}, [user, userEmail]);
 
 	//handle login and set user state
@@ -39,9 +38,13 @@ export default function App() {
 		e.preventDefault();
 		const email = e.target.email.value;
 		await axios.post(`${api}/users`, { email }).then((res) => {
+			if (res.data.length > 0) {
 			setLoggedIn(true);
 			setUser(res.data[0]);
 			setUserEmail(res.data[0].email);
+			} else {
+				alert("Email not found. Please try again or register.");
+			}
 		});
 	}
 

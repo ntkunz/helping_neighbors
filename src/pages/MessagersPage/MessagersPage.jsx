@@ -14,7 +14,7 @@ export default function MessagersPage({ neighbors }) {
 			</h1>
 			<div className="messager__list">
 				{neighbors.map((neighbor) => (
-					<div className="messager__neighbor">
+					<div className="messager__neighbor" key={neighbor.user_id}>
 						<Link
 							to={`/neighbor/${neighbor.user_id}`}
 							className="messager__neighbor-link"

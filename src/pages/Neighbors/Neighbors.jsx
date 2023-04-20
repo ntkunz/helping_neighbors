@@ -15,10 +15,10 @@ export default function Neighbors({ neighbors, user }) {
 					neighbors.map((neighbor) => (
 						<Link
 							className="neighbor__link"
-							key={neighbor.id}
+							key={neighbor.user_id}
 							to={`/neighbor/${neighbor.user_id}`}
 						>
-							<Neighbor neighbor={neighbor} />
+							<Neighbor key={neighbor.user_id} neighbor={neighbor} />
 						</Link>
 					))
 				) : (
