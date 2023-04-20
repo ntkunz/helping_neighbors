@@ -28,6 +28,40 @@ export default function App() {
 
 	const api = process.env.REACT_APP_API_URL;
 
+		//function to set token in local storage
+		function setToken(email) {
+			const tokenValue = JSON.stringify({ email });
+			localStorage.setItem('token', tokenValue);
+		 }
+
+		 const getUserFromToken = () => {
+			const tokenValue = localStorage.getItem('token');
+			if (tokenValue) {
+			  const { email } = JSON.parse(tokenValue);
+			  return email;
+			}
+			return null;
+		 }
+	 
+	useEffect(() => {
+		const email = getUserFromToken();
+		console.log('email: ', email)
+		if (email) {
+			// const email = email;
+			axios.post(`${api}/users`, { email }).then((res) => {
+				if (res.data.length > 0) {
+				setLoggedIn(true);
+				setToken(res.data[0].email);
+				setUser(res.data[0]);
+				setUserEmail(res.data[0].email);
+				} else {
+					alert("Email not found. Please try again or register.");
+				}
+			})
+		}
+	}, [])
+
+
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
@@ -40,6 +74,7 @@ export default function App() {
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			if (res.data.length > 0) {
 			setLoggedIn(true);
+			setToken(res.data[0].email);
 			setUser(res.data[0]);
 			setUserEmail(res.data[0].email);
 			} else {
@@ -54,6 +89,7 @@ export default function App() {
 		if (loggedIn) {
 			setLoggedIn(!loggedIn);
 			setUser({});
+			localStorage.removeItem('token');
 			return navigate("/login");
 		} else {
 			return navigate("/login");
