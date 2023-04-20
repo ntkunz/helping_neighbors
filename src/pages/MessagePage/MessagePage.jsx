@@ -26,13 +26,8 @@ export default function Message({ user, neighbors }) {
 			return () => {
 				clearInterval(messageInt);
 			};
-			// setTimeout(()=>{getMessages(user.user_id, receiver.user_id)}, 2000);
-			// return () => {
-			// 	clearTimeout();
-			// };
 		}
 		//eslint-disable-next-line
-	// }, [receiver]);
 	}, [receiver]);
 
 	function sendMessage(e) {
