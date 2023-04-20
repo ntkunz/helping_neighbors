@@ -22,8 +22,17 @@ export default function Message({ user, neighbors }) {
 		//only retrieve messages once receiver is set to avoid 400 error
 		if (receiver.user_id) {
 			getMessages(user.user_id, receiver.user_id);
+			const messageInt = setInterval(()=>{getMessages(user.user_id, receiver.user_id)}, 2000);
+			return () => {
+				clearInterval(messageInt);
+			};
+			// setTimeout(()=>{getMessages(user.user_id, receiver.user_id)}, 2000);
+			// return () => {
+			// 	clearTimeout();
+			// };
 		}
 		//eslint-disable-next-line
+	// }, [receiver]);
 	}, [receiver]);
 
 	function sendMessage(e) {
@@ -58,13 +67,12 @@ export default function Message({ user, neighbors }) {
 				const sortedMessages = response.data.sort(function (x, y) {
 					return y.unix_timestamp - x.unix_timestamp;
 				});
-				// setMessages(response.data);
 				setMessages(sortedMessages);
 			})
 			.catch((error) => {
 				console.log("error", error);
 			});
-		setTimeout(()=>{getMessages(user.user_id, receiver.user_id)}, 2000)
+		// setTimeout(()=>{getMessages(user.user_id, receiver.user_id)}, 2000);
 	}
 
 	return (
