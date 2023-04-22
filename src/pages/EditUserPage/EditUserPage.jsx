@@ -55,6 +55,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	//submit the edit user form
 	async function editUser(e) {
 		e.preventDefault();
+
 		const user_id = user.user_id;
 		await removeSkills(user_id); //remove all user skills from table to add updated ones
 		const address = `${home} ${city} ${province}`;
@@ -70,7 +71,21 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
 		await editSkills(desiresArray, user_id, false); //add barters to user skills table
 		// const image_url = user.image_url;
-
+		if (
+			address === "" ||
+			about === "" ||
+			offers === "" ||
+			desires === "" ||
+			first_name === "" ||
+			last_name === "" ||
+			email === "" ||
+			home === "" ||
+			city === "" ||
+			province === ""
+		) {
+			alert("Oops, you missed a field, please fill out all fields.");
+			return;
+		}
 		try {
 			const response = await Promise.all([
 				axios.post(`${api}/users/edituser`, {
@@ -254,6 +269,15 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 					</p>
 
 					<button className="edit__btn">Edit Your Profile</button>
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							navigate(-1);
+						}}
+						className="edit__btn"
+					>
+						Cancel
+					</button>
 				</div>
 			</form>
 		</div>
