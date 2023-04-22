@@ -142,3 +142,12 @@
 .signup {
 	text-align: center;
 }
+
+.error {
+	background-color: $color-error;
+	color: $color-one;
+	display: none;
+	margin: 0 0 .25rem;
+	padding: .125rem .25rem;
+	border-radius: .25rem;
+}

@@ -71,6 +71,11 @@ export default function App() {
 	async function handleLogin(e) {
 		e.preventDefault();
 		const email = e.target.email.value;
+		if (email === '') {
+			document.querySelector(".error").style.display = "inline-block";
+			return;
+		}
+		document.querySelector(".error").style.display = "none";
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			if (res.data.length > 0) {
 			setLoggedIn(true);
@@ -78,7 +83,7 @@ export default function App() {
 			setUser(res.data[0]);
 			setUserEmail(res.data[0].email);
 			} else {
-				alert("Email not found. Please try again or register.");
+				document.querySelector(".error").style.display = "inline-block"
 			}
 		});
 	}
