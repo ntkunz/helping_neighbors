@@ -1,12 +1,6 @@
 import "./App.scss";
 import { useState, useEffect } from "react";
-import {
-	Routes,
-	Route,
-	useParams,
-	Navigate,
-	useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -24,66 +18,68 @@ export default function App() {
 	const [neighbors, setNeighbors] = useState([]);
 
 	let navigate = useNavigate();
-	const id = useParams();
 
 	const api = process.env.REACT_APP_API_URL;
 
-		//function to set token in local storage
-		function setToken(email) {
-			const tokenValue = JSON.stringify({ email });
-			localStorage.setItem('token', tokenValue);
-		 }
-
-		 const getUserFromToken = () => {
-			const tokenValue = localStorage.getItem('token');
-			if (tokenValue) {
-			  const { email } = JSON.parse(tokenValue);
-			  return email;
-			}
-			return null;
-		 }
-	 
+	//use effect to login user if token is present , run on load
 	useEffect(() => {
 		const email = getUserFromToken();
-		console.log('email: ', email)
 		if (email) {
-			// const email = email;
 			axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
-				setLoggedIn(true);
-				setToken(res.data[0].email);
-				setUser(res.data[0]);
-				setUserEmail(res.data[0].email);
+					setLoggedIn(true);
+					setToken(res.data[0].email);
+					setUser(res.data[0]);
+					setUserEmail(res.data[0].email);
 				} else {
 					alert("Email not found. Please try again or register.");
 				}
-			})
+			});
 		}
-	}, [])
+		//eslint-disable-next-line
+	}, []);
 
-
+	//use effect to get neighbors and navigate to neighbors page once user and userEmail are set
 	useEffect(() => {
 		getNeighbors(user.location);
 		navigate("/neighbors");
+		//eslint-disable-next-line
 	}, [user, userEmail]);
+
+	//function to set token in local storage
+	function setToken(email) {
+		const tokenValue = JSON.stringify({ email });
+		localStorage.setItem("token", tokenValue);
+	}
+
+	//function to get user email from token in local storage
+	const getUserFromToken = () => {
+		const tokenValue = localStorage.getItem("token");
+		if (tokenValue) {
+			const { email } = JSON.parse(tokenValue);
+			return email;
+		}
+		return null;
+	};
 
 	//handle login and set user state
 	async function handleLogin(e) {
 		e.preventDefault();
+		console.log("logging in?");
 		const email = e.target.email.value;
-		if (email === '') {
+		if (email === "") {
 			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
 		document.querySelector(".error").style.display = "none";
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			if (res.data.length > 0) {
-			setLoggedIn(true);
-			setToken(res.data[0].email);
-			setUser(res.data[0]);
-			setUserEmail(res.data[0].email);
+				setLoggedIn(true);
+				setToken(res.data[0].email);
+				setUser(res.data[0]);
+				setUserEmail(res.data[0].email);
 			} else {
-				document.querySelector(".error").style.display = "inline-block"
+				document.querySelector(".error").style.display = "inline-block";
 			}
 		});
 	}
@@ -94,7 +90,7 @@ export default function App() {
 		if (loggedIn) {
 			setLoggedIn(!loggedIn);
 			setUser({});
-			localStorage.removeItem('token');
+			localStorage.removeItem("token");
 			return navigate("/login");
 		} else {
 			return navigate("/login");
@@ -161,6 +157,7 @@ export default function App() {
 									user={user}
 									setUser={setUser}
 									setNeighbors={setNeighbors}
+									handleLogin={handleLogin}
 								/>
 							) : (
 								<Navigate to="/login" />

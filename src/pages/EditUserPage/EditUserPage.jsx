@@ -272,7 +272,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 					<button
 						onClick={(e) => {
 							e.preventDefault();
-							navigate(-1);
+							navigate("/neighbors");
 						}}
 						className="edit__btn"
 					>
