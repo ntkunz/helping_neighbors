@@ -42,6 +42,9 @@ export default function App() {
 	//use effect to get neighbors and navigate to neighbors page once user and userEmail are set
 	useEffect(() => {
 		getNeighbors(user.location);
+		
+		console.log('user after getNeighbors', user)
+
 		navigate("/neighbors");
 		//eslint-disable-next-line
 	}, [user, userEmail]);
@@ -102,6 +105,7 @@ export default function App() {
 		axios
 			.put(`${api}/users`, { userLocation: location })
 			.then((response) => {
+				console.log("response in getNeighbors call", response.data)
 				const onlyNeighbors = response.data.filter(
 					(neighbor) => neighbor.email !== userEmail
 				);
