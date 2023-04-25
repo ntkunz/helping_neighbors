@@ -46,6 +46,7 @@ export default function LoginPage({ handleLogin }) {
 							className="login-form__input"
 							name="email"
 							placeholder="your email@something.com"
+							required
 						/>
 						<p className="error">Email not found</p>
 						<p className="login-form__label">Password</p>
