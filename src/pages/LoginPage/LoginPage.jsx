@@ -42,11 +42,13 @@ export default function LoginPage({ handleLogin }) {
 					<div className="login-form__box">
 						<p className="login-form__label">Email</p>
 						<input
-							type="text"
+							type="email"
 							className="login-form__input"
 							name="email"
 							placeholder="your email@something.com"
+							required
 						/>
+						<p className="error">Email not found</p>
 						<p className="login-form__label">Password</p>
 						<input
 							type="password"
