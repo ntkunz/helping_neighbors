@@ -1,6 +1,5 @@
 import "./Neighbor.scss";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 export default function Neighbor({ neighbor }) {
 	// const api = process.env.REACT_APP_API_URL;
