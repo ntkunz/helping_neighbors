@@ -1,16 +1,10 @@
 import "./Neighbors.scss";
 import Neighbor from "../../Components/Neighbor/Neighbor";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { useState, useEffect } from "react";
 
 export default function Neighbors({ neighbors, user }) {
 
-// useEffect(() => {
-// 	getUserSkills();
-// }, [user]);
-
-const api = process.env.REACT_APP_API_URL;
+// const api = process.env.REACT_APP_API_URL;
 
 
 	// added 4/25 to attempt to rtrieve all neighbors in one call
