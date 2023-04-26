@@ -32,7 +32,7 @@ export default function App() {
 					setUser(res.data[0]);
 					setUserEmail(res.data[0].email);
 				} else {
-					alert("Email not found. Please try again or register.");
+					// alert("Email not found. Please try again or register.");
 				}
 			});
 		}
@@ -41,11 +41,11 @@ export default function App() {
 
 	//use effect to get neighbors and navigate to neighbors page once user and userEmail are set
 	useEffect(() => {
-		getNeighbors(user.location);
-		
-		console.log('user after getNeighbors', user)
+		// getNeighbors(user.location);
 
-		navigate("/neighbors");
+		console.log("user after getNeighbors", user);
+
+		// navigate("/neighbors");
 		//eslint-disable-next-line
 	}, [user, userEmail]);
 
@@ -68,20 +68,40 @@ export default function App() {
 	//handle login and set user state
 	async function handleLogin(e) {
 		e.preventDefault();
-		console.log("logging in?");
+		//set eail user signed in with
 		const email = e.target.email.value;
 		if (email === "") {
+			//display error if no email entered
 			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
+
+		//remove error if email not emply
 		document.querySelector(".error").style.display = "none";
+
+		//api call to return user with matching email and all neighbors
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			if (res.data.length > 0) {
+				//if user found, separate user and neighbors
+				const loggedInUser = res.data.find((user) => user.email === email);
+				const onlyNeighbors = res.data.filter(
+					(neighbor) => neighbor.email !== userEmail
+				);
+
+				//set neighbors state
+				setNeighbors(onlyNeighbors);
+				//set logged in
 				setLoggedIn(true);
-				setToken(res.data[0].email);
-				setUser(res.data[0]);
-				setUserEmail(res.data[0].email);
+				//place a token for logged in user
+				setToken(loggedInUser.email);
+				//set user state
+				setUser(loggedInUser);
+				//MAY BE ABLE TO REMOVE BELOW STATE AS I THINK IT'S REDUNDANT
+				// setUserEmail(loggedInUser.email);
+				//navigate to neighbors page
+				navigate("/neighbors");
 			} else {
+				// error if no user found
 				document.querySelector(".error").style.display = "inline-block";
 			}
 		});
@@ -105,7 +125,7 @@ export default function App() {
 		axios
 			.put(`${api}/users`, { userLocation: location })
 			.then((response) => {
-				console.log("response in getNeighbors call", response.data)
+				console.log("response in getNeighbors call", response.data);
 				const onlyNeighbors = response.data.filter(
 					(neighbor) => neighbor.email !== userEmail
 				);
@@ -134,7 +154,7 @@ export default function App() {
 								<Neighbors
 									loggedIn={loggedIn}
 									user={user}
-									getNeighbors={getNeighbors}
+									// getNeighbors={getNeighbors}
 									neighbors={neighbors}
 								/>
 							) : (
