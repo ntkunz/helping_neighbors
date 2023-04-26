@@ -25,12 +25,23 @@ export default function App() {
 	useEffect(() => {
 		const email = getUserFromToken();
 		if (email) {
+			console.log(email)
 			axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
+					const loggedInUser = res.data.find((user) => user.email === email);
+					const onlyNeighbors = res.data.filter(
+						(neighbor) => neighbor.email !== loggedInUser.email
+					);
+	
+					//set neighbors state
+					setNeighbors(onlyNeighbors);
+					//set logged in
 					setLoggedIn(true);
-					setToken(res.data[0].email);
-					setUser(res.data[0]);
-					setUserEmail(res.data[0].email);
+					setUser(loggedInUser);
+					// setUserEmail(res.data[0].email);
+					//navigate to neighbors page
+				navigate("/neighbors");
+					
 				} else {
 					// alert("Email not found. Please try again or register.");
 				}
@@ -39,15 +50,15 @@ export default function App() {
 		//eslint-disable-next-line
 	}, []);
 
-	//use effect to get neighbors and navigate to neighbors page once user and userEmail are set
-	useEffect(() => {
-		// getNeighbors(user.location);
+	// //use effect to get neighbors and navigate to neighbors page once user and userEmail are set
+	// useEffect(() => {
+	// 	// getNeighbors(user.location);
 
-		console.log("user after getNeighbors", user);
+	// 	console.log("user after getNeighbors", user);
 
-		// navigate("/neighbors");
-		//eslint-disable-next-line
-	}, [user, userEmail]);
+	// 	// navigate("/neighbors");
+	// 	//eslint-disable-next-line
+	// }, [user, userEmail]);
 
 	//function to set token in local storage
 	function setToken(email) {
@@ -85,7 +96,7 @@ export default function App() {
 				//if user found, separate user and neighbors
 				const loggedInUser = res.data.find((user) => user.email === email);
 				const onlyNeighbors = res.data.filter(
-					(neighbor) => neighbor.email !== userEmail
+					(neighbor) => neighbor.email !== loggedInUser.email
 				);
 
 				//set neighbors state
