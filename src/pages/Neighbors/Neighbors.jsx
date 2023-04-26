@@ -4,39 +4,6 @@ import { Link } from "react-router-dom";
 
 export default function Neighbors({ neighbors, user }) {
 
-// const api = process.env.REACT_APP_API_URL;
-
-
-	// added 4/25 to attempt to rtrieve all neighbors in one call
-		//get the skills of the neighbor *later pass this up to where retrieving the neighbors
-		// function getUserSkills() {
-		// 	axios
-		// 		.post(`${api}/users/skills/`, { user })
-		// 		.then((response) => {
-		// 			console.log("response in getNeighbors call", response.data)
-
-
-		// 			// const offeringSkills = [];
-		// 			// const exchangeSkills = [];
-		// 			// response.data.forEach((skill) => {
-		// 			// 	if (skill.offer === 1) {
-		// 			// 		offeringSkills.push(skill.skill);
-		// 			// 	} else {
-		// 			// 		exchangeSkills.push(skill.skill);
-		// 			// 	}
-		// 			// });
-		// 			// //format date of neighbor creation
-		// 			// setStrDate(neighbor.created_at.substring(0, 10));
-		// 			// setOffering(offeringSkills);
-		// 			// setExchange(exchangeSkills);
-		// 		})
-		// 		.catch((error) => {
-		// 			console.log("error getting user skills", error);
-		// 		});
-		// }
-	
-
-
 	return (
 		<div className="neighbors__container">
 			<h1 className="login__title">

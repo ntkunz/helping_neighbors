@@ -14,7 +14,6 @@ import axios from "axios";
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState({});
-	const [userEmail, setUserEmail] = useState([]);
 	const [neighbors, setNeighbors] = useState([]);
 
 	let navigate = useNavigate();
@@ -23,42 +22,29 @@ export default function App() {
 
 	//use effect to login user if token is present , run on load
 	useEffect(() => {
+		//get token on load
 		const email = getUserFromToken();
+		//if token present, set logged in and user state
 		if (email) {
-			console.log(email)
 			axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
 					const loggedInUser = res.data.find((user) => user.email === email);
 					const onlyNeighbors = res.data.filter(
 						(neighbor) => neighbor.email !== loggedInUser.email
 					);
-	
 					//set neighbors state
 					setNeighbors(onlyNeighbors);
 					//set logged in
 					setLoggedIn(true);
+					//set user state
 					setUser(loggedInUser);
-					// setUserEmail(res.data[0].email);
 					//navigate to neighbors page
 				navigate("/neighbors");
-					
-				} else {
-					// alert("Email not found. Please try again or register.");
-				}
+			}
 			});
 		}
 		//eslint-disable-next-line
 	}, []);
-
-	// //use effect to get neighbors and navigate to neighbors page once user and userEmail are set
-	// useEffect(() => {
-	// 	// getNeighbors(user.location);
-
-	// 	console.log("user after getNeighbors", user);
-
-	// 	// navigate("/neighbors");
-	// 	//eslint-disable-next-line
-	// }, [user, userEmail]);
 
 	//function to set token in local storage
 	function setToken(email) {
@@ -79,14 +65,13 @@ export default function App() {
 	//handle login and set user state
 	async function handleLogin(e) {
 		e.preventDefault();
-		//set eail user signed in with
+		//set email user signed in with
 		const email = e.target.email.value;
 		if (email === "") {
 			//display error if no email entered
 			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
-
 		//remove error if email not emply
 		document.querySelector(".error").style.display = "none";
 
@@ -98,7 +83,6 @@ export default function App() {
 				const onlyNeighbors = res.data.filter(
 					(neighbor) => neighbor.email !== loggedInUser.email
 				);
-
 				//set neighbors state
 				setNeighbors(onlyNeighbors);
 				//set logged in
@@ -107,8 +91,6 @@ export default function App() {
 				setToken(loggedInUser.email);
 				//set user state
 				setUser(loggedInUser);
-				//MAY BE ABLE TO REMOVE BELOW STATE AS I THINK IT'S REDUNDANT
-				// setUserEmail(loggedInUser.email);
 				//navigate to neighbors page
 				navigate("/neighbors");
 			} else {
@@ -131,22 +113,6 @@ export default function App() {
 		}
 	}
 
-	//get neighbor's location within 1/2 km, filter out user, and set state
-	function getNeighbors(location) {
-		axios
-			.put(`${api}/users`, { userLocation: location })
-			.then((response) => {
-				console.log("response in getNeighbors call", response.data);
-				const onlyNeighbors = response.data.filter(
-					(neighbor) => neighbor.email !== userEmail
-				);
-				setNeighbors(onlyNeighbors);
-			})
-			.catch((error) => {
-				console.log("error", error);
-			});
-	}
-
 	return (
 		<div className="App">
 			<Header loggedIn={loggedIn} handleLogout={handleLogout} />
@@ -165,7 +131,6 @@ export default function App() {
 								<Neighbors
 									loggedIn={loggedIn}
 									user={user}
-									// getNeighbors={getNeighbors}
 									neighbors={neighbors}
 								/>
 							) : (
@@ -205,8 +170,8 @@ export default function App() {
 							<NewUserPage
 								setUser={setUser}
 								setLoggedIn={setLoggedIn}
-								setUserEmail={setUserEmail}
 								setNeighbors={setNeighbors}
+								setToken={setToken}
 							/>
 						}
 					/>
