@@ -26,6 +26,8 @@ export default function App() {
 		const email = getUserFromToken();
 		//if token present, set logged in and user state
 		if (email) {
+			setNeighbors([]);
+
 			axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
 					const loggedInUser = res.data.find((user) => user.email === email);
@@ -66,7 +68,8 @@ export default function App() {
 	async function handleLogin(e) {
 		e.preventDefault();
 		//set email user signed in with
-		const email = e.target.email.value;
+		const email = e.target.email.value.toLowerCase();
+		console.log('email', email)
 		if (email === "") {
 			//display error if no email entered
 			document.querySelector(".error").style.display = "inline-block";
@@ -155,9 +158,8 @@ export default function App() {
 							loggedIn ? (
 								<EditUserPage
 									user={user}
-									setUser={setUser}
 									setNeighbors={setNeighbors}
-									handleLogin={handleLogin}
+									setUser={setUser}
 								/>
 							) : (
 								<Navigate to="/login" />

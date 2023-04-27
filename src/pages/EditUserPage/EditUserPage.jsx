@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function EditUserPage({ user, setUser, setNeighbors }) {
+export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn }) {
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
@@ -23,30 +23,16 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 	const [desires, setDesires] = useState("");
 
 	useEffect(() => {
-		getSkills();
+		Object.keys(user.barters).forEach((key) => {
+			if (user.barters[key] === 1) {
+				setOffers((offers) => offers + ` ${key},`);
+			} else {
+				setDesires((desires) => desires + ` ${key},`);
+			}
+		});
 		//eslint-disable-next-line
 	}, []);
 
-	function getSkills() {
-		axios
-			.get(`${api}/users/skills/${user.user_id}`)
-			.then((response) => {
-				const offeringSkills = [];
-				const exchangeSkills = [];
-				response.data.forEach((skill) => {
-					if (skill.offer === 1) {
-						offeringSkills.push(skill.skill);
-					} else {
-						exchangeSkills.push(skill.skill);
-					}
-				});
-				setOffers(offeringSkills.join(", "));
-				setDesires(exchangeSkills.join(", "));
-			})
-			.catch((error) => {
-				console.log("error", error);
-			});
-	}
 
 	function capFirst(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
@@ -64,7 +50,7 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		const offersSplit = offers.split(",");
+		const offersSplit = offers.trim(' ').split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
 		await editSkills(offersArray, user_id, true); //add offers to user skills table
 		const desiresSplit = desires.split(",");
@@ -104,12 +90,25 @@ export default function EditUserPage({ user, setUser, setNeighbors }) {
 				}),
 			]);
 			setNeighbors([]);
-			setUser(response[0].data);
-			navigate("/");
-		} catch (err) {
+			//api call to return all users
+			axios.post(`${api}/users`, { email: response[0].data.email }).then((res) => {
+			  if (res.data.length > 0) {
+				 const loggedInUser = res.data.find((user) => user.email === email);
+				 const onlyNeighbors = res.data.filter(
+					(neighbor) => neighbor.email !== loggedInUser.email
+				 );
+				 //set neighbors state
+				 setNeighbors(onlyNeighbors);
+				 //set user state
+				 setUser(loggedInUser);
+				 //navigate to neighbors page
+				 navigate("/neighbors");
+			  }
+			});
+		 } catch (err) {
 			console.log("Error creating new user: ", err);
+		 }
 		}
-	}
 
 	//api call to return lat long from address
 	async function getNewUserGeo(addressRequest) {
