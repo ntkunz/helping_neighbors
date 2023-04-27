@@ -14,13 +14,13 @@ export default function Neighbor({ neighbor }) {
 		const offeringSkills = [];
 		const exchangeSkills = [];
 		//sort offers and desires from neighbor.barters object
-		for (const [key, value] of Object.entries(neighbor.barters)) {
-			if (value === 1) {
-				offeringSkills.push(key);
+		Object.keys(neighbor.barters).forEach((key) => {
+			if (neighbor.barters[key] === 1) {
+				offeringSkills.push(` ${key}`);
 			} else {
-				exchangeSkills.push(key);
+				exchangeSkills.push(` ${key}`);
 			}
-		}
+		});
 		//format date of neighbor creation
 		setStrDate(neighbor.created_at.substring(0, 10));
 		setOffering(offeringSkills);
