@@ -2,8 +2,9 @@ import "./EditUserPage.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import setReturnedUsers from "../../utils/setReturnedUsers";
 
-export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn }) {
+export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn, setToken }) {
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
@@ -92,15 +93,21 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn 
 			setNeighbors([]);
 			//api call to return all users
 			axios.post(`${api}/users`, { email: response[0].data.email }).then((res) => {
-			  if (res.data.length > 0) {
-				 const loggedInUser = res.data.find((user) => user.email === email);
-				 const onlyNeighbors = res.data.filter(
-					(neighbor) => neighbor.email !== loggedInUser.email
-				 );
-				 //set neighbors state
-				 setNeighbors(onlyNeighbors);
-				 //set user state
-				 setUser(loggedInUser);
+				if (res.data.length > 0) {
+
+					//set user and neighbor states, set token, set logged in
+					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+
+
+
+				//  const loggedInUser = res.data.find((user) => user.email === email);
+				//  const onlyNeighbors = res.data.filter(
+				// 	(neighbor) => neighbor.email !== loggedInUser.email
+				//  );
+				//  //set neighbors state
+				//  setNeighbors(onlyNeighbors);
+				//  //set user state
+				//  setUser(loggedInUser);
 				 //navigate to neighbors page
 				 navigate("/neighbors");
 			  }
