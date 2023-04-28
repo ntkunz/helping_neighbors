@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import setReturnedUsers from '../../utils/setReturnedUsers';
 export default function NewUserPage({
 	setUser,
 	setLoggedIn,
@@ -74,16 +75,10 @@ export default function NewUserPage({
 			await submitImage(response[0].data.user_id);
 			await axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
-					//if user found, separate user and neighbors
-					const loggedInUser = res.data.find((user) => user.email === email);
-					const onlyNeighbors = res.data.filter(
-						(neighbor) => neighbor.email !== loggedInUser.email
-					);
-					//set neighbors state
-					setNeighbors(onlyNeighbors);
-					setLoggedIn(true);
-					setUser(response[0].data);
-					setToken(response[0].data.email);
+
+					//set user and neighbor states, set token, set logged in
+					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+
 					navigate("/neighbors");
 			}})
 		} catch (err) {

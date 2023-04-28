@@ -10,6 +10,7 @@ import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import axios from "axios";
+import setReturnedUsers from "./utils/setReturnedUsers";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -30,16 +31,8 @@ export default function App() {
 
 			axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
-					const loggedInUser = res.data.find((user) => user.email === email);
-					const onlyNeighbors = res.data.filter(
-						(neighbor) => neighbor.email !== loggedInUser.email
-					);
-					//set neighbors state
-					setNeighbors(onlyNeighbors);
-					//set logged in
-					setLoggedIn(true);
-					//set user state
-					setUser(loggedInUser);
+					//set user and neighbor states, set token, set logged in
+					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
 					//navigate to neighbors page
 				navigate("/neighbors");
 			}
@@ -81,19 +74,8 @@ export default function App() {
 		//api call to return user with matching email and all neighbors
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			if (res.data.length > 0) {
-				//if user found, separate user and neighbors
-				const loggedInUser = res.data.find((user) => user.email === email);
-				const onlyNeighbors = res.data.filter(
-					(neighbor) => neighbor.email !== loggedInUser.email
-				);
-				//set neighbors state
-				setNeighbors(onlyNeighbors);
-				//set logged in
-				setLoggedIn(true);
-				//place a token for logged in user
-				setToken(loggedInUser.email);
-				//set user state
-				setUser(loggedInUser);
+				//set user and neighbor states, set token, set logged in
+				setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
 				//navigate to neighbors page
 				navigate("/neighbors");
 			} else {
@@ -160,6 +142,8 @@ export default function App() {
 									user={user}
 									setNeighbors={setNeighbors}
 									setUser={setUser}
+									setToken={setToken}
+									setLoggedIn={setLoggedIn}
 								/>
 							) : (
 								<Navigate to="/login" />
