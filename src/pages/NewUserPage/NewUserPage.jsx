@@ -3,10 +3,12 @@ import { v4 } from "uuid";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import setReturnedUsers from '../../utils/setReturnedUsers';
 export default function NewUserPage({
 	setUser,
 	setLoggedIn,
-	setUserEmail,
+	setToken,
+	setNeighbors,
 }) {
 	const navigate = useNavigate();
 
@@ -22,6 +24,8 @@ export default function NewUserPage({
 
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
+		setUser({});
+		setNeighbors({});
 		e.preventDefault();
 		const user_id = v4();
 		const first_name = capFirst(e.target.first_name.value);
@@ -68,11 +72,15 @@ export default function NewUserPage({
 				}),
 			]);
 			//upload image to users api once user_id is created
-			submitImage(response[0].data.user_id);
-			setLoggedIn(true);
-			setUserEmail(email);
-			setUser(response[0].data);
-			navigate("/neighbors");
+			await submitImage(response[0].data.user_id);
+			await axios.post(`${api}/users`, { email }).then((res) => {
+				if (res.data.length > 0) {
+
+					//set user and neighbor states, set token, set logged in
+					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+
+					navigate("/neighbors");
+			}})
 		} catch (err) {
 			console.log("Error creating new user: ", err);
 		}
@@ -120,7 +128,7 @@ export default function NewUserPage({
 	//set image function with url and file
 	const handleFileChange = (e) => {
 		const img = {
-			preview: URL.createObjectURL(e.target.files[0]),
+			// preview: URL.createObjectURL(e.target.files[0]),
 			data: e.target.files[0],
 		};
 		setImg(img);
