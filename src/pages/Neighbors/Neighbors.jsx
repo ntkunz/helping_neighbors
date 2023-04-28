@@ -3,6 +3,7 @@ import Neighbor from "../../Components/Neighbor/Neighbor";
 import { Link } from "react-router-dom";
 
 export default function Neighbors({ neighbors, user }) {
+
 	return (
 		<div className="neighbors__container">
 			<h1 className="login__title">

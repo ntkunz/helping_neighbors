@@ -10,11 +10,11 @@ import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import axios from "axios";
+import setReturnedUsers from "./utils/setReturnedUsers";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState({});
-	const [userEmail, setUserEmail] = useState([]);
 	const [neighbors, setNeighbors] = useState([]);
 
 	let navigate = useNavigate();
@@ -23,28 +23,23 @@ export default function App() {
 
 	//use effect to login user if token is present , run on load
 	useEffect(() => {
+		//get token on load
 		const email = getUserFromToken();
+		//if token present, set logged in and user state
 		if (email) {
+			setNeighbors([]);
+
 			axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
-					setLoggedIn(true);
-					setToken(res.data[0].email);
-					setUser(res.data[0]);
-					setUserEmail(res.data[0].email);
-				} else {
-					alert("Email not found. Please try again or register.");
-				}
+					//set user and neighbor states, set token, set logged in
+					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+					//navigate to neighbors page
+				navigate("/neighbors");
+			}
 			});
 		}
 		//eslint-disable-next-line
 	}, []);
-
-	//use effect to get neighbors and navigate to neighbors page once user and userEmail are set
-	useEffect(() => {
-		getNeighbors(user.location);
-		navigate("/neighbors");
-		//eslint-disable-next-line
-	}, [user, userEmail]);
 
 	//function to set token in local storage
 	function setToken(email) {
@@ -65,20 +60,26 @@ export default function App() {
 	//handle login and set user state
 	async function handleLogin(e) {
 		e.preventDefault();
-		console.log("logging in?");
-		const email = e.target.email.value;
+		//set email user signed in with
+		const email = e.target.email.value.toLowerCase();
+		console.log('email', email)
 		if (email === "") {
+			//display error if no email entered
 			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
+		//remove error if email not emply
 		document.querySelector(".error").style.display = "none";
+
+		//api call to return user with matching email and all neighbors
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			if (res.data.length > 0) {
-				setLoggedIn(true);
-				setToken(res.data[0].email);
-				setUser(res.data[0]);
-				setUserEmail(res.data[0].email);
+				//set user and neighbor states, set token, set logged in
+				setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+				//navigate to neighbors page
+				navigate("/neighbors");
 			} else {
+				// error if no user found
 				document.querySelector(".error").style.display = "inline-block";
 			}
 		});
@@ -95,21 +96,6 @@ export default function App() {
 		} else {
 			return navigate("/login");
 		}
-	}
-
-	//get neighbor's location within 1/2 km, filter out user, and set state
-	function getNeighbors(location) {
-		axios
-			.put(`${api}/users`, { userLocation: location })
-			.then((response) => {
-				const onlyNeighbors = response.data.filter(
-					(neighbor) => neighbor.email !== userEmail
-				);
-				setNeighbors(onlyNeighbors);
-			})
-			.catch((error) => {
-				console.log("error", error);
-			});
 	}
 
 	return (
@@ -130,7 +116,6 @@ export default function App() {
 								<Neighbors
 									loggedIn={loggedIn}
 									user={user}
-									getNeighbors={getNeighbors}
 									neighbors={neighbors}
 								/>
 							) : (
@@ -155,9 +140,10 @@ export default function App() {
 							loggedIn ? (
 								<EditUserPage
 									user={user}
-									setUser={setUser}
 									setNeighbors={setNeighbors}
-									handleLogin={handleLogin}
+									setUser={setUser}
+									setToken={setToken}
+									setLoggedIn={setLoggedIn}
 								/>
 							) : (
 								<Navigate to="/login" />
@@ -170,8 +156,8 @@ export default function App() {
 							<NewUserPage
 								setUser={setUser}
 								setLoggedIn={setLoggedIn}
-								setUserEmail={setUserEmail}
 								setNeighbors={setNeighbors}
+								setToken={setToken}
 							/>
 						}
 					/>

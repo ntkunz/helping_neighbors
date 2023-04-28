@@ -13,11 +13,13 @@ export default function Message({ user, neighbors }) {
 	const [receiver, setReceiver] = useState([]);
 	const [messages, setMessages] = useState([]);
 
+	//set receiver of messages on load based on id in url
 	useEffect(() => {
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
 		//eslint-disable-next-line
 	}, [neighbors]);
 
+	//function to get messages from api for user and receiver
 	useEffect(() => {
 		//only retrieve messages once receiver is set to avoid 400 error
 		if (receiver.user_id) {
@@ -34,13 +36,17 @@ export default function Message({ user, neighbors }) {
 		//eslint-disable-next-line
 	}, [receiver]);
 
+	//function to send new message if message input is not empty 
 	function sendMessage(e) {
 		e.preventDefault();
+		//get message from input
 		const message = document.querySelector(".message__input").value;
+		//if message is empty, display error message
 		if (message === "") {
 			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
+		//if message is not empty, hide error message and send message to api
 		document.querySelector(".error").style.display = "none";
 		axios
 			.post(`${api}/messages`, {
@@ -49,6 +55,7 @@ export default function Message({ user, neighbors }) {
 				message: document.querySelector(".message__input").value,
 			})
 			.then((response) => {
+				//set message field to empty
 				document.querySelector(".message__input").value = "";
 			})
 			.catch((error) => {
@@ -56,6 +63,7 @@ export default function Message({ user, neighbors }) {
 			});
 	}
 
+	//function to get messages from api
 	function getMessages(senderId, receiverId) {
 		axios
 			.put(`${api}/messages`, {
@@ -63,15 +71,16 @@ export default function Message({ user, neighbors }) {
 				receiverId: receiverId,
 			})
 			.then((response) => {
+				//sort messages by timestamp
 				const sortedMessages = response.data.sort(function (x, y) {
 					return y.unix_timestamp - x.unix_timestamp;
 				});
+				//set messages to sorted messages
 				setMessages(sortedMessages);
 			})
 			.catch((error) => {
 				console.log("error", error);
 			});
-		// setTimeout(()=>{getMessages(user.user_id, receiver.user_id)}, 2000);
 	}
 
 	return (
@@ -83,9 +92,12 @@ export default function Message({ user, neighbors }) {
 				</Link>
 			</h1>
 			<div className="message">
-				<div className="message__receiver">
-					<Neighbor neighbor={receiver} />
-				</div>
+				{/* ternary to allow update once receiver set and display card */}
+				{receiver.user_id && (
+					<div className="message__receiver">
+						<Neighbor neighbor={receiver} />
+					</div>
+				)}
 
 				<div className="message__messages">
 					<div className="message__message">
