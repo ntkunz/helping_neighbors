@@ -28,7 +28,9 @@ export default function NewUserPage({
 		setNeighbors({});
 		e.preventDefault();
 		const user_id = v4();
-		const first_name = capFirst(e.target.first_name.value);
+		const first_name = encodeURIComponent(capFirst(e.target.first_name.value));
+		console.log('first_name', first_name);
+		console.log('decoded first_name', decodeURIComponent(first_name));
 		const last_name = capFirst(e.target.last_name.value);
 		const email = e.target.email.value.toLowerCase();
 		const password = e.target.password.value;
@@ -122,16 +124,25 @@ export default function NewUserPage({
 		formData.append("file", img.data);
 		formData.append("user_id", userId);
 		const response = await axios.post(`${api}/users/image`, formData);
-		if (response) console.log(response.statusText);
+		return response;
 	};
 
-	//set image function with url and file
-	const handleFileChange = (e) => {
+	//set image function with file
+	const handleFileChange = async (e) => {
+		//return alert if image too large
+		if (e.target.files[0].size > 1000000) {
+			return alert("Image too large, please add an image under 1MB");
+		}
+		//return alert if not an image
+		if (!e.target.files[0].type.includes("image")) {
+			return alert("Please add an image file");
+		}
+		//set image state if image is valid
 		const img = {
-			// preview: URL.createObjectURL(e.target.files[0]),
 			data: e.target.files[0],
 		};
 		setImg(img);
+		console.log('img.data: ', img.data)
 	};
 
 	return (
