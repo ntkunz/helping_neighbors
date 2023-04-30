@@ -24,15 +24,20 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 	const [desires, setDesires] = useState("");
 
 	useEffect(() => {
-		Object.keys(user.barters).forEach((key) => {
+		let newOffers = "";
+		let newDesires = "";
+		Object.keys(user.barters).forEach((key, index) => {
 			if (user.barters[key] === 1) {
-				setOffers((offers) => offers + ` ${key},`);
+					newOffers += ` ${key},`;
 			} else {
-				setDesires((desires) => desires + ` ${key},`);
+					newDesires += ` ${key},`;
 			}
 		});
+		setOffers(newOffers.trim().replace(/,$/, ""));
+		setDesires(newDesires.trim().replace(/,$/, ""));
 		//eslint-disable-next-line
 	}, []);
+
 
 
 	function capFirst(string) {
