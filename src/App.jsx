@@ -62,7 +62,6 @@ export default function App() {
 		e.preventDefault();
 		//set email user signed in with
 		const email = e.target.email.value.toLowerCase();
-		console.log('email', email)
 		if (email === "") {
 			//display error if no email entered
 			document.querySelector(".error").style.display = "inline-block";
@@ -70,7 +69,7 @@ export default function App() {
 		}
 		//remove error if email not emply
 		document.querySelector(".error").style.display = "none";
-
+		
 		//api call to return user with matching email and all neighbors
 		await axios.post(`${api}/users`, { email }).then((res) => {
 			if (res.data.length > 0) {
