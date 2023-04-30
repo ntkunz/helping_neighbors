@@ -28,9 +28,10 @@ export default function NewUserPage({
 		setNeighbors({});
 		e.preventDefault();
 		const user_id = v4();
-		const first_name = encodeURIComponent(capFirst(e.target.first_name.value));
-		console.log('first_name', first_name);
-		console.log('decoded first_name', decodeURIComponent(first_name));
+		const first_name = capFirst(e.target.first_name.value);
+		// const first_name = encodeURIComponent(capFirst(e.target.first_name.value));
+		// console.log('first_name', first_name);
+		// console.log('decoded first_name', decodeURIComponent(first_name));
 		const last_name = capFirst(e.target.last_name.value);
 		const email = e.target.email.value.toLowerCase();
 		const password = e.target.password.value;
