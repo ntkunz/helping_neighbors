@@ -67,7 +67,7 @@ export default function App() {
 			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
-		//remove error if email not emply
+		//remove error if email not empty
 		document.querySelector(".error").style.display = "none";
 		
 		//api call to return user with matching email and all neighbors
@@ -78,9 +78,21 @@ export default function App() {
 				//navigate to neighbors page
 				navigate("/neighbors");
 			} else {
-				// error if no user found
-				document.querySelector(".error").style.display = "inline-block";
-			}
+					// error if no user found
+					//CURIOUS, THIS DOESN'T SEEM TO EVER RUN, BUT THE CATCH BELOW DOES
+					const errorElement = document.querySelector(".error");
+					errorElement.style.display = "inline-block";
+					errorElement.textContent = "User not found";
+			} 
+		}).catch((error) => {
+			// error if server returns an error
+			const errorElement = document.querySelector(".error");
+			//display error element
+			errorElement.style.display = "inline-block";
+			console.log('error', error);
+			//set error text based on error status
+			if (error.response.status === 404) errorElement.textContent = "User not found";
+			if (error.response.status === 429) errorElement.textContent = "Please try again later";
 		});
 	}
 
