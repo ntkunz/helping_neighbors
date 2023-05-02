@@ -7,6 +7,8 @@ Made with React, Express, MySQL, Node, Here Geocode Api, Knex, Sass, Multer
 
 Welcome to the Helping Neighbors App. This is the past (ehem future) way of life for communities for as long as the written word can remember. Bartering with your fellow humans, lifting each other up, and making your existentialism fill with gratitude and happiness.
 
+I am currently working on sanitizing all user input to prevent SQL injection, on both the frontend and backend. 
+
 ------------------------------------------------------
 
 -How to run a local version of the app
