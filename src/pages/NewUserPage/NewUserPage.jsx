@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import setReturnedUsers from '../../utils/setReturnedUsers';
+import purify from '../../utils/purify';
 export default function NewUserPage({
 	setUser,
 	setLoggedIn,
@@ -28,16 +29,13 @@ export default function NewUserPage({
 		setNeighbors({});
 		e.preventDefault();
 		const user_id = v4();
-		const first_name = capFirst(e.target.first_name.value);
-		// const first_name = encodeURIComponent(capFirst(e.target.first_name.value));
-		// console.log('first_name', first_name);
-		// console.log('decoded first_name', decodeURIComponent(first_name));
-		const last_name = capFirst(e.target.last_name.value);
-		const email = e.target.email.value.toLowerCase();
-		const password = e.target.password.value;
-		const home = capFirst(e.target.home.value);
-		const city = capFirst(e.target.city.value);
-		const province = capFirst(e.target.province.value);
+		const first_name = purify(capFirst(e.target.first_name.value));
+		const last_name = purify(capFirst(e.target.last_name.value));
+		const email = purify(e.target.email.value.toLowerCase());
+		const password = purify(e.target.password.value);
+		const home = purify(capFirst(e.target.home.value));
+		const city = purify(capFirst(e.target.city.value));
+		const province = purify(capFirst(e.target.province.value));
 		const address = `${home} ${city} ${province}`;
 		const addressRequest = address
 			.replaceAll(",", " ")
@@ -45,13 +43,13 @@ export default function NewUserPage({
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
 		const status = "active";
-		const about = e.target.about.value;
-		const offers = e.target.offers.value;
+		const about = purify(e.target.about.value);
+		const offers = purify(e.target.offers.value);
 		const offersSplit = offers.split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
 		//add skills to user_skills table
 		await addSkills(offersArray, user_id, true);
-		const desires = e.target.desires.value;
+		const desires = purify(e.target.desires.value);
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
 		//add barters to user_skills table
@@ -143,7 +141,7 @@ export default function NewUserPage({
 			data: e.target.files[0],
 		};
 		setImg(img);
-		console.log('img.data: ', img.data)
+		// console.log('img.data: ', img.data)
 	};
 
 	return (

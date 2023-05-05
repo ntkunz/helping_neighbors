@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import setReturnedUsers from "../../utils/setReturnedUsers";
+import purify from "../../utils/purify";
 
 export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn, setToken }) {
 	const navigate = useNavigate();
@@ -11,15 +12,15 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 	const geoKey = process.env.REACT_APP_HERE_API_KEY;
 	const geoApi = process.env.REACT_APP_GEO_URL;
 
-	const [first_name, setFirstName] = useState(user.first_name);
-	const [last_name, setLastName] = useState(user.last_name);
-	const [email, setEmail] = useState(user.email);
+	const [first_name, setFirstName] = useState(purify(user.first_name));
+	const [last_name, setLastName] = useState(purify(user.last_name));
+	const [email, setEmail] = useState(purify(user.email));
 	// const [password, setPassword] = useState(user.password);
-	const [home, setHome] = useState(user.home);
-	const [city, setCity] = useState(user.city);
-	const [province, setProvince] = useState(user.province);
+	const [home, setHome] = useState(purify(user.home));
+	const [city, setCity] = useState(purify(user.city));
+	const [province, setProvince] = useState(purify(user.province));
 	// const [active, setActive] = useState(user.status);
-	const [about, setAbout] = useState(user.about);
+	const [about, setAbout] = useState(purify(user.about));
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
 
@@ -176,7 +177,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="first_name"
 							placeholder="First name"
 							value={first_name}
-							onChange={(e) => setFirstName(capFirst(e.target.value))}
+							onChange={(e) => setFirstName(purify(capFirst(e.target.value)))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -187,7 +188,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="last_name"
 							placeholder="Last name"
 							value={last_name}
-							onChange={(e) => setLastName(capFirst(e.target.value))}
+							onChange={(e) => setLastName(purify(capFirst(e.target.value)))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -198,7 +199,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="email"
 							placeholder="your email@something.com"
 							value={email}
-							onChange={(e) => setEmail(e.target.value.toLowerCase())}
+							onChange={(e) => setEmail(purify(e.target.value.toLowerCase()))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -209,7 +210,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="home"
 							placeholder="123 Main St"
 							value={home}
-							onChange={(e) => setHome(capFirst(e.target.value))}
+							onChange={(e) => setHome(purify(capFirst(e.target.value)))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -220,7 +221,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="city"
 							placeholder="Any Town"
 							value={city}
-							onChange={(e) => setCity(capFirst(e.target.value))}
+							onChange={(e) => setCity(purify(capFirst(e.target.value)))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -231,7 +232,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="province"
 							placeholder="British Columbia"
 							value={province}
-							onChange={(e) => setProvince(capFirst(e.target.value))}
+							onChange={(e) => setProvince(purify(capFirst(e.target.value)))}
 						/>
 					</label>
 				</div>
@@ -246,7 +247,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 							value={about}
-							onChange={(e) => setAbout(e.target.value)}
+							onChange={(e) => setAbout(purify(e.target.value))}
 						/>
 					</label>
 					<label className="edit__label">
@@ -257,7 +258,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="offers"
 							placeholder="ie Gardening, Landscaping, Construction"
 							value={offers}
-							onChange={(e) => setOffers(capFirst(e.target.value))}
+							onChange={(e) => setOffers(purify(capFirst(e.target.value)))}
 						/>
 					</label>
 					<p className="edit__desc">
@@ -271,7 +272,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="desires"
 							placeholder="ie Cooking, Running Errands, Cat Sitting"
 							value={desires}
-							onChange={(e) => setDesires(capFirst(e.target.value))}
+							onChange={(e) => setDesires(purify(capFirst(e.target.value)))}
 						/>
 					</label>
 					<p className="edit__desc">
