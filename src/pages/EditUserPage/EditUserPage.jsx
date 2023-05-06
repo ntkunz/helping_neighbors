@@ -56,8 +56,6 @@ export default function EditUserPage({
 	async function editUser(e) {
 		e.preventDefault();
 
-		console.log("first name: ", first_name);
-
 		const cleanEmail = purify(email);
 		const user_id = user.user_id;
 		await removeSkills(purify(user_id)); //remove all user skills from table to add updated ones
