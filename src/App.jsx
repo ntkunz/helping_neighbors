@@ -11,6 +11,7 @@ import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import axios from "axios";
 import setReturnedUsers from "./utils/setReturnedUsers";
+import purify from "./utils/purify";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -24,7 +25,7 @@ export default function App() {
 	//use effect to login user if token is present , run on load
 	useEffect(() => {
 		//get token on load
-		const email = getUserFromToken();
+		const email = purify(getUserFromToken());
 		//if token present, set logged in and user state
 		if (email) {
 			setNeighbors([]);
@@ -48,6 +49,7 @@ export default function App() {
 	}
 
 	//function to get user email from token in local storage
+	//dompurified in useEffect that retrieves token
 	const getUserFromToken = () => {
 		const tokenValue = localStorage.getItem("token");
 		if (tokenValue) {
@@ -61,7 +63,7 @@ export default function App() {
 	async function handleLogin(e) {
 		e.preventDefault();
 		//set email user signed in with
-		const email = e.target.email.value.toLowerCase();
+		const email = purify(e.target.email.value.toLowerCase());
 		if (email === "") {
 			//display error if no email entered
 			document.querySelector(".error").style.display = "inline-block";
