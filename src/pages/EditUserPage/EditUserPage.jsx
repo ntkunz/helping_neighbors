@@ -5,22 +5,28 @@ import { useNavigate } from "react-router-dom";
 import setReturnedUsers from "../../utils/setReturnedUsers";
 import purify from "../../utils/purify";
 
-export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn, setToken }) {
+export default function EditUserPage({
+	user,
+	setNeighbors,
+	setUser,
+	setLoggedIn,
+	setToken,
+}) {
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
 	const geoKey = process.env.REACT_APP_HERE_API_KEY;
 	const geoApi = process.env.REACT_APP_GEO_URL;
 
-	const [first_name, setFirstName] = useState(purify(user.first_name));
-	const [last_name, setLastName] = useState(purify(user.last_name));
-	const [email, setEmail] = useState(purify(user.email));
+	const [first_name, setFirstName] = useState(user.first_name);
+	const [last_name, setLastName] = useState(user.last_name);
+	const [email, setEmail] = useState(user.email);
 	// const [password, setPassword] = useState(user.password);
-	const [home, setHome] = useState(purify(user.home));
-	const [city, setCity] = useState(purify(user.city));
-	const [province, setProvince] = useState(purify(user.province));
+	const [home, setHome] = useState(user.home);
+	const [city, setCity] = useState(user.city);
+	const [province, setProvince] = useState(user.province);
 	// const [active, setActive] = useState(user.status);
-	const [about, setAbout] = useState(purify(user.about));
+	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
 
@@ -29,9 +35,9 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 		let newDesires = "";
 		Object.keys(user.barters).forEach((key, index) => {
 			if (user.barters[key] === 1) {
-					newOffers += ` ${key},`;
+				newOffers += purify(` ${key},`);
 			} else {
-					newDesires += ` ${key},`;
+				newDesires += purify(` ${key},`);
 			}
 		});
 		setOffers(newOffers.trim().replace(/,$/, ""));
@@ -39,31 +45,35 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 		//eslint-disable-next-line
 	}, []);
 
-
-
 	function capFirst(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
+
+	//==============need to add ability to change email, password, and image=================
+	//============also need to add ability to change status to active or inactive=============
 
 	//submit the edit user form
 	async function editUser(e) {
 		e.preventDefault();
 
+		console.log("first name: ", first_name);
+
+		const cleanEmail = purify(email);
 		const user_id = user.user_id;
-		await removeSkills(user_id); //remove all user skills from table to add updated ones
-		const address = `${home} ${city} ${province}`;
+		await removeSkills(purify(user_id)); //remove all user skills from table to add updated ones
+		const address = purify(`${home} ${city} ${province}`);
 		const addressRequest = address
 			.replaceAll(",", " ")
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		const offersSplit = offers.trim(' ').split(",");
-		const offersArray = offersSplit.map((offer) => offer.trim(" "));
+		const offersSplit = offers.trim(" ").split(",");
+		const offersArray = offersSplit.map((offer) => purify(offer.trim(" ")));
 		await editSkills(offersArray, user_id, true); //add offers to user skills table
 		const desiresSplit = desires.split(",");
-		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
+		const desiresArray = desiresSplit.map((desire) => purify(desire.trim(" ")));
 		await editSkills(desiresArray, user_id, false); //add barters to user skills table
-		// const image_url = user.image_url;
+
 		if (
 			address === "" ||
 			about === "" ||
@@ -82,46 +92,43 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 		try {
 			const response = await Promise.all([
 				axios.post(`${api}/users/edituser`, {
-					user_id: user_id,
-					first_name: first_name,
-					last_name: last_name,
-					email: email,
+					user_id: purify(user_id),
+					first_name: purify(first_name),
+					last_name: purify(last_name),
+					email: cleanEmail,
 					// password: password,
 					// status: active,
 					coords: coords,
-					about: about,
+					about: purify(about),
 					address: address,
-					home: home,
-					city: city,
-					province: province,
+					home: purify(home),
+					city: purify(city),
+					province: purify(province),
 				}),
 			]);
 			setNeighbors([]);
 			//api call to return all users
-			axios.post(`${api}/users`, { email: response[0].data.email }).then((res) => {
-				if (res.data.length > 0) {
+			axios
+				.post(`${api}/users`, { email: response[0].data.email })
+				.then((res) => {
+					if (res.data.length > 0) {
+						//set user and neighbor states, set token, set logged in
+						setReturnedUsers(
+							email,
+							res.data,
+							setNeighbors,
+							setLoggedIn,
+							setToken,
+							setUser
+						);
 
-					//set user and neighbor states, set token, set logged in
-					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
-
-
-
-				//  const loggedInUser = res.data.find((user) => user.email === email);
-				//  const onlyNeighbors = res.data.filter(
-				// 	(neighbor) => neighbor.email !== loggedInUser.email
-				//  );
-				//  //set neighbors state
-				//  setNeighbors(onlyNeighbors);
-				//  //set user state
-				//  setUser(loggedInUser);
-				 //navigate to neighbors page
-				 navigate("/neighbors");
-			  }
-			});
-		 } catch (err) {
+						navigate("/neighbors");
+					}
+				});
+		} catch (err) {
 			console.log("Error creating new user: ", err);
-		 }
 		}
+	}
 
 	//api call to return lat long from address
 	async function getNewUserGeo(addressRequest) {
@@ -177,9 +184,10 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="first_name"
 							placeholder="First name"
 							value={first_name}
-							onChange={(e) => setFirstName(purify(capFirst(e.target.value)))}
+							onChange={(e) => setFirstName(e.target.value)}
 						/>
 					</label>
+
 					<label className="edit__label">
 						Last Name
 						<input
@@ -188,7 +196,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="last_name"
 							placeholder="Last name"
 							value={last_name}
-							onChange={(e) => setLastName(purify(capFirst(e.target.value)))}
+							onChange={(e) => setLastName(e.target.value)}
 						/>
 					</label>
 					<label className="edit__label">
@@ -199,7 +207,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="email"
 							placeholder="your email@something.com"
 							value={email}
-							onChange={(e) => setEmail(purify(e.target.value.toLowerCase()))}
+							onChange={(e) => setEmail(e.target.value.toLowerCase())}
 						/>
 					</label>
 					<label className="edit__label">
@@ -210,7 +218,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="home"
 							placeholder="123 Main St"
 							value={home}
-							onChange={(e) => setHome(purify(capFirst(e.target.value)))}
+							onChange={(e) => setHome(e.target.value)}
 						/>
 					</label>
 					<label className="edit__label">
@@ -221,7 +229,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="city"
 							placeholder="Any Town"
 							value={city}
-							onChange={(e) => setCity(purify(capFirst(e.target.value)))}
+							onChange={(e) => setCity(e.target.value)}
 						/>
 					</label>
 					<label className="edit__label">
@@ -232,7 +240,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="province"
 							placeholder="British Columbia"
 							value={province}
-							onChange={(e) => setProvince(purify(capFirst(e.target.value)))}
+							onChange={(e) => setProvince(e.target.value)}
 						/>
 					</label>
 				</div>
@@ -247,7 +255,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 							value={about}
-							onChange={(e) => setAbout(purify(e.target.value))}
+							onChange={(e) => setAbout(e.target.value)}
 						/>
 					</label>
 					<label className="edit__label">
@@ -258,7 +266,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="offers"
 							placeholder="ie Gardening, Landscaping, Construction"
 							value={offers}
-							onChange={(e) => setOffers(purify(capFirst(e.target.value)))}
+							onChange={(e) => setOffers(e.target.value)}
 						/>
 					</label>
 					<p className="edit__desc">
@@ -272,7 +280,7 @@ export default function EditUserPage({ user, setNeighbors, setUser, setLoggedIn,
 							name="desires"
 							placeholder="ie Cooking, Running Errands, Cat Sitting"
 							value={desires}
-							onChange={(e) => setDesires(purify(capFirst(e.target.value)))}
+							onChange={(e) => setDesires(e.target.value)}
 						/>
 					</label>
 					<p className="edit__desc">
