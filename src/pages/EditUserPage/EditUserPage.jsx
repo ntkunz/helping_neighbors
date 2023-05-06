@@ -45,9 +45,9 @@ export default function EditUserPage({
 		//eslint-disable-next-line
 	}, []);
 
-	function capFirst(string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
+	// function capFirst(string) {
+	// 	return string.charAt(0).toUpperCase() + string.slice(1);
+	// }
 
 	//==============need to add ability to change email, password, and image=================
 	//============also need to add ability to change status to active or inactive=============
