@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Neighbor from "../../Components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
+import purify from "../../utils/purify";
 
 export default function Message({ user, neighbors }) {
 	const api = process.env.REACT_APP_API_URL;
@@ -52,7 +53,8 @@ export default function Message({ user, neighbors }) {
 			.post(`${api}/messages`, {
 				senderId: user.user_id,
 				receiverId: receiver.user_id,
-				message: document.querySelector(".message__input").value,
+				// message: document.querySelector(".message__input").value,
+				message: purify(message),
 			})
 			.then((response) => {
 				//set message field to empty
@@ -86,7 +88,7 @@ export default function Message({ user, neighbors }) {
 	return (
 		<div className="message__container">
 			<h1 className="message__title">
-				{user.first_name}, message {receiver.first_name} to arrange a barter, or{" "}
+				{user.first_name}, message {purify(receiver.first_name)} to arrange a barter, or{" "}
 				<Link to="/neighbors" className="message__link">
 					explore other neighbors
 				</Link>
@@ -124,11 +126,11 @@ export default function Message({ user, neighbors }) {
 											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
 											<span className="semibold">{user.first_name}</span>
 										</p>
-										<p className="message__text sent">{message.message}</p>
+										<p className="message__text sent">{purify(message.message)}</p>
 									</>
 								) : (
 									<>
-										<p className="message__text received">{message.message}</p>
+										<p className="message__text received">{purify(message.message)}</p>
 										<p className="message__info received">
 											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
 											<span className="semibold">{receiver.first_name}</span>
