@@ -113,7 +113,7 @@ export default function NewUserPage({
 			);
 			return response;
 		} catch (err) {
-			console.log("Error adding skills: ", err);
+			return console.log("Error adding skills: ", err);
 		}
 	}
 
