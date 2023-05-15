@@ -174,6 +174,7 @@ export default function NewUserPage({
 						Your Email
 						<input
 							type="text"
+							autocomplete="username"
 							className="new__input"
 							name="email"
 							placeholder="your email@something.com"
@@ -183,6 +184,7 @@ export default function NewUserPage({
 						Password
 						<input
 							type="password"
+							autocomplete="new-password"
 							className="new__input"
 							name="password"
 							placeholder="Password"

@@ -43,6 +43,7 @@ export default function LoginPage({ handleLogin }) {
 						<p className="login-form__label">Email</p>
 						<input
 							type="email"
+							autocomplete="username"
 							className="login-form__input"
 							name="email"
 							placeholder="your email@something.com"
@@ -52,6 +53,7 @@ export default function LoginPage({ handleLogin }) {
 						<p className="login-form__label">Password</p>
 						<input
 							type="password"
+							autocomplete="current-password"
 							className="login-form__input"
 							name="password"
 						/>
