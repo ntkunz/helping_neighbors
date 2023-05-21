@@ -33,10 +33,17 @@ export default function App() {
 			axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
 					//set user and neighbor states, set token, set logged in
-					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+					setReturnedUsers(
+						email,
+						res.data,
+						setNeighbors,
+						setLoggedIn,
+						setToken,
+						setUser
+					);
 					//navigate to neighbors page
-				navigate("/neighbors");
-			}
+					navigate("/neighbors");
+				}
 			});
 		}
 		//eslint-disable-next-line
@@ -62,40 +69,65 @@ export default function App() {
 	//handle login and set user state
 	async function handleLogin(e) {
 		e.preventDefault();
+		// errorElement ready if server returns an error
+		const errorElement = document.querySelector(".error");
 		//set email user signed in with
 		const email = purify(e.target.email.value.toLowerCase());
-		if (email === "") {
-			//display error if no email entered
-			document.querySelector(".error").style.display = "inline-block";
-			return;
-		}
-		//remove error if email not empty
-		document.querySelector(".error").style.display = "none";
+
+
+		// regex to check for valid email input
+		// const emailRegex = /\S+@\S+\.\S+/;
+		// if (!emailRegex.test(email)) {
+		// 	//display error if email not valid
+		// 	errorElement.textContent = "Please enter a valid email";
+		// 	errorElement.style.display = "inline-block";
+		// 	return;
+		// }
+
+		const password = purify(e.target.password.value);
+
 		
+		//regex to check for valid password
+			// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+			// if (!passwordRegex.test(password)) {
+			// 	//display error if password not valid
+			// 	errorElement.textContent =
+			// 		"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
+			// 	errorElement.style.display = "inline-block";
+			// 	return;
+			// }
+
+
+		//remove error if user has corrected input
+		document.querySelector(".error").style.display = "none";
+
 		//api call to return user with matching email and all neighbors
-		await axios.post(`${api}/users`, { email }).then((res) => {
-			if (res.data.length > 0) {
-				//set user and neighbor states, set token, set logged in
-				setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
-				//navigate to neighbors page
-				navigate("/neighbors");
-			} else {
+		await axios
+			.post(`${api}/users`, { email, password })
+			.then((res) => {
+				// await axios.post(`${api}/users`, { email, password }).then((res) => {
+				if (res.data.length > 0) {
+					//set user and neighbor states, set token, set logged in
+					// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+					console.log("logged in	");
+					//navigate to neighbors page
+					// navigate("/neighbors");
+				} else {
 					// error if no user found
-					//CURIOUS, THIS DOESN'T SEEM TO EVER RUN, BUT THE CATCH BELOW DOES
-					const errorElement = document.querySelector(".error");
 					errorElement.style.display = "inline-block";
 					errorElement.textContent = "User not found";
-			} 
-		}).catch((error) => {
-			// error if server returns an error
-			const errorElement = document.querySelector(".error");
-			//display error element
-			errorElement.style.display = "inline-block";
-			console.log('error', error);
-			//set error text based on error status
-			if (error.response.status === 404) errorElement.textContent = "User not found";
-			if (error.response.status === 429) errorElement.textContent = "Please try again later";
-		});
+				}
+			})
+			.catch((error) => {
+				//set error text based on error status
+				// console.log(error.response.status)
+				if (error.response.status === 404)
+					errorElement.textContent = "Invalid User";
+				if (error.response.status === 429)
+					errorElement.textContent = "Please try again later";
+				// //display error element
+				errorElement.style.display = "inline-block";
+			});
 	}
 
 	//handle logout and clear user state

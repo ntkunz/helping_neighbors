@@ -43,17 +43,17 @@ export default function LoginPage({ handleLogin }) {
 						<p className="login-form__label">Email</p>
 						<input
 							type="email"
-							autocomplete="username"
+							autoComplete="username"
 							className="login-form__input"
 							name="email"
 							placeholder="your email@something.com"
 							required
 						/>
-						<p className="error">Email not found</p>
+						<p className="error"></p>
 						<p className="login-form__label">Password</p>
 						<input
 							type="password"
-							autocomplete="current-password"
+							autoComplete="current-password"
 							className="login-form__input"
 							name="password"
 						/>

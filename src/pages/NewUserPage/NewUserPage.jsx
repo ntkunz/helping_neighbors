@@ -25,14 +25,34 @@ export default function NewUserPage({
 
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
+		
 		setUser({});
 		setNeighbors({});
 		e.preventDefault();
+		const errorElement = document.querySelector(".error");
 		const user_id = v4();
 		const first_name = purify(capFirst(e.target.first_name.value));
 		const last_name = purify(capFirst(e.target.last_name.value));
-		const email = purify(e.target.email.value.toLowerCase());
+		const email = purify(e.target.email.value.toLowerCase());		
+		// Throw error if email is already in use in databse
+		const newEmail = await axios.post(`${api}/users/newemail`, { email });
+		if (newEmail.status === 202) {
+			errorElement.style.display = "inline-block";
+			errorElement.innerHTML = "Invalid email";
+			return;
+		}
 		const password = purify(e.target.password.value);
+		const passwordConfirm = purify(e.target.password_confirm.value);
+		// Throw error if passwords do not match
+		if (password !== passwordConfirm) {
+			errorElement.style.display = "inline-block";
+			errorElement.innerHTML = "Passwords do not match";
+			return;
+		}
+		// Clear error if passwords match
+		errorElement.style.display = "none";
+		errorElement.innerHTML = "";
+
 		const home = purify(capFirst(e.target.home.value));
 		const city = purify(capFirst(e.target.city.value));
 		const province = purify(capFirst(e.target.province.value));
@@ -55,6 +75,7 @@ export default function NewUserPage({
 		//add barters to user_skills table
 		await addSkills(desiresArray, user_id, false);
 		//add user to users table
+		
 		try {
 			const response = await Promise.all([
 				axios.post(`${api}/users/newuser`, {
@@ -63,6 +84,7 @@ export default function NewUserPage({
 					last_name: last_name,
 					email: email,
 					password: password,
+					passwordConfirm: passwordConfirm,
 					status: status,
 					coords: coords,
 					about: about,
@@ -73,6 +95,7 @@ export default function NewUserPage({
 				}),
 			]);
 			//upload image to users api once user_id is created
+			console.log('response', response)
 			await submitImage(response[0].data.user_id);
 			await axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
@@ -174,7 +197,7 @@ export default function NewUserPage({
 						Your Email
 						<input
 							type="text"
-							autocomplete="username"
+							autoComplete="username"
 							className="new__input"
 							name="email"
 							placeholder="your email@something.com"
@@ -184,7 +207,7 @@ export default function NewUserPage({
 						Password
 						<input
 							type="password"
-							autocomplete="new-password"
+							autoComplete="new-password"
 							className="new__input"
 							name="password"
 							placeholder="Password"
@@ -199,6 +222,9 @@ export default function NewUserPage({
 							placeholder="Password again"
 						/>
 					</label>
+					<p className="new__requirement">Password must be at least 8 characters and contain 
+						at least one uppercase letter, one lowercase letter, one number and one special character
+					</p>
 					<label className="new__label">
 						Home Address
 						<input
@@ -270,6 +296,7 @@ export default function NewUserPage({
 					</label>
 					<p className="edit__desc">File size limit: 1mb</p>
 
+					<p className="error"></p>
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>
 			</form>
