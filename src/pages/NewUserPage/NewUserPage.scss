@@ -70,6 +70,12 @@
 		}
 	}
 
+	&__requirement {
+		@include bodyCopy;
+		color: $color-six;
+		text-align: left;
+	}
+
 	&__btn {
 		align-self: center;
 		text-decoration: none;
