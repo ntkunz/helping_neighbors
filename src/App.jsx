@@ -12,6 +12,7 @@ import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import axios from "axios";
 import setReturnedUsers from "./utils/setReturnedUsers";
 import purify from "./utils/purify";
+import setToken from "./utils/setToken";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -49,11 +50,11 @@ export default function App() {
 		//eslint-disable-next-line
 	}, []);
 
-	//function to set token in local storage
-	function setToken(email) {
-		const tokenValue = JSON.stringify({ email });
-		localStorage.setItem("token", tokenValue);
-	}
+	// //function to set token in local storage
+	// function setToken(email) {
+	// 	const tokenValue = JSON.stringify({ email });
+	// 	localStorage.setItem("token", tokenValue);
+	// }
 
 	//function to get user email from token in local storage
 	//dompurified in useEffect that retrieves token

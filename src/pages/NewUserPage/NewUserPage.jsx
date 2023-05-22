@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import setReturnedUsers from '../../utils/setReturnedUsers';
 import purify from '../../utils/purify';
+import setToken from "../../utils/setToken";
 export default function NewUserPage({
 	setUser,
 	setLoggedIn,
@@ -30,17 +31,7 @@ export default function NewUserPage({
 		setNeighbors({});
 		e.preventDefault();
 		const errorElement = document.querySelector(".error");
-		const user_id = v4();
-		const first_name = purify(capFirst(e.target.first_name.value));
-		const last_name = purify(capFirst(e.target.last_name.value));
-		const email = purify(e.target.email.value.toLowerCase());		
-		// Throw error if email is already in use in databse
-		const newEmail = await axios.post(`${api}/users/newemail`, { email });
-		if (newEmail.status === 202) {
-			errorElement.style.display = "inline-block";
-			errorElement.innerHTML = "Invalid email";
-			return;
-		}
+
 		const password = purify(e.target.password.value);
 		const passwordConfirm = purify(e.target.password_confirm.value);
 		// Throw error if passwords do not match
@@ -49,6 +40,20 @@ export default function NewUserPage({
 			errorElement.innerHTML = "Passwords do not match";
 			return;
 		}
+
+		const user_id = v4();
+		const first_name = purify(capFirst(e.target.first_name.value));
+		const last_name = purify(capFirst(e.target.last_name.value));
+		const email = purify(e.target.email.value.toLowerCase());
+
+		// Throw error if email is already in use in databse
+		const newEmail = await axios.post(`${api}/users/newemail`, { email });
+		if (newEmail.status === 202) {
+			errorElement.style.display = "inline-block";
+			errorElement.innerHTML = "Invalid email";
+			return;
+		}
+
 		// Clear error if passwords match
 		errorElement.style.display = "none";
 		errorElement.innerHTML = "";
@@ -74,8 +79,10 @@ export default function NewUserPage({
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
 		//add barters to user_skills table
 		await addSkills(desiresArray, user_id, false);
+
+		//CREATE A NEW USER OBJECT TO PASS VARIABLES TO API CALL INSTEAD OF PASSING EACH VARIABLE
+
 		//add user to users table
-		
 		try {
 			const response = await Promise.all([
 				axios.post(`${api}/users/newuser`, {
@@ -84,7 +91,7 @@ export default function NewUserPage({
 					last_name: last_name,
 					email: email,
 					password: password,
-					passwordConfirm: passwordConfirm,
+					// passwordConfirm: passwordConfirm,
 					status: status,
 					coords: coords,
 					about: about,
@@ -95,21 +102,28 @@ export default function NewUserPage({
 				}),
 			]);
 			//upload image to users api once user_id is created
-			console.log('response', response)
+			// console.log('response', response)
 			await submitImage(response[0].data.user_id);
-			await axios.post(`${api}/users`, { email }).then((res) => {
-				if (res.data.length > 0) {
 
-					//set user and neighbor states, set token, set logged in
-					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+			//set token in local storage
+			setToken(response[0].data.token)
+			setUser(response[0].data.user)
+			// console.log(response[0].data)
+			// console.log(response.data)
+			// await axios.post(`${api}/users`, { email }).then((res) => {
+			// 	if (res.data.length > 0) {
 
+			// 		//set user and neighbor states, set token, set logged in
+			// 		setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+			// 		//navigate to neighbors page
 					navigate("/neighbors");
-			}})
+			// }})
 		} catch (err) {
 			console.log("Error creating new user: ", err);
 		}
 	}
 
+	//MOVE THIS FUNCTION TO THE SERVER
 	//api call to return lat long from address as lat and long
 	async function getNewUserGeo(addressRequest) {
 		try {
@@ -122,6 +136,7 @@ export default function NewUserPage({
 		}
 	}
 
+	// MOVE THIS TO THE SERVER AND MAKE IT A SINGLE CALL
 	//add userskills to user page function
 	async function addSkills(arr, id, which) {
 		try {
