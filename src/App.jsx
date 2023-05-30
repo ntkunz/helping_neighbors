@@ -50,11 +50,23 @@ export default function App() {
 	// 	//eslint-disable-next-line
 	// }, []);
 
-	// //function to set token in local storage
-	// function setToken(email) {
-	// 	const tokenValue = JSON.stringify({ email });
-	// 	localStorage.setItem("token", tokenValue);
-	// }
+
+	//new function to send jwt to server and see if email is valid and user is logged in
+	useEffect(() => {
+		//get token on load
+		const token = localStorage.getItem("token");
+		//if token present, set logged in and user state
+		if (token) {
+			//send token to server to see if user is logged in
+			axios.post(`${api}/users/verify`, { token }).then((res) => {
+				if (res.data.email) {
+					console.log(res.data.email)
+				}
+			})
+		}
+	}, []);
+
+
 
 	//function to get user email from token in local storage
 	//dompurified in useEffect that retrieves token
@@ -66,6 +78,17 @@ export default function App() {
 			return userToken;
 		} else return null;
 	};
+
+	// const getEmailFromToken = (token) => {
+	// 	try {
+	// 	  // Replace 'yourSecretKey' with your own secret key for verifying the token
+	// 	  const decoded = jwt.verify(token, 'yourSecretKey');
+	// 	  return decoded.email;
+	// 	} catch (err) {
+	// 	  console.error('Error decoding token:', err);
+	// 	  return null;
+	// 	}
+	//  };
 
 	//handle login and set user state
 	async function handleLogin(e) {
