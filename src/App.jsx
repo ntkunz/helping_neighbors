@@ -50,23 +50,61 @@ export default function App() {
 	// 	//eslint-disable-next-line
 	// }, []);
 
-
 	//new function to send jwt to server and see if email is valid and user is logged in
-	useEffect(() => {
-		//get token on load
+	// useEffect(() => {
+	// 	//get token on load
+	// 	const token = localStorage.getItem("token");
+	// 	console.log('token: ', token)
+	// 	//if token present, set logged in and user state
+	// 	if (token) {
+	// 		//send token to server to see if user is logged in
+	// 		axios.post(`${api}/users/verify`, { token }).then((res) => {
+	// 			if (res.data.email) {
+	// 				console.log(res.data.email)
+	// 			}
+	// 		})
+	// 	} else {
+	// 		navigate("/login");
+	// 	}
+	// }, []);
+
+	const sendRequest = async () => {
 		const token = localStorage.getItem("token");
-		//if token present, set logged in and user state
-		if (token) {
-			//send token to server to see if user is logged in
-			axios.post(`${api}/users/verify`, { token }).then((res) => {
-				if (res.data.email) {
-					console.log(res.data.email)
+		if (!token) {
+			navigate("/login");
+		} else {
+		try {
+			const response = await axios.get(
+				`${api}/users/verify`,
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
 				}
-			})
+			);
+
+			// Handle the response
+
+			// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
+			//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
+			
+
+
+		} catch (error) {
+			// Handle the error
+			console.error(error);
 		}
+	}
+	};
+
+	//another attempt to send the token to the server on load using authorization header
+	useEffect(() => {
+
+		sendRequest();
 	}, []);
 
-
+	sendRequest();
 
 	//function to get user email from token in local storage
 	//dompurified in useEffect that retrieves token
@@ -98,7 +136,6 @@ export default function App() {
 		//set email user signed in with
 		const email = purify(e.target.email.value.toLowerCase());
 
-
 		// regex to check for valid email input
 		const emailRegex = /\S+@\S+\.\S+/;
 		if (!emailRegex.test(email)) {
@@ -110,17 +147,15 @@ export default function App() {
 
 		const password = purify(e.target.password.value);
 
-		
 		//regex to check for valid password
-			// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-			// if (!passwordRegex.test(password)) {
-			// 	//display error if password not valid
-			// 	errorElement.textContent =
-			// 		"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
-			// 	errorElement.style.display = "inline-block";
-			// 	return;
-			// }
-
+		// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+		// if (!passwordRegex.test(password)) {
+		// 	//display error if password not valid
+		// 	errorElement.textContent =
+		// 		"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
+		// 	errorElement.style.display = "inline-block";
+		// 	return;
+		// }
 
 		//remove error if user has corrected input
 		document.querySelector(".error").style.display = "none";
@@ -129,7 +164,7 @@ export default function App() {
 		await axios
 			.post(`${api}/users`, { email, password })
 			.then((res) => {
-				console.log('res: ', res)
+				console.log("res: ", res);
 				// await axios.post(`${api}/users`, { email, password }).then((res) => {
 				// if (res.data.length > 0) {
 				if (res.data) {
@@ -138,14 +173,14 @@ export default function App() {
 					//set neighbors
 					setNeighbors(res.data.neighbors);
 					//set token in local storage
-					setToken(res.data.token)
+					setToken(res.data.token);
 
 					//set user and neighbor states, set token, set logged in
 					// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
 
 					//set loggedIn to true
 					setLoggedIn(true);
-					
+
 					//navigate to neighbors page
 					navigate("/neighbors");
 				} else {
@@ -188,6 +223,7 @@ export default function App() {
 						path="/"
 						element={
 							loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />
+							// <Neighbors loggedIn={loggedIn} />
 						}
 					/>
 					<Route
