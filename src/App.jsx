@@ -24,31 +24,31 @@ export default function App() {
 	const api = process.env.REACT_APP_API_URL;
 
 	//use effect to login user if token is present , run on load
-	useEffect(() => {
-		//get token on load
-		const email = purify(getUserFromToken());
-		//if token present, set logged in and user state
-		if (email) {
-			setNeighbors([]);
+	// useEffect(() => {
+	// 	//get token on load
+	// 	const email = purify(getUserFromToken());
+	// 	//if token present, set logged in and user state
+	// 	if (email) {
+	// 		setNeighbors([]);
 
-			axios.post(`${api}/users`, { email }).then((res) => {
-				if (res.data.length > 0) {
-					//set user and neighbor states, set token, set logged in
-					setReturnedUsers(
-						email,
-						res.data,
-						setNeighbors,
-						setLoggedIn,
-						setToken,
-						setUser
-					);
-					//navigate to neighbors page
-					navigate("/neighbors");
-				}
-			});
-		}
-		//eslint-disable-next-line
-	}, []);
+	// 		axios.post(`${api}/users`, { email }).then((res) => {
+	// 			if (res.data.length > 0) {
+	// 				//set user and neighbor states, set token, set logged in
+	// 				setReturnedUsers(
+	// 					email,
+	// 					res.data,
+	// 					setNeighbors,
+	// 					setLoggedIn,
+	// 					setToken,
+	// 					setUser
+	// 				);
+	// 				//navigate to neighbors page
+	// 				navigate("/neighbors");
+	// 			}
+	// 		});
+	// 	}
+	// 	//eslint-disable-next-line
+	// }, []);
 
 	// //function to set token in local storage
 	// function setToken(email) {
@@ -60,11 +60,11 @@ export default function App() {
 	//dompurified in useEffect that retrieves token
 	const getUserFromToken = () => {
 		const tokenValue = localStorage.getItem("token");
+
 		if (tokenValue) {
-			const { email } = JSON.parse(tokenValue);
-			return email;
-		}
-		return null;
+			const { userToken } = JSON.parse(tokenValue);
+			return userToken;
+		} else return null;
 	};
 
 	//handle login and set user state
@@ -77,13 +77,13 @@ export default function App() {
 
 
 		// regex to check for valid email input
-		// const emailRegex = /\S+@\S+\.\S+/;
-		// if (!emailRegex.test(email)) {
-		// 	//display error if email not valid
-		// 	errorElement.textContent = "Please enter a valid email";
-		// 	errorElement.style.display = "inline-block";
-		// 	return;
-		// }
+		const emailRegex = /\S+@\S+\.\S+/;
+		if (!emailRegex.test(email)) {
+			//display error if email not valid
+			errorElement.textContent = "Please enter a valid email";
+			errorElement.style.display = "inline-block";
+			return;
+		}
 
 		const password = purify(e.target.password.value);
 
@@ -106,13 +106,25 @@ export default function App() {
 		await axios
 			.post(`${api}/users`, { email, password })
 			.then((res) => {
+				console.log('res: ', res)
 				// await axios.post(`${api}/users`, { email, password }).then((res) => {
-				if (res.data.length > 0) {
+				// if (res.data.length > 0) {
+				if (res.data) {
+					//set user
+					setUser(res.data.user);
+					//set neighbors
+					setNeighbors(res.data.neighbors);
+					//set token in local storage
+					setToken(res.data.token)
+
 					//set user and neighbor states, set token, set logged in
 					// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
-					console.log("logged in	");
+
+					//set loggedIn to true
+					setLoggedIn(true);
+					
 					//navigate to neighbors page
-					// navigate("/neighbors");
+					navigate("/neighbors");
 				} else {
 					// error if no user found
 					errorElement.style.display = "inline-block";

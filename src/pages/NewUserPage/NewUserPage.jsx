@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import setReturnedUsers from '../../utils/setReturnedUsers';
 import purify from '../../utils/purify';
-import setToken from "../../utils/setToken";
+// import setToken from "../../utils/setToken";
 export default function NewUserPage({
 	setUser,
 	setLoggedIn,
@@ -101,23 +101,22 @@ export default function NewUserPage({
 					province: province,
 				}),
 			]);
-			//upload image to users api once user_id is created
-			// console.log('response', response)
-			await submitImage(response[0].data.user_id);
 
-			//set token in local storage
+			// set new user and token from api response
+			const newUser = response[0].data.user;
+			setUser(newUser)
 			setToken(response[0].data.token)
-			setUser(response[0].data.user)
-			// console.log(response[0].data)
-			// console.log(response.data)
-			// await axios.post(`${api}/users`, { email }).then((res) => {
-			// 	if (res.data.length > 0) {
+			//upload image to users api once user_id is created
+			await submitImage(newUser.user_id);
 
-			// 		//set user and neighbor states, set token, set logged in
-			// 		setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
+			//get user and neighbors from api
+			await axios.post(`${api}/users`, { email }).then((res) => {
+				if (res.data.length > 0) {
+					//set neighbors and loggedIn states
+					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn);
 			// 		//navigate to neighbors page
 					navigate("/neighbors");
-			// }})
+			}})
 		} catch (err) {
 			console.log("Error creating new user: ", err);
 		}
