@@ -73,38 +73,62 @@ export default function App() {
 		if (!token) {
 			navigate("/login");
 		} else {
-		try {
-			const response = await axios.get(
-				`${api}/users/verify`,
-				{
+			try {
+				const response = await axios.get(`${api}/users/verify`, {
 					headers: {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${token}`,
 					},
-				}
-			);
+				});
 
-			// Handle the response
+				// Handle the response
 
-			// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
-			//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
-			
+				// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
+				//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
 
-
-		} catch (error) {
-			// Handle the error
-			console.error(error);
+				console.log(response.data[0]);
+				return await response.data[0];
+			} catch (error) {
+				// Handle the error
+				console.error(error);
+			}
 		}
-	}
 	};
 
 	//another attempt to send the token to the server on load using authorization header
+	// useEffect(() => {
+
+	// 	const user = sendRequest();
+	// 	if (user) {
+	// 		console.log('user: ', user)
+	// 	}
+	// }, []);
+
 	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const user = await sendRequest();
+				console.log("user:", user);
+				if (user) {
+					setUser(user);
+					setLoggedIn(true);
+					const response = await axios.get(`${api}/users/getneighbors`, {
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+					});
+					console.log("response: ", response.data);
+					setNeighbors(response.data.neighbors);
+					navigate("/neighbors");
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
 
-		sendRequest();
+		fetchData();
 	}, []);
-
-	sendRequest();
 
 	//function to get user email from token in local storage
 	//dompurified in useEffect that retrieves token
@@ -161,17 +185,21 @@ export default function App() {
 		document.querySelector(".error").style.display = "none";
 
 		//api call to return user with matching email and all neighbors
+		//api call to login user, not to return all neighbors yet
 		await axios
-			.post(`${api}/users`, { email, password })
+			// .post(`${api}/users`, { email, password })
+			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
-				console.log("res: ", res);
+				console.log("res: ", res.data.user);
 				// await axios.post(`${api}/users`, { email, password }).then((res) => {
 				// if (res.data.length > 0) {
-				if (res.data) {
+					//ADDED POTATO TO TEST/DISABLE THOSE STATE CHANGES
+				if (res.data.user.email === email) {
 					//set user
 					setUser(res.data.user);
 					//set neighbors
-					setNeighbors(res.data.neighbors);
+					//DISABLED BELOW TO TEST
+					// setNeighbors(res.data.neighbors);
 					//set token in local storage
 					setToken(res.data.token);
 
