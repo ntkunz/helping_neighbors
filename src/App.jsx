@@ -68,6 +68,7 @@ export default function App() {
 	// 	}
 	// }, []);
 
+	//THERE'S SOMETHING STRANGE HERE WHERE IT'S NOT CANCELLING FURTHER REQUESTS TO GET NEIGHBORS
 	const sendRequest = async () => {
 		const token = localStorage.getItem("token");
 		if (!token) {
@@ -85,50 +86,69 @@ export default function App() {
 
 				// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
 				//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
-
-				console.log(response.data[0]);
-				return await response.data[0];
+				console.log('token response: ', response)
+				if (response.data[0].email) {
+					return await response.data[0];
+				} else return null;
 			} catch (error) {
 				// Handle the error
-				console.error(error);
+				console.log('token validation error');
+
 			}
 		}
 	};
 
 	//another attempt to send the token to the server on load using authorization header
-	// useEffect(() => {
+	useEffect(() => {
+		const user = sendRequest();
+		if (user.email) {
+			console.log('user: ', user)
+			setUser(user)
+		} else {
+			navigate("/login");
+		}
+	}, []);
 
-	// 	const user = sendRequest();
-	// 	if (user) {
-	// 		console.log('user: ', user)
-	// 	}
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const user = await sendRequest();
+	// 			console.log("user:", user);
+	// 			if (user.email) {
+	// 				setUser(user);
+	// 				//at this point, user is set so run axios call to get neighbors in useEffect on user state
+	// 			}
+	// 		} catch (error) {
+	// 			return null;
+	// 			// console.error(error);
+	// 		}
+	// 	};
+
+	// 	fetchData();
 	// }, []);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const user = await sendRequest();
-				console.log("user:", user);
-				if (user) {
-					setUser(user);
-					setLoggedIn(true);
-					const response = await axios.get(`${api}/users/getneighbors`, {
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
-						},
-					});
-					console.log("response: ", response.data);
-					setNeighbors(response.data.neighbors);
-					navigate("/neighbors");
-				}
-			} catch (error) {
-				console.error(error);
-			}
+		//fetch neighbors, to be used in useEffect on user state
+		const fetchNeighbors = async () => {
+			// setLoggedIn(true);
+			const getNeighbors = await axios.get(`${api}/users/getneighbors`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
+			//ADD ERROR HANDLING HERE!
+
+			//return neighbors as response
+			console.log("neighbors: ", getNeighbors.data.neighbors);
+			setNeighbors(getNeighbors.data.neighbors);
+			setLoggedIn(true);
+			navigate("/neighbors");
+			return getNeighbors.data;
 		};
 
-		fetchData();
-	}, []);
+		fetchNeighbors();
+	}, [user]);
 
 	//function to get user email from token in local storage
 	//dompurified in useEffect that retrieves token
@@ -193,24 +213,24 @@ export default function App() {
 				console.log("res: ", res.data.user);
 				// await axios.post(`${api}/users`, { email, password }).then((res) => {
 				// if (res.data.length > 0) {
-					//ADDED POTATO TO TEST/DISABLE THOSE STATE CHANGES
+				//ADDED POTATO TO TEST/DISABLE THOSE STATE CHANGES
 				if (res.data.user.email === email) {
+					//set token in local storage
+					setToken(res.data.token);
 					//set user
 					setUser(res.data.user);
 					//set neighbors
 					//DISABLED BELOW TO TEST
 					// setNeighbors(res.data.neighbors);
-					//set token in local storage
-					setToken(res.data.token);
 
 					//set user and neighbor states, set token, set logged in
 					// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
 
 					//set loggedIn to true
-					setLoggedIn(true);
+					// setLoggedIn(true);
 
 					//navigate to neighbors page
-					navigate("/neighbors");
+					// navigate("/neighbors");
 				} else {
 					// error if no user found
 					errorElement.style.display = "inline-block";
