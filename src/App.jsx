@@ -86,7 +86,6 @@ export default function App() {
 				// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
 				//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
 
-				console.log(response.data[0]);
 				return await response.data[0];
 			} catch (error) {
 				// Handle the error
@@ -111,16 +110,7 @@ export default function App() {
 				console.log("user:", user);
 				if (user) {
 					setUser(user);
-					setLoggedIn(true);
-					const response = await axios.get(`${api}/users/getneighbors`, {
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
-						},
-					});
-					console.log("response: ", response.data);
-					setNeighbors(response.data.neighbors);
-					navigate("/neighbors");
+					//at this point, user is set so run axios call to get neighbors in useEffect on user state
 				}
 			} catch (error) {
 				console.error(error);
@@ -129,6 +119,29 @@ export default function App() {
 
 		fetchData();
 	}, []);
+
+	useEffect(() => {
+		//fetch neighbors, to be used in useEffect on user state
+		const fetchNeighbors = async () => {
+			// setLoggedIn(true);
+			const getNeighbors = await axios.get(`${api}/users/getneighbors`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
+			//ADD ERROR HANDLING HERE!
+
+			//return neighbors as response
+			console.log("neighbors: ", getNeighbors.data.neighbors);
+			setNeighbors(getNeighbors.data.neighbors);
+			setLoggedIn(true);
+			navigate("/neighbors");
+			return getNeighbors.data;
+		};
+
+		fetchNeighbors();
+	}, [user]);
 
 	//function to get user email from token in local storage
 	//dompurified in useEffect that retrieves token
@@ -193,24 +206,24 @@ export default function App() {
 				console.log("res: ", res.data.user);
 				// await axios.post(`${api}/users`, { email, password }).then((res) => {
 				// if (res.data.length > 0) {
-					//ADDED POTATO TO TEST/DISABLE THOSE STATE CHANGES
+				//ADDED POTATO TO TEST/DISABLE THOSE STATE CHANGES
 				if (res.data.user.email === email) {
+					//set token in local storage
+					setToken(res.data.token);
 					//set user
 					setUser(res.data.user);
 					//set neighbors
 					//DISABLED BELOW TO TEST
 					// setNeighbors(res.data.neighbors);
-					//set token in local storage
-					setToken(res.data.token);
 
 					//set user and neighbor states, set token, set logged in
 					// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
 
 					//set loggedIn to true
-					setLoggedIn(true);
+					// setLoggedIn(true);
 
 					//navigate to neighbors page
-					navigate("/neighbors");
+					// navigate("/neighbors");
 				} else {
 					// error if no user found
 					errorElement.style.display = "inline-block";
