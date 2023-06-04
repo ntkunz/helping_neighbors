@@ -37,7 +37,7 @@ export default function Message({ user, neighbors }) {
 		//eslint-disable-next-line
 	}, [receiver]);
 
-	//function to send new message if message input is not empty 
+	//function to send new message if message input is not empty
 	function sendMessage(e) {
 		e.preventDefault();
 		//get message from input
@@ -50,12 +50,20 @@ export default function Message({ user, neighbors }) {
 		//if message is not empty, hide error message and send message to api
 		document.querySelector(".error").style.display = "none";
 		axios
-			.post(`${api}/messages`, {
-				senderId: user.user_id,
-				receiverId: receiver.user_id,
-				// message: document.querySelector(".message__input").value,
-				message: purify(message),
-			})
+			.post(
+				`${api}/messages`,
+				{
+					senderId: user.user_id,
+					receiverId: receiver.user_id,
+					message: purify(message),
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				}
+			)
 			.then((response) => {
 				//set message field to empty
 				document.querySelector(".message__input").value = "";
@@ -68,10 +76,20 @@ export default function Message({ user, neighbors }) {
 	//function to get messages from api
 	function getMessages(senderId, receiverId) {
 		axios
-			.put(`${api}/messages`, {
-				senderId: senderId,
-				receiverId: receiverId,
-			})
+			//include authorization bearer in header
+			.put(
+				`${api}/messages`,
+				{
+					senderId: senderId,
+					receiverId: receiverId,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				}
+			)
 			.then((response) => {
 				//sort messages by timestamp
 				const sortedMessages = response.data.sort(function (x, y) {
@@ -88,7 +106,8 @@ export default function Message({ user, neighbors }) {
 	return (
 		<div className="message__container">
 			<h1 className="message__title">
-				{user.first_name}, message {purify(receiver.first_name)} to arrange a barter, or{" "}
+				{user.first_name}, message {purify(receiver.first_name)} to arrange a
+				barter, or{" "}
 				<Link to="/neighbors" className="message__link">
 					explore other neighbors
 				</Link>
@@ -126,11 +145,15 @@ export default function Message({ user, neighbors }) {
 											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
 											<span className="semibold">{user.first_name}</span>
 										</p>
-										<p className="message__text sent">{purify(message.message)}</p>
+										<p className="message__text sent">
+											{purify(message.message)}
+										</p>
 									</>
 								) : (
 									<>
-										<p className="message__text received">{purify(message.message)}</p>
+										<p className="message__text received">
+											{purify(message.message)}
+										</p>
 										<p className="message__info received">
 											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
 											<span className="semibold">{receiver.first_name}</span>

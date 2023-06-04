@@ -152,14 +152,14 @@ export default function App() {
 
 	//function to get user email from token in local storage
 	//dompurified in useEffect that retrieves token
-	const getUserFromToken = () => {
-		const tokenValue = localStorage.getItem("token");
+	// const getUserFromToken = () => {
+	// 	const tokenValue = localStorage.getItem("token");
 
-		if (tokenValue) {
-			const { userToken } = JSON.parse(tokenValue);
-			return userToken;
-		} else return null;
-	};
+	// 	if (tokenValue) {
+	// 		const { userToken } = JSON.parse(tokenValue);
+	// 		return userToken;
+	// 	} else return null;
+	// };
 
 	// const getEmailFromToken = (token) => {
 	// 	try {
