@@ -53,7 +53,11 @@ export default function EditUserPage({
 	//============also need to add ability to change status to active or inactive=============
 
 	//submit the edit user form
-	async function editUser(e) {
+
+//6-8-23 - This is all working smoothly, though after I edit the user, go to neighbors, then try to edit again I am getting an error. 
+//fix today when I return
+
+	async function editUser(e) { console.log('editing user')
 		e.preventDefault();
 
 		const cleanEmail = purify(email);
@@ -87,40 +91,69 @@ export default function EditUserPage({
 			alert("Oops, you missed a field, please fill out all fields.");
 			return;
 		}
+		console.log('skills edited')
 		try {
 			const response = await Promise.all([
-				axios.post(`${api}/users/edituser`, {
-					user_id: purify(user_id),
-					first_name: purify(first_name),
-					last_name: purify(last_name),
-					email: cleanEmail,
-					// password: password,
-					// status: active,
-					coords: coords,
-					about: purify(about),
-					address: address,
-					home: purify(home),
-					city: purify(city),
-					province: purify(province),
-				}),
+				axios.post(
+					`${api}/users/edituser`,
+					{
+						user_id: purify(user_id),
+						first_name: purify(first_name),
+						last_name: purify(last_name),
+						email: cleanEmail,
+						// password: password,
+						// status: active,
+						coords: coords,
+						about: purify(about),
+						address: address,
+						home: purify(home),
+						city: purify(city),
+						province: purify(province),
+					}, 
+					{
+						headers: {
+							// "Content-Type": "application/json",
+							'Authorization': `Bearer ${localStorage.getItem("token")}`,
+						},
+					}
+				),
 			]);
+			console.log('response from first post to edit user: '	, response);
+			const updatedUser = response[0].data;
+			console.log('updated user: ', updatedUser)
+			setUser(response[0].data);
 			setNeighbors([]);
 			//api call to return all users
 			axios
-				.post(`${api}/users`, { email: response[0].data.email })
+				// .post(
+					.get(
+					// `${api}/users`,
+					`${api}/users/getneighbors`,
+					{
+						headers: {
+							// "Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+						params: {
+							email: response[0].data.email
+						}
+					}
+				)
 				.then((res) => {
+					console.log('res.data.neighbors: ', res.data.neighbors);
 					if (res.data.length > 0) {
 						//set user and neighbor states, set token, set logged in
-						setReturnedUsers(
-							email,
-							res.data,
-							setNeighbors,
-							setLoggedIn,
-							setToken,
-							setUser
-						);
-
-						navigate("/neighbors");
+						// setReturnedUsers(
+						// 	email,
+						// 	res.data,
+						// 	setNeighbors,
+						// 	setLoggedIn,
+						// 	setToken,
+						// 	setUser
+						// );
+						// setUser(res.data[0]);
+						setNeighbors(res.data.neighbors);
+						// navigate("/neighbors");
 					}
 				});
 		} catch (err) {
@@ -143,7 +176,12 @@ export default function EditUserPage({
 	//function to remove skills from user
 	async function removeSkills(id) {
 		try {
-			const response = await axios.delete(`${api}/userskills/${id}`);
+			const response = await axios.delete(`${api}/userskills/${id}`, {
+				headers: {
+					// "Content-Type": "application/json",
+					'Authorization': `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
 			return response;
 		} catch (err) {
 			console.log("Error removing skills: ", err);
@@ -155,13 +193,23 @@ export default function EditUserPage({
 		try {
 			const response = await Promise.all(
 				arr.map((item) =>
-					axios.post(`${api}/userskills`, {
-						user_id: id,
-						skill: item,
-						offer: which,
-					})
+					axios.post(
+						`${api}/userskills`,
+						{
+							user_id: id,
+							skill: item,
+							offer: which,
+						},
+						{
+							headers: {
+								// "Content-Type": "application/json",
+								'Authorization': `Bearer ${localStorage.getItem("token")}`,
+							},
+						}
+					)
 				)
 			);
+			console.log('skill edited')
 			return response;
 		} catch (err) {
 			console.log("Error adding skills: ", err);
