@@ -186,7 +186,7 @@ export default function NewUserPage({
 			<h1 className="new__title">
 				Sign up to start bartering your way to a better neighborhood
 			</h1>
-			<form onSubmit={createNewUser} method="post" className="new__form">
+			<form onSubmit={createNewUser} method="post" className="new__form" noValidate>
 				<div className="new__signup">
 					<label className="new__label">
 						{" "}
@@ -210,7 +210,7 @@ export default function NewUserPage({
 					<label className="new__label">
 						Your Email
 						<input
-							type="text"
+							type="email"
 							autoComplete="username"
 							className="new__input"
 							name="email"

@@ -38,11 +38,12 @@ export default function LoginPage({ handleLogin }) {
 				</div>
 
 				<div className="login-form">
-					<form className="login-form__form" onSubmit={handleLogin} method="post">
+					<form className="login-form__form" onSubmit={handleLogin} method="post" noValidate>
 					<div className="login-form__box">
 						<p className="login-form__label">Email</p>
 						<input
 							type="email"
+							
 							autoComplete="username"
 							className="login-form__input"
 							name="email"
