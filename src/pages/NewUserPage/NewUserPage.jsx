@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import setReturnedUsers from '../../utils/setReturnedUsers';
 import purify from '../../utils/purify';
+// import setToken from "../../utils/setToken";
 export default function NewUserPage({
 	setUser,
 	setLoggedIn,
@@ -25,14 +26,38 @@ export default function NewUserPage({
 
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
+		
 		setUser({});
 		setNeighbors({});
 		e.preventDefault();
+		const errorElement = document.querySelector(".error");
+
+		const password = purify(e.target.password.value);
+		const passwordConfirm = purify(e.target.password_confirm.value);
+		// Throw error if passwords do not match
+		if (password !== passwordConfirm) {
+			errorElement.style.display = "inline-block";
+			errorElement.innerHTML = "Passwords do not match";
+			return;
+		}
+
 		const user_id = v4();
 		const first_name = purify(capFirst(e.target.first_name.value));
 		const last_name = purify(capFirst(e.target.last_name.value));
 		const email = purify(e.target.email.value.toLowerCase());
-		const password = purify(e.target.password.value);
+
+		// Throw error if email is already in use in databse
+		const newEmail = await axios.post(`${api}/users/newemail`, { email });
+		if (newEmail.status === 202) {
+			errorElement.style.display = "inline-block";
+			errorElement.innerHTML = "Invalid email";
+			return;
+		}
+
+		// Clear error if passwords match
+		errorElement.style.display = "none";
+		errorElement.innerHTML = "";
+
 		const home = purify(capFirst(e.target.home.value));
 		const city = purify(capFirst(e.target.city.value));
 		const province = purify(capFirst(e.target.province.value));
@@ -54,6 +79,9 @@ export default function NewUserPage({
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
 		//add barters to user_skills table
 		await addSkills(desiresArray, user_id, false);
+
+		//CREATE A NEW USER OBJECT TO PASS VARIABLES TO API CALL INSTEAD OF PASSING EACH VARIABLE
+
 		//add user to users table
 		try {
 			const response = await Promise.all([
@@ -63,6 +91,7 @@ export default function NewUserPage({
 					last_name: last_name,
 					email: email,
 					password: password,
+					// passwordConfirm: passwordConfirm,
 					status: status,
 					coords: coords,
 					about: about,
@@ -72,14 +101,20 @@ export default function NewUserPage({
 					province: province,
 				}),
 			]);
+
+			// set new user and token from api response
+			const newUser = response[0].data.user;
+			setUser(newUser)
+			setToken(response[0].data.token)
 			//upload image to users api once user_id is created
-			await submitImage(response[0].data.user_id);
+			await submitImage(newUser.user_id);
+
+			//get user and neighbors from api
 			await axios.post(`${api}/users`, { email }).then((res) => {
 				if (res.data.length > 0) {
-
-					//set user and neighbor states, set token, set logged in
-					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
-
+					//set neighbors and loggedIn states
+					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn);
+			// 		//navigate to neighbors page
 					navigate("/neighbors");
 			}})
 		} catch (err) {
@@ -87,6 +122,7 @@ export default function NewUserPage({
 		}
 	}
 
+	//MOVE THIS FUNCTION TO THE SERVER
 	//api call to return lat long from address as lat and long
 	async function getNewUserGeo(addressRequest) {
 		try {
@@ -99,6 +135,7 @@ export default function NewUserPage({
 		}
 	}
 
+	// MOVE THIS TO THE SERVER AND MAKE IT A SINGLE CALL
 	//add userskills to user page function
 	async function addSkills(arr, id, which) {
 		try {
@@ -149,7 +186,7 @@ export default function NewUserPage({
 			<h1 className="new__title">
 				Sign up to start bartering your way to a better neighborhood
 			</h1>
-			<form onSubmit={createNewUser} method="post" className="new__form">
+			<form onSubmit={createNewUser} method="post" className="new__form" noValidate>
 				<div className="new__signup">
 					<label className="new__label">
 						{" "}
@@ -173,7 +210,8 @@ export default function NewUserPage({
 					<label className="new__label">
 						Your Email
 						<input
-							type="text"
+							type="email"
+							autoComplete="username"
 							className="new__input"
 							name="email"
 							placeholder="your email@something.com"
@@ -183,6 +221,7 @@ export default function NewUserPage({
 						Password
 						<input
 							type="password"
+							autoComplete="new-password"
 							className="new__input"
 							name="password"
 							placeholder="Password"
@@ -192,11 +231,15 @@ export default function NewUserPage({
 						Confirm
 						<input
 							type="password"
+							autoComplete="new-password"
 							className="new__input"
 							name="password_confirm"
 							placeholder="Password again"
 						/>
 					</label>
+					<p className="new__requirement">Password must be at least 8 characters and contain 
+						at least one uppercase letter, one lowercase letter, one number and one special character
+					</p>
 					<label className="new__label">
 						Home Address
 						<input
@@ -268,6 +311,7 @@ export default function NewUserPage({
 					</label>
 					<p className="edit__desc">File size limit: 1mb</p>
 
+					<p className="error"></p>
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>
 			</form>
