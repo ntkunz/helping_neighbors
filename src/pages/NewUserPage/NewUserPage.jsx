@@ -231,6 +231,7 @@ export default function NewUserPage({
 						Confirm
 						<input
 							type="password"
+							autoComplete="new-password"
 							className="new__input"
 							name="password_confirm"
 							placeholder="Password again"

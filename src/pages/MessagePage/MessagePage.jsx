@@ -6,6 +6,7 @@ import Neighbor from "../../Components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
 
+
 export default function Message({ user, neighbors }) {
 	const api = process.env.REACT_APP_API_URL;
 
