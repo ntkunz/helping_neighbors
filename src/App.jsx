@@ -10,9 +10,10 @@ import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import axios from "axios";
-import setReturnedUsers from "./utils/setReturnedUsers";
+// import setReturnedUsers from "./utils/setReturnedUsers";
 import purify from "./utils/purify";
 import setToken from "./utils/setToken";
+import sendRequest from "./utils/sendRequest";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -23,110 +24,21 @@ export default function App() {
 
 	const api = process.env.REACT_APP_API_URL;
 
-	//use effect to login user if token is present , run on load
-	// useEffect(() => {
-	// 	//get token on load
-	// 	const email = purify(getUserFromToken());
-	// 	//if token present, set logged in and user state
-	// 	if (email) {
-	// 		setNeighbors([]);
-
-	// 		axios.post(`${api}/users`, { email }).then((res) => {
-	// 			if (res.data.length > 0) {
-	// 				//set user and neighbor states, set token, set logged in
-	// 				setReturnedUsers(
-	// 					email,
-	// 					res.data,
-	// 					setNeighbors,
-	// 					setLoggedIn,
-	// 					setToken,
-	// 					setUser
-	// 				);
-	// 				//navigate to neighbors page
-	// 				navigate("/neighbors");
-	// 			}
-	// 		});
-	// 	}
-	// 	//eslint-disable-next-line
-	// }, []);
-
-	//new function to send jwt to server and see if email is valid and user is logged in
-	// useEffect(() => {
-	// 	//get token on load
-	// 	const token = localStorage.getItem("token");
-	// 	console.log('token: ', token)
-	// 	//if token present, set logged in and user state
-	// 	if (token) {
-	// 		//send token to server to see if user is logged in
-	// 		axios.post(`${api}/users/verify`, { token }).then((res) => {
-	// 			if (res.data.email) {
-	// 				console.log(res.data.email)
-	// 			}
-	// 		})
-	// 	} else {
-	// 		navigate("/login");
-	// 	}
-	// }, []);
-
-	//THERE'S SOMETHING STRANGE HERE WHERE IT'S NOT CANCELLING FURTHER REQUESTS TO GET NEIGHBORS
-	const sendRequest = async () => {
-		const token = localStorage.getItem("token");
-		if (!token) {
-			navigate("/login");
-		} else {
-			try {
-				const response = await axios.get(`${api}/users/verify`, {
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-				});
-
-				// Handle the response
-
-				// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
-				//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
-				console.log('token response: ', response)
-				if (response.data[0].email) {
-					return await response.data[0];
-				} else return null;
-			} catch (error) {
-				// Handle the error
-				console.log('token validation error');
-
-			}
-		}
-	};
-
-	//another attempt to send the token to the server on load using authorization header
+	// JUNE 8TH ASYNC AWAIT TO GET USER ON LOAD
 	useEffect(() => {
-		const user = sendRequest();
-		if (user.email) {
-			console.log('user: ', user)
-			setUser(user)
-		} else {
-			navigate("/login");
-		}
+		const getUser = async () => {
+			const user = await sendRequest();
+			if (user && user.email) {
+				setUser(user);
+			} else {
+				navigate("/login");
+			}
+		};
+		getUser();
 	}, []);
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		try {
-	// 			const user = await sendRequest();
-	// 			console.log("user:", user);
-	// 			if (user.email) {
-	// 				setUser(user);
-	// 				//at this point, user is set so run axios call to get neighbors in useEffect on user state
-	// 			}
-	// 		} catch (error) {
-	// 			return null;
-	// 			// console.error(error);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
-
+	
+	//send the token to the server on load using authorization header
 	useEffect(() => {
 		//fetch neighbors, to be used in useEffect on user state
 		const fetchNeighbors = async () => {
@@ -140,7 +52,6 @@ export default function App() {
 			//ADD ERROR HANDLING HERE!
 
 			//return neighbors as response
-			console.log("neighbors: ", getNeighbors.data.neighbors);
 			setNeighbors(getNeighbors.data.neighbors);
 			setLoggedIn(true);
 			navigate("/neighbors");
@@ -150,27 +61,7 @@ export default function App() {
 		fetchNeighbors();
 	}, [user]);
 
-	//function to get user email from token in local storage
-	//dompurified in useEffect that retrieves token
-	// const getUserFromToken = () => {
-	// 	const tokenValue = localStorage.getItem("token");
 
-	// 	if (tokenValue) {
-	// 		const { userToken } = JSON.parse(tokenValue);
-	// 		return userToken;
-	// 	} else return null;
-	// };
-
-	// const getEmailFromToken = (token) => {
-	// 	try {
-	// 	  // Replace 'yourSecretKey' with your own secret key for verifying the token
-	// 	  const decoded = jwt.verify(token, 'yourSecretKey');
-	// 	  return decoded.email;
-	// 	} catch (err) {
-	// 	  console.error('Error decoding token:', err);
-	// 	  return null;
-	// 	}
-	//  };
 
 	//handle login and set user state
 	async function handleLogin(e) {
@@ -191,15 +82,16 @@ export default function App() {
 
 		const password = purify(e.target.password.value);
 
-		//regex to check for valid password
+		// regex to check for valid password
 		// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-		// if (!passwordRegex.test(password)) {
-		// 	//display error if password not valid
-		// 	errorElement.textContent =
-		// 		"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
-		// 	errorElement.style.display = "inline-block";
-		// 	return;
-		// }
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
+		if (!passwordRegex.test(password)) {
+			//display error if password not valid
+			errorElement.textContent =
+				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
+			errorElement.style.display = "inline-block";
+			return;
+		}
 
 		//remove error if user has corrected input
 		document.querySelector(".error").style.display = "none";
@@ -219,18 +111,7 @@ export default function App() {
 					setToken(res.data.token);
 					//set user
 					setUser(res.data.user);
-					//set neighbors
-					//DISABLED BELOW TO TEST
-					// setNeighbors(res.data.neighbors);
 
-					//set user and neighbor states, set token, set logged in
-					// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
-
-					//set loggedIn to true
-					// setLoggedIn(true);
-
-					//navigate to neighbors page
-					// navigate("/neighbors");
 				} else {
 					// error if no user found
 					errorElement.style.display = "inline-block";
