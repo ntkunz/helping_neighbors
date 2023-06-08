@@ -10,9 +10,10 @@ import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import axios from "axios";
-import setReturnedUsers from "./utils/setReturnedUsers";
+// import setReturnedUsers from "./utils/setReturnedUsers";
 import purify from "./utils/purify";
 import setToken from "./utils/setToken";
+import sendRequest from "./utils/sendRequest";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -22,75 +23,6 @@ export default function App() {
 	let navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
-
-	//use effect to login user if token is present , run on load
-	// useEffect(() => {
-	// 	//get token on load
-	// 	const email = purify(getUserFromToken());
-	// 	//if token present, set logged in and user state
-	// 	if (email) {
-	// 		setNeighbors([]);
-
-	// 		axios.post(`${api}/users`, { email }).then((res) => {
-	// 			if (res.data.length > 0) {
-	// 				//set user and neighbor states, set token, set logged in
-	// 				setReturnedUsers(
-	// 					email,
-	// 					res.data,
-	// 					setNeighbors,
-	// 					setLoggedIn,
-	// 					setToken,
-	// 					setUser
-	// 				);
-	// 				//navigate to neighbors page
-	// 				navigate("/neighbors");
-	// 			}
-	// 		});
-	// 	}
-	// 	//eslint-disable-next-line
-	// }, []);
-
-	//new function to send jwt to server and see if email is valid and user is logged in
-	// useEffect(() => {
-	// 	//get token on load
-	// 	const token = localStorage.getItem("token");
-	// 	console.log('token: ', token)
-	// 	//if token present, set logged in and user state
-	// 	if (token) {
-	// 		//send token to server to see if user is logged in
-	// 		axios.post(`${api}/users/verify`, { token }).then((res) => {
-	// 			if (res.data.email) {
-	// 				console.log(res.data.email)
-	// 			}
-	// 		})
-	// 	} else {
-	// 		navigate("/login");
-	// 	}
-	// }, []);
-
-	const sendRequest = async () => {
-		const token = localStorage.getItem("token");
-		if (!token) {
-			navigate("/login");
-		} else {
-			try {
-				const response = await axios.get(`${api}/users/verify`, {
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-				});
-
-				// Handle the response
-				if (response.data[0].email) {
-					return await response.data[0];
-				} else return null;
-			} catch (error) {
-				// Handle the error
-				console.log("token validation error");
-			}
-		}
-	};
 
 	// JUNE 8TH ASYNC AWAIT TO GET USER ON LOAD
 	useEffect(() => {
@@ -120,7 +52,6 @@ export default function App() {
 			//ADD ERROR HANDLING HERE!
 
 			//return neighbors as response
-			console.log("neighbors: ", getNeighbors.data.neighbors);
 			setNeighbors(getNeighbors.data.neighbors);
 			setLoggedIn(true);
 			navigate("/neighbors");
