@@ -68,7 +68,6 @@ export default function App() {
 	// 	}
 	// }, []);
 
-	//THERE'S SOMETHING STRANGE HERE WHERE IT'S NOT CANCELLING FURTHER REQUESTS TO GET NEIGHBORS
 	const sendRequest = async () => {
 		const token = localStorage.getItem("token");
 		if (!token) {
@@ -83,10 +82,6 @@ export default function App() {
 				});
 
 				// Handle the response
-
-				// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
-				//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
-				console.log("token response: ", response);
 				if (response.data[0].email) {
 					return await response.data[0];
 				} else return null;
@@ -110,18 +105,8 @@ export default function App() {
 		getUser();
 	}, []);
 
-	//another attempt to send the token to the server on load using authorization header
-	//WORKING, BUT NOT ASYNC AWAIT VERSION
-	// useEffect(() => {
-	// 	const user = sendRequest();
-	// 	console.log('user line 104: ', user)
-	// 	if (user.email) {
-	// 		setUser(user)
-	// 	} else {
-	// 		navigate("/login");
-	// 	}
-	// }, []);
-
+	
+	//send the token to the server on load using authorization header
 	useEffect(() => {
 		//fetch neighbors, to be used in useEffect on user state
 		const fetchNeighbors = async () => {
