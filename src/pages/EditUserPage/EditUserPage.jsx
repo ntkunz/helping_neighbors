@@ -209,7 +209,7 @@ export default function EditUserPage({
 					)
 				)
 			);
-			console.log('skill edited')
+			console.log('skill edited response: ', response)
 			return response;
 		} catch (err) {
 			console.log("Error adding skills: ", err);

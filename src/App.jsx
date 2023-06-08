@@ -86,45 +86,40 @@ export default function App() {
 
 				// AT THIS POINT, THE USER'S EMAIL IS ATTAINED BASED OFF OF THE JWT
 				//NOW, WE NEED TO GET THE USER'S DATA FROM THE DATABASE AND THE NEIGHBORS' DATA
-				console.log('token response: ', response)
+				console.log("token response: ", response);
 				if (response.data[0].email) {
 					return await response.data[0];
 				} else return null;
 			} catch (error) {
 				// Handle the error
-				console.log('token validation error');
-
+				console.log("token validation error");
 			}
 		}
 	};
 
-	//another attempt to send the token to the server on load using authorization header
+	// JUNE 8TH ASYNC AWAIT TO GET USER ON LOAD
 	useEffect(() => {
-		const user = sendRequest();
-		if (user.email) {
-			console.log('user: ', user)
-			setUser(user)
-		} else {
-			navigate("/login");
-		}
+		const getUser = async () => {
+			const user = await sendRequest();
+			if (user && user.email) {
+				setUser(user);
+			} else {
+				navigate("/login");
+			}
+		};
+		getUser();
 	}, []);
 
+	//another attempt to send the token to the server on load using authorization header
+	//WORKING, BUT NOT ASYNC AWAIT VERSION
 	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		try {
-	// 			const user = await sendRequest();
-	// 			console.log("user:", user);
-	// 			if (user.email) {
-	// 				setUser(user);
-	// 				//at this point, user is set so run axios call to get neighbors in useEffect on user state
-	// 			}
-	// 		} catch (error) {
-	// 			return null;
-	// 			// console.error(error);
-	// 		}
-	// 	};
-
-	// 	fetchData();
+	// 	const user = sendRequest();
+	// 	console.log('user line 104: ', user)
+	// 	if (user.email) {
+	// 		setUser(user)
+	// 	} else {
+	// 		navigate("/login");
+	// 	}
 	// }, []);
 
 	useEffect(() => {
