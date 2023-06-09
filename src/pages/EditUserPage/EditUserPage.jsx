@@ -29,21 +29,6 @@ export default function EditUserPage({
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
 
-	// useEffect(() => {
-	// 	let newOffers = "";
-	// 	let newDesires = "";
-	// 	Object.keys(user.barters).forEach((key, index) => {
-	// 		if (user.barters[key] === 1) {
-	// 			newOffers += purify(` ${key},`);
-	// 		} else {
-	// 			newDesires += purify(` ${key},`);
-	// 		}
-	// 	});
-	// 	setOffers(newOffers.trim().replace(/,$/, ""));
-	// 	setDesires(newDesires.trim().replace(/,$/, ""));
-	// 	//eslint-disable-next-line
-	// }, []);
-
 	/**
 	 * This effect runs once on component mount and updates the state with the user's barters
 	 */
@@ -82,7 +67,6 @@ export default function EditUserPage({
 	//fix today when I return
 
 	async function editUser(e) {
-		console.log("editing user");
 		e.preventDefault();
 
 		const cleanEmail = purify(email);
@@ -143,27 +127,21 @@ export default function EditUserPage({
 					}
 				),
 			]);
-			console.log("response from first post to edit user: ", response);
 			const updatedUser = response[0].data;
-			console.log("updated user: ", updatedUser);
 			setUser(response[0].data);
 			setNeighbors([]);
-			//api call to return all users
+			//api call to return all neighbors
 			axios
 				// .post(
-				.get(
-					// `${api}/users`,
-					`${api}/users/getneighbors`,
-					{
-						headers: {
-							// "Content-Type": "application/json",
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
-						},
-						params: {
-							email: response[0].data.email,
-						},
-					}
-				)
+				.get(`${api}/users/getneighbors`, {
+					headers: {
+						// "Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+					params: {
+						email: response[0].data.email,
+					},
+				})
 				.then((res) => {
 					console.log("res.data.neighbors: ", res.data.neighbors);
 					if (res.data.length > 0) {
@@ -187,13 +165,32 @@ export default function EditUserPage({
 	}
 
 	//api call to return lat long from address
+	// async function getNewUserGeo(addressRequest) {
+	// 	try {
+	// 		const res = await axios.get(
+	// 			`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
+	// 		);
+	// 		return [res.data.items[0].position.lng, res.data.items[0].position.lat];
+	// 	} catch (err) {
+	// 		console.log("Error returning lat long from api ", err);
+	// 	}
+	// }
+
+	/**
+	 * Gets the longitude and latitude of a given address using a third-party API.
+	 * @param {string} addressRequest - The address to use for the API request.
+	 * @returns {Array<number>} The longitude and latitude of the address.
+	 */
 	async function getNewUserGeo(addressRequest) {
 		try {
 			const res = await axios.get(
+				// API endpoint for getting the latitude and longitude of an address
 				`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
 			);
+			// return the longitude and latitude of the address
 			return [res.data.items[0].position.lng, res.data.items[0].position.lat];
 		} catch (err) {
+			// log an error if there is an issue with the API request
 			console.log("Error returning lat long from api ", err);
 		}
 	}
