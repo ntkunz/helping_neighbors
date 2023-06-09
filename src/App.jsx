@@ -61,27 +61,7 @@ export default function App() {
 		fetchNeighbors();
 	}, [user]);
 
-	//function to get user email from token in local storage
-	//dompurified in useEffect that retrieves token
-	// const getUserFromToken = () => {
-	// 	const tokenValue = localStorage.getItem("token");
 
-	// 	if (tokenValue) {
-	// 		const { userToken } = JSON.parse(tokenValue);
-	// 		return userToken;
-	// 	} else return null;
-	// };
-
-	// const getEmailFromToken = (token) => {
-	// 	try {
-	// 	  // Replace 'yourSecretKey' with your own secret key for verifying the token
-	// 	  const decoded = jwt.verify(token, 'yourSecretKey');
-	// 	  return decoded.email;
-	// 	} catch (err) {
-	// 	  console.error('Error decoding token:', err);
-	// 	  return null;
-	// 	}
-	//  };
 
 	//handle login and set user state
 	async function handleLogin(e) {
@@ -102,15 +82,16 @@ export default function App() {
 
 		const password = purify(e.target.password.value);
 
-		//regex to check for valid password
+		// regex to check for valid password
 		// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-		// if (!passwordRegex.test(password)) {
-		// 	//display error if password not valid
-		// 	errorElement.textContent =
-		// 		"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
-		// 	errorElement.style.display = "inline-block";
-		// 	return;
-		// }
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
+		if (!passwordRegex.test(password)) {
+			//display error if password not valid
+			errorElement.textContent =
+				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
+			errorElement.style.display = "inline-block";
+			return;
+		}
 
 		//remove error if user has corrected input
 		document.querySelector(".error").style.display = "none";
@@ -130,18 +111,7 @@ export default function App() {
 					setToken(res.data.token);
 					//set user
 					setUser(res.data.user);
-					//set neighbors
-					//DISABLED BELOW TO TEST
-					// setNeighbors(res.data.neighbors);
 
-					//set user and neighbor states, set token, set logged in
-					// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn, setToken, setUser);
-
-					//set loggedIn to true
-					// setLoggedIn(true);
-
-					//navigate to neighbors page
-					// navigate("/neighbors");
 				} else {
 					// error if no user found
 					errorElement.style.display = "inline-block";
