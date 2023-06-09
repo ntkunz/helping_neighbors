@@ -1,4 +1,5 @@
 import "./App.scss";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
@@ -9,11 +10,10 @@ import EditUserPage from "./pages/EditUserPage/EditUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
-import axios from "axios";
-// import setReturnedUsers from "./utils/setReturnedUsers";
 import purify from "./utils/purify";
 import setToken from "./utils/setToken";
 import sendRequest from "./utils/sendRequest";
+import fetchNeighbors from "./utils/fetchNeighbors";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -23,45 +23,39 @@ export default function App() {
 	let navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
-
-	// JUNE 8TH ASYNC AWAIT TO GET USER ON LOAD
+	
+	/**
+	 * This effect runs once on component mount and updates the state with the user's data
+	 * or redirects to the login page if the user is not authenticated
+	 */
 	useEffect(() => {
 		const getUser = async () => {
-			const user = await sendRequest();
-			if (user && user.email) {
+			try {
+				const user = await sendRequest();
 				setUser(user);
-			} else {
+			} catch (error) {
 				navigate("/login");
 			}
 		};
 		getUser();
 	}, []);
 
-	
-	//send the token to the server on load using authorization header
+	// This effect runs whenever user is ChannelMergerNode, it gets the user's neighbors and udpates the neighbors state
 	useEffect(() => {
-		//fetch neighbors, to be used in useEffect on user state
-		const fetchNeighbors = async () => {
-			// setLoggedIn(true);
-			const getNeighbors = await axios.get(`${api}/users/getneighbors`, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
-			//ADD ERROR HANDLING HERE!
-
-			//return neighbors as response
-			setNeighbors(getNeighbors.data.neighbors);
+		const fetchData = async () => {
+			//run fetchNeighbors function to get the neighbors with token
+			const neighbors = await fetchNeighbors();
+			// set the neighbors, logged in, and navigate to /neighbors page
+			setNeighbors(neighbors);
 			setLoggedIn(true);
 			navigate("/neighbors");
-			return getNeighbors.data;
 		};
 
-		fetchNeighbors();
+		// Check if user object has an email property and if so fetch neighbors
+		if ("email" in user) {
+			fetchData();
+		}
 	}, [user]);
-
-
 
 	//handle login and set user state
 	async function handleLogin(e) {
@@ -83,8 +77,8 @@ export default function App() {
 		const password = purify(e.target.password.value);
 
 		// regex to check for valid password
-		// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
+		const passwordRegex =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 		if (!passwordRegex.test(password)) {
 			//display error if password not valid
 			errorElement.textContent =
@@ -96,7 +90,6 @@ export default function App() {
 		//remove error if user has corrected input
 		document.querySelector(".error").style.display = "none";
 
-		//api call to return user with matching email and all neighbors
 		//api call to login user, not to return all neighbors yet
 		await axios
 			// .post(`${api}/users`, { email, password })
@@ -111,7 +104,6 @@ export default function App() {
 					setToken(res.data.token);
 					//set user
 					setUser(res.data.user);
-
 				} else {
 					// error if no user found
 					errorElement.style.display = "inline-block";

@@ -21,28 +21,37 @@ export default function EditUserPage({
 	const [first_name, setFirstName] = useState(user.first_name);
 	const [last_name, setLastName] = useState(user.last_name);
 	const [email, setEmail] = useState(user.email);
-	// const [password, setPassword] = useState(user.password);
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
-	// const [active, setActive] = useState(user.status);
+	const [active, setActive] = useState(user.status);
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
 
+	/**
+	 * This effect runs once on component mount and updates the state with the user's barters
+	 */
 	useEffect(() => {
+		// Initialize newOffers and newDesires
 		let newOffers = "";
 		let newDesires = "";
+		// Loop through each key in user.barters
 		Object.keys(user.barters).forEach((key, index) => {
+			// If the value for the current key is 1, add it to newOffers
 			if (user.barters[key] === 1) {
 				newOffers += purify(` ${key},`);
 			} else {
+				// Otherwise, add it to newDesires
 				newDesires += purify(` ${key},`);
 			}
 		});
+		// Update state with the new offers and desires
 		setOffers(newOffers.trim().replace(/,$/, ""));
 		setDesires(newDesires.trim().replace(/,$/, ""));
-		//eslint-disable-next-line
+		// Ignore the "missing dependencies" warning for this effect
+		// because it only needs to run once on mount
+		// eslint-disable-next-line
 	}, []);
 
 	// function capFirst(string) {
@@ -54,10 +63,10 @@ export default function EditUserPage({
 
 	//submit the edit user form
 
-//6-8-23 - This is all working smoothly, though after I edit the user, go to neighbors, then try to edit again I am getting an error. 
-//fix today when I return
+	//6-8-23 - This is all working smoothly, though after I edit the user, go to neighbors, then try to edit again I am getting an error.
+	//fix today when I return
 
-	async function editUser(e) { console.log('editing user')
+	async function editUser(e) {
 		e.preventDefault();
 
 		const cleanEmail = purify(email);
@@ -91,7 +100,7 @@ export default function EditUserPage({
 			alert("Oops, you missed a field, please fill out all fields.");
 			return;
 		}
-		console.log('skills edited')
+		console.log("skills edited");
 		try {
 			const response = await Promise.all([
 				axios.post(
@@ -109,38 +118,32 @@ export default function EditUserPage({
 						home: purify(home),
 						city: purify(city),
 						province: purify(province),
-					}, 
-					{
-						headers: {
-							// "Content-Type": "application/json",
-							'Authorization': `Bearer ${localStorage.getItem("token")}`,
-						},
-					}
-				),
-			]);
-			console.log('response from first post to edit user: '	, response);
-			const updatedUser = response[0].data;
-			console.log('updated user: ', updatedUser)
-			setUser(response[0].data);
-			setNeighbors([]);
-			//api call to return all users
-			axios
-				// .post(
-					.get(
-					// `${api}/users`,
-					`${api}/users/getneighbors`,
+					},
 					{
 						headers: {
 							// "Content-Type": "application/json",
 							Authorization: `Bearer ${localStorage.getItem("token")}`,
 						},
-						params: {
-							email: response[0].data.email
-						}
 					}
-				)
+				),
+			]);
+			const updatedUser = response[0].data;
+			setUser(response[0].data);
+			setNeighbors([]);
+			//api call to return all neighbors
+			axios
+				// .post(
+				.get(`${api}/users/getneighbors`, {
+					headers: {
+						// "Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+					params: {
+						email: response[0].data.email,
+					},
+				})
 				.then((res) => {
-					console.log('res.data.neighbors: ', res.data.neighbors);
+					console.log("res.data.neighbors: ", res.data.neighbors);
 					if (res.data.length > 0) {
 						//set user and neighbor states, set token, set logged in
 						// setReturnedUsers(
@@ -161,25 +164,36 @@ export default function EditUserPage({
 		}
 	}
 
-	//api call to return lat long from address
+	/**
+	 * Gets the longitude and latitude of a given address using a third-party API.
+	 * @param {string} addressRequest - The address to use for the API request.
+	 * @returns {Array<number>} The longitude and latitude of the address.
+	 */
 	async function getNewUserGeo(addressRequest) {
 		try {
 			const res = await axios.get(
+				// API endpoint for getting the latitude and longitude of an address
 				`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
 			);
+			// return the longitude and latitude of the address
 			return [res.data.items[0].position.lng, res.data.items[0].position.lat];
 		} catch (err) {
+			// log an error if there is an issue with the API request
 			console.log("Error returning lat long from api ", err);
 		}
 	}
 
-	//function to remove skills from user
+	/**
+	 * Async function to remove skills from a user.
+	 * @param {string} id - The ID of the user whose skills are being removed.
+	 * @returns {Promise} - A promise that resolves to the response from the server.
+	 */
 	async function removeSkills(id) {
 		try {
 			const response = await axios.delete(`${api}/userskills/${id}`, {
 				headers: {
-					// "Content-Type": "application/json",
-					'Authorization': `Bearer ${localStorage.getItem("token")}`,
+					// Add authorization header with token from local storage
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 			});
 			return response;
@@ -203,13 +217,13 @@ export default function EditUserPage({
 						{
 							headers: {
 								// "Content-Type": "application/json",
-								'Authorization': `Bearer ${localStorage.getItem("token")}`,
+								Authorization: `Bearer ${localStorage.getItem("token")}`,
 							},
 						}
 					)
 				)
 			);
-			console.log('skill edited response: ', response)
+			console.log("skill edited response: ", response);
 			return response;
 		} catch (err) {
 			console.log("Error adding skills: ", err);
