@@ -164,18 +164,6 @@ export default function EditUserPage({
 		}
 	}
 
-	//api call to return lat long from address
-	// async function getNewUserGeo(addressRequest) {
-	// 	try {
-	// 		const res = await axios.get(
-	// 			`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
-	// 		);
-	// 		return [res.data.items[0].position.lng, res.data.items[0].position.lat];
-	// 	} catch (err) {
-	// 		console.log("Error returning lat long from api ", err);
-	// 	}
-	// }
-
 	/**
 	 * Gets the longitude and latitude of a given address using a third-party API.
 	 * @param {string} addressRequest - The address to use for the API request.
@@ -195,12 +183,16 @@ export default function EditUserPage({
 		}
 	}
 
-	//function to remove skills from user
+	/**
+	 * Async function to remove skills from a user.
+	 * @param {string} id - The ID of the user whose skills are being removed.
+	 * @returns {Promise} - A promise that resolves to the response from the server.
+	 */
 	async function removeSkills(id) {
 		try {
 			const response = await axios.delete(`${api}/userskills/${id}`, {
 				headers: {
-					// "Content-Type": "application/json",
+					// Add authorization header with token from local storage
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 			});
