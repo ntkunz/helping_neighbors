@@ -3,8 +3,8 @@ import { v4 } from "uuid";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import setReturnedUsers from '../../utils/setReturnedUsers';
-import purify from '../../utils/purify';
+import setReturnedUsers from "../../utils/setReturnedUsers";
+import purify from "../../utils/purify";
 // import setToken from "../../utils/setToken";
 export default function NewUserPage({
 	setUser,
@@ -26,7 +26,6 @@ export default function NewUserPage({
 
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
-		
 		setUser({});
 		setNeighbors({});
 		e.preventDefault();
@@ -73,12 +72,12 @@ export default function NewUserPage({
 		const offersSplit = offers.split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
 		//add skills to user_skills table
-		await addSkills(offersArray, user_id, true);
+		// await addSkills(offersArray, user_id, true);
 		const desires = purify(e.target.desires.value);
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
 		//add barters to user_skills table
-		await addSkills(desiresArray, user_id, false);
+		// await addSkills(desiresArray, user_id, false);
 
 		//CREATE A NEW USER OBJECT TO PASS VARIABLES TO API CALL INSTEAD OF PASSING EACH VARIABLE
 
@@ -86,6 +85,7 @@ export default function NewUserPage({
 		try {
 			const response = await Promise.all([
 				axios.post(`${api}/users/newuser`, {
+					// axios.post(`${api}/users`, {
 					user_id: user_id,
 					first_name: first_name,
 					last_name: last_name,
@@ -103,20 +103,45 @@ export default function NewUserPage({
 			]);
 
 			// set new user and token from api response
-			const newUser = response[0].data.user;
-			setUser(newUser)
-			setToken(response[0].data.token)
-			//upload image to users api once user_id is created
-			await submitImage(newUser.user_id);
+			console.log("response: ", response);
+			// const newUser = response[0].data.user;
+			const newUserId = response[0].data.userId;
+			await setToken(response[0].data.token);
+			// await addSkills(desiresArray, user_id, false);
+			// await addSkills(offersArray, user_id, true);
+			await addSkills(desiresArray, newUserId, false);
+			await addSkills(offersArray, newUserId, true);
+			// setUser(newUser)
 
-			//get user and neighbors from api
-			await axios.post(`${api}/users`, { email }).then((res) => {
-				if (res.data.length > 0) {
-					//set neighbors and loggedIn states
-					setReturnedUsers(email, res.data, setNeighbors, setLoggedIn);
-			// 		//navigate to neighbors page
-					navigate("/neighbors");
-			}})
+			//upload image to users api once user_id is created
+			// await submitImage(newUser.user_id);
+			await submitImage(newUserId);
+
+			//get neighbors from api
+			// await axios.post(`${api}/users`, { email }).then((res) => {
+			// await axios
+			// 	.get(`${api}/users`, {
+			// 		headers: {
+			// 			Authorization: `Bearer ${localStorage.getItem("token")}`,
+			// 		},
+			// 	})
+			// 	.then((res) => {
+			// 		if (res.data.length > 0) {
+			// 			//set neighbors and loggedIn states
+			// 			// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn);
+			// 			console.log('res.data: ', res.data)
+			// 			// 		//navigate to neighbors page
+			// 			// navigate("/neighbors");
+			// 		}
+			// 	});
+			// await setTimeout(() => {
+			// 	navigate("/");}, 5000);
+			
+			navigate("/");
+
+//THIS IS NAVIGATING TO THE '/' PAGE BUT THERE IS NO USER SET, JUST THE 
+//TOKEN, BUT IT'S NOT GETTING THE NEIGHBORS AND REDEIRECTING AS I'D EXPECT
+
 		} catch (err) {
 			console.log("Error creating new user: ", err);
 		}
@@ -141,11 +166,19 @@ export default function NewUserPage({
 		try {
 			const response = await Promise.all(
 				arr.map((item) =>
-					axios.post(`${api}/userskills`, {
-						user_id: id,
-						skill: item,
-						offer: which,
-					})
+					axios.post(
+						`${api}/userskills`,
+						{
+							user_id: id,
+							skill: item,
+							offer: which,
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${localStorage.getItem("token")}`,
+							},
+						}
+					)
 				)
 			);
 			return response;
@@ -159,7 +192,13 @@ export default function NewUserPage({
 		let formData = new FormData();
 		formData.append("file", img.data);
 		formData.append("user_id", userId);
-		const response = await axios.post(`${api}/users/image`, formData);
+		// const response = await axios.post(`${api}/users/image`, formData);
+		const response = await axios.post(`${api}/users/image`, formData, {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "multipart/form-data", // assuming this is the content type of the form data
+			},
+		});
 		return response;
 	};
 
@@ -186,7 +225,12 @@ export default function NewUserPage({
 			<h1 className="new__title">
 				Sign up to start bartering your way to a better neighborhood
 			</h1>
-			<form onSubmit={createNewUser} method="post" className="new__form" noValidate>
+			<form
+				onSubmit={createNewUser}
+				method="post"
+				className="new__form"
+				noValidate
+			>
 				<div className="new__signup">
 					<label className="new__label">
 						{" "}
@@ -237,8 +281,10 @@ export default function NewUserPage({
 							placeholder="Password again"
 						/>
 					</label>
-					<p className="new__requirement">Password must be at least 8 characters and contain 
-						at least one uppercase letter, one lowercase letter, one number and one special character
+					<p className="new__requirement">
+						Password must be at least 8 characters and contain at least one
+						uppercase letter, one lowercase letter, one number and one special
+						character
 					</p>
 					<label className="new__label">
 						Home Address
