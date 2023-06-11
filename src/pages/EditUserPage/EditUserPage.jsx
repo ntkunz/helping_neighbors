@@ -2,8 +2,8 @@ import "./EditUserPage.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import setReturnedUsers from "../../utils/setReturnedUsers";
 import purify from "../../utils/purify";
+import getNewUserGeo from "../../utils/getNewUserGeo";
 
 export default function EditUserPage({
 	user,
@@ -54,18 +54,10 @@ export default function EditUserPage({
 		// eslint-disable-next-line
 	}, []);
 
-	// function capFirst(string) {
-	// 	return string.charAt(0).toUpperCase() + string.slice(1);
-	// }
-
 	//==============need to add ability to change email, password, and image=================
 	//============also need to add ability to change status to active or inactive=============
 
 	//submit the edit user form
-
-	//6-8-23 - This is all working smoothly, though after I edit the user, go to neighbors, then try to edit again I am getting an error.
-	//fix today when I return
-
 	async function editUser(e) {
 		e.preventDefault();
 
@@ -100,7 +92,6 @@ export default function EditUserPage({
 			alert("Oops, you missed a field, please fill out all fields.");
 			return;
 		}
-		console.log("skills edited");
 		try {
 			const response = await Promise.all([
 				axios.post(
@@ -121,42 +112,27 @@ export default function EditUserPage({
 					},
 					{
 						headers: {
-							// "Content-Type": "application/json",
 							Authorization: `Bearer ${localStorage.getItem("token")}`,
 						},
 					}
 				),
 			]);
-			const updatedUser = response[0].data;
+			//set user's new data
 			setUser(response[0].data);
+			//clear old neighbors incase address changed
 			setNeighbors([]);
 			//api call to return all neighbors
 			axios
-				// .post(
-				.get(`${api}/users/getneighbors`, {
+				.get(`${api}/users`, {
 					headers: {
-						// "Content-Type": "application/json",
+						"Content-Type": "application/json",
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-					params: {
-						email: response[0].data.email,
 					},
 				})
 				.then((res) => {
-					console.log("res.data.neighbors: ", res.data.neighbors);
 					if (res.data.length > 0) {
-						//set user and neighbor states, set token, set logged in
-						// setReturnedUsers(
-						// 	email,
-						// 	res.data,
-						// 	setNeighbors,
-						// 	setLoggedIn,
-						// 	setToken,
-						// 	setUser
-						// );
-						// setUser(res.data[0]);
+						//set new neighbors
 						setNeighbors(res.data.neighbors);
-						// navigate("/neighbors");
 					}
 				});
 		} catch (err) {
@@ -169,19 +145,19 @@ export default function EditUserPage({
 	 * @param {string} addressRequest - The address to use for the API request.
 	 * @returns {Array<number>} The longitude and latitude of the address.
 	 */
-	async function getNewUserGeo(addressRequest) {
-		try {
-			const res = await axios.get(
-				// API endpoint for getting the latitude and longitude of an address
-				`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
-			);
-			// return the longitude and latitude of the address
-			return [res.data.items[0].position.lng, res.data.items[0].position.lat];
-		} catch (err) {
-			// log an error if there is an issue with the API request
-			console.log("Error returning lat long from api ", err);
-		}
-	}
+	// async function getNewUserGeo(addressRequest) {
+	// 	try {
+	// 		const res = await axios.get(
+	// 			// API endpoint for getting the latitude and longitude of an address
+	// 			`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
+	// 		);
+	// 		// return the longitude and latitude of the address
+	// 		return [res.data.items[0].position.lng, res.data.items[0].position.lat];
+	// 	} catch (err) {
+	// 		// log an error if there is an issue with the API request
+	// 		console.log("Error returning lat long from api ", err);
+	// 	}
+	// }
 
 	/**
 	 * Async function to remove skills from a user.
