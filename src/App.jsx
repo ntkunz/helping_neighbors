@@ -95,10 +95,7 @@ export default function App() {
 			// .post(`${api}/users`, { email, password })
 			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
-				console.log("res: ", res.data.user);
-				// await axios.post(`${api}/users`, { email, password }).then((res) => {
-				// if (res.data.length > 0) {
-				//ADDED POTATO TO TEST/DISABLE THOSE STATE CHANGES
+				
 				if (res.data.user.email === email) {
 					//set token in local storage
 					setToken(res.data.token);

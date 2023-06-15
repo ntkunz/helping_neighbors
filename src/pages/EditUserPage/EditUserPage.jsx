@@ -9,8 +9,6 @@ export default function EditUserPage({
 	user,
 	setNeighbors,
 	setUser,
-	setLoggedIn,
-	setToken,
 }) {
 	const navigate = useNavigate();
 
@@ -94,9 +92,6 @@ export default function EditUserPage({
 		}
 		try {
 			const response = await Promise.all([
-				// axios.post(
-				// 	`${api}/users/edituser`,
-				// 	{
 				axios.put(
 					`${api}/users`,
 					{
@@ -104,8 +99,6 @@ export default function EditUserPage({
 						first_name: purify(first_name),
 						last_name: purify(last_name),
 						email: cleanEmail,
-						// password: password,
-						// status: active,
 						coords: coords,
 						about: purify(about),
 						address: address,
@@ -120,6 +113,7 @@ export default function EditUserPage({
 					}
 				),
 			]);
+
 			//set user's new data
 			setUser(response[0].data);
 			//clear old neighbors incase address changed
@@ -142,25 +136,6 @@ export default function EditUserPage({
 			console.log("Error creating new user: ", err);
 		}
 	}
-
-	/**
-	 * Gets the longitude and latitude of a given address using a third-party API.
-	 * @param {string} addressRequest - The address to use for the API request.
-	 * @returns {Array<number>} The longitude and latitude of the address.
-	 */
-	// async function getNewUserGeo(addressRequest) {
-	// 	try {
-	// 		const res = await axios.get(
-	// 			// API endpoint for getting the latitude and longitude of an address
-	// 			`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
-	// 		);
-	// 		// return the longitude and latitude of the address
-	// 		return [res.data.items[0].position.lng, res.data.items[0].position.lat];
-	// 	} catch (err) {
-	// 		// log an error if there is an issue with the API request
-	// 		console.log("Error returning lat long from api ", err);
-	// 	}
-	// }
 
 	/**
 	 * Async function to remove skills from a user.
@@ -202,7 +177,6 @@ export default function EditUserPage({
 					)
 				)
 			);
-			console.log("skill edited response: ", response);
 			return response;
 		} catch (err) {
 			console.log("Error adding skills: ", err);
