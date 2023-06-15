@@ -94,8 +94,11 @@ export default function EditUserPage({
 		}
 		try {
 			const response = await Promise.all([
-				axios.post(
-					`${api}/users/edituser`,
+				// axios.post(
+				// 	`${api}/users/edituser`,
+				// 	{
+				axios.put(
+					`${api}/users`,
 					{
 						user_id: purify(user_id),
 						first_name: purify(first_name),
@@ -238,12 +241,13 @@ export default function EditUserPage({
 					<label className="edit__label">
 						Your Email
 						<input
-							type="text"
+							type="email"
 							className="edit__input"
 							name="email"
 							placeholder="your email@something.com"
 							value={email}
 							onChange={(e) => setEmail(e.target.value.toLowerCase())}
+							readOnly
 						/>
 					</label>
 					<label className="edit__label">

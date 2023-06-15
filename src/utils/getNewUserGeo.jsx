@@ -9,14 +9,14 @@ const geoKey = process.env.REACT_APP_HERE_API_KEY;
  */
 export default async function getNewUserGeo(addressRequest) {
 	try {
-	  const res = await axios.get(
-		 // API endpoint for getting the latitude and longitude of an address
-		 `${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
-	  );
-	  // return the longitude and latitude of the address
-	  return [res.data.items[0].position.lng, res.data.items[0].position.lat];
+		const res = await axios.get(
+			// API endpoint for getting the latitude and longitude of an address
+			`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
+		);
+		// return the longitude and latitude of the address
+		return [res.data.items[0].position.lng, res.data.items[0].position.lat];
 	} catch (err) {
-	  // log an error if there is an issue with the API request
-	  console.log("Error returning lat long from api ", err);
+		// log an error if there is an issue with the API request
+		console.log("Error returning lat long from api ", err);
 	}
- }
+}

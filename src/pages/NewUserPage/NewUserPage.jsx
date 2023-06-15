@@ -103,12 +103,10 @@ export default function NewUserPage({
 			]);
 
 			// set new user and token from api response
-			console.log("response: ", response);
 			// const newUser = response[0].data.user;
-			const newUserId = response[0].data.userId;
-			await setToken(response[0].data.token);
-			// await addSkills(desiresArray, user_id, false);
-			// await addSkills(offersArray, user_id, true);
+			const newUser = response[0].data;
+			const newUserId = newUser.userId;
+			await setToken(newUser.token);
 			await addSkills(desiresArray, newUserId, false);
 			await addSkills(offersArray, newUserId, true);
 			// setUser(newUser)
@@ -119,6 +117,7 @@ export default function NewUserPage({
 
 			//get neighbors from api
 			// await axios.post(`${api}/users`, { email }).then((res) => {
+
 			// await axios
 			// 	.get(`${api}/users`, {
 			// 		headers: {
@@ -127,15 +126,39 @@ export default function NewUserPage({
 			// 	})
 			// 	.then((res) => {
 			// 		if (res.data.length > 0) {
-			// 			//set neighbors and loggedIn states
-			// 			// setReturnedUsers(email, res.data, setNeighbors, setLoggedIn);
 			// 			console.log('res.data: ', res.data)
-			// 			// 		//navigate to neighbors page
+			// 			//set neighbors and loggedIn states
+			// 			// setLoggedIn(true)
+			// 			// setUser(newUser)
+			// 			// setNeighbors(res.data)
+			// 			//navigate to neighbors page
 			// 			// navigate("/neighbors");
 			// 		}
 			// 	});
-			// await setTimeout(() => {
-			// 	navigate("/");}, 5000);
+
+			const getNewUser = await axios.get(`${api}/users/verify`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				}
+			});
+
+			console.log('getNewUser: ', getNewUser)
+
+			const getNewNeighbors = await axios.get(`${api}/users`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
+
+			console.log('getNewNeighbors: ', getNewNeighbors)
+
+			setUser(getNewUser.data[0]);
+			setNeighbors(getNewNeighbors.data.neighbors);
+			setLoggedIn(true);
+			// setUser(newUser)
+			// setLoggedIn(true)
 			
 			navigate("/");
 
@@ -143,7 +166,7 @@ export default function NewUserPage({
 //TOKEN, BUT IT'S NOT GETTING THE NEIGHBORS AND REDEIRECTING AS I'D EXPECT
 
 		} catch (err) {
-			console.log("Error creating new user: ", err);
+			console.log("Error creating new user");
 		}
 	}
 
@@ -196,7 +219,7 @@ export default function NewUserPage({
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
-				"Content-Type": "multipart/form-data", // assuming this is the content type of the form data
+				"Content-Type": "multipart/form-data", 
 			},
 		});
 		return response;
