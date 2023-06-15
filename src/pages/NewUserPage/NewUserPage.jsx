@@ -84,8 +84,8 @@ export default function NewUserPage({
 		//add user to users table
 		try {
 			const response = await Promise.all([
-				axios.post(`${api}/users/newuser`, {
-					// axios.post(`${api}/users`, {
+				// axios.post(`${api}/users/newuser`, {
+					axios.post(`${api}/users`, {
 					user_id: user_id,
 					first_name: first_name,
 					last_name: last_name,
