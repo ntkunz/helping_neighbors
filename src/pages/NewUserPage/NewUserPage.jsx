@@ -3,8 +3,8 @@ import { v4 } from "uuid";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import setReturnedUsers from "../../utils/setReturnedUsers";
 import purify from "../../utils/purify";
+import getNewUserGeo from "../../utils/getNewUserGeo";
 // import setToken from "../../utils/setToken";
 export default function NewUserPage({
 	setUser,
@@ -71,15 +71,9 @@ export default function NewUserPage({
 		const offers = purify(e.target.offers.value);
 		const offersSplit = offers.split(",");
 		const offersArray = offersSplit.map((offer) => offer.trim(" "));
-		//add skills to user_skills table
-		// await addSkills(offersArray, user_id, true);
 		const desires = purify(e.target.desires.value);
 		const desiresSplit = desires.split(",");
 		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
-		//add barters to user_skills table
-		// await addSkills(desiresArray, user_id, false);
-
-		//CREATE A NEW USER OBJECT TO PASS VARIABLES TO API CALL INSTEAD OF PASSING EACH VARIABLE
 
 		//add user to users table
 		try {
@@ -91,7 +85,6 @@ export default function NewUserPage({
 					last_name: last_name,
 					email: email,
 					password: password,
-					// passwordConfirm: passwordConfirm,
 					status: status,
 					coords: coords,
 					about: about,
@@ -103,7 +96,6 @@ export default function NewUserPage({
 			]);
 
 			// set new user and token from api response
-			// const newUser = response[0].data.user;
 			const newUser = response[0].data;
 			const newUserId = newUser.userId;
 			await setToken(newUser.token);
@@ -112,29 +104,7 @@ export default function NewUserPage({
 			// setUser(newUser)
 
 			//upload image to users api once user_id is created
-			// await submitImage(newUser.user_id);
 			await submitImage(newUserId);
-
-			//get neighbors from api
-			// await axios.post(`${api}/users`, { email }).then((res) => {
-
-			// await axios
-			// 	.get(`${api}/users`, {
-			// 		headers: {
-			// 			Authorization: `Bearer ${localStorage.getItem("token")}`,
-			// 		},
-			// 	})
-			// 	.then((res) => {
-			// 		if (res.data.length > 0) {
-			// 			console.log('res.data: ', res.data)
-			// 			//set neighbors and loggedIn states
-			// 			// setLoggedIn(true)
-			// 			// setUser(newUser)
-			// 			// setNeighbors(res.data)
-			// 			//navigate to neighbors page
-			// 			// navigate("/neighbors");
-			// 		}
-			// 	});
 
 			const getNewUser = await axios.get(`${api}/users/verify`, {
 				headers: {
@@ -143,8 +113,6 @@ export default function NewUserPage({
 				}
 			});
 
-			console.log('getNewUser: ', getNewUser)
-
 			const getNewNeighbors = await axios.get(`${api}/users`, {
 				headers: {
 					"Content-Type": "application/json",
@@ -152,34 +120,13 @@ export default function NewUserPage({
 				},
 			});
 
-			console.log('getNewNeighbors: ', getNewNeighbors)
-
-			setUser(getNewUser.data[0]);
+			setUser(getNewUser.data);
 			setNeighbors(getNewNeighbors.data.neighbors);
-			setLoggedIn(true);
-			// setUser(newUser)
-			// setLoggedIn(true)
-			
+			setLoggedIn(true);			
 			navigate("/");
-
-//THIS IS NAVIGATING TO THE '/' PAGE BUT THERE IS NO USER SET, JUST THE 
-//TOKEN, BUT IT'S NOT GETTING THE NEIGHBORS AND REDEIRECTING AS I'D EXPECT
 
 		} catch (err) {
 			console.log("Error creating new user");
-		}
-	}
-
-	//MOVE THIS FUNCTION TO THE SERVER
-	//api call to return lat long from address as lat and long
-	async function getNewUserGeo(addressRequest) {
-		try {
-			const res = await axios.get(
-				`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
-			);
-			return [res.data.items[0].position.lng, res.data.items[0].position.lat];
-		} catch (err) {
-			console.log("Error returning lat long from api ", err);
 		}
 	}
 
