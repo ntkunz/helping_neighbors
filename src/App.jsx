@@ -95,7 +95,6 @@ export default function App() {
 			// .post(`${api}/users`, { email, password })
 			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
-				
 				if (res.data.user.email === email) {
 					//set token in local storage
 					setToken(res.data.token);
@@ -109,7 +108,6 @@ export default function App() {
 			})
 			.catch((error) => {
 				//set error text based on error status
-				// console.log(error.response.status)
 				if (error.response.status === 404)
 					errorElement.textContent = "Invalid User";
 				if (error.response.status === 429)
