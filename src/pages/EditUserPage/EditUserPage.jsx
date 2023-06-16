@@ -10,6 +10,7 @@ export default function EditUserPage({
 	user,
 	setNeighbors,
 	setUser,
+	setLoggedIn,
 }) {
 	const navigate = useNavigate();
 
@@ -23,10 +24,12 @@ export default function EditUserPage({
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
+	const [originalAddress, setOriginalAddress] = useState(user.address);
 	const [active, setActive] = useState(user.status);
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
+	const [password, setPassword] = useState("");
 
 	/**
 	 * This effect runs once on component mount and updates the state with the user's barters
@@ -62,23 +65,22 @@ export default function EditUserPage({
 
 		const cleanEmail = purify(email);
 		const user_id = user.user_id;
+
 		await removeSkills(purify(user_id)); //remove all user skills from table to add updated ones
 		const address = purify(`${home} ${city} ${province}`);
 		const addressRequest = address
 			.replaceAll(",", " ")
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
-		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		// const offersSplit = offers.trim(" ").split(",");
-		// const offersArray = offersSplit.map((offer) => purify(offer.trim(" ")));
-		// await editSkills(offersArray, user_id, true); //add offers to user skills table
-		// const desiresSplit = desires.split(",");
-		// const desiresArray = desiresSplit.map((desire) => purify(desire.trim(" ")));
-		// await editSkills(desiresArray, user_id, false); //add barters to user skills table
+
+		let coords = [user.location.x, user.location.y];
+		// Check if the address has changed
+		if (address !== originalAddress) {
+			coords = await getNewUserGeo(addressRequest); // get new address coordinates
+		}
 
 		const offersSplit = offers.split(",");
 		const desiresSplit = desires.split(",");
-
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
 				skill: purify(offer.trim()),
@@ -89,7 +91,8 @@ export default function EditUserPage({
 				offer: false, // Indicate it as a desire
 			})),
 		];
-		addSkills(skillsArray, user_id);
+
+		await addSkills(skillsArray, user_id);
 
 		if (
 			address === "" ||
@@ -196,6 +199,45 @@ export default function EditUserPage({
 			return response;
 		} catch (err) {
 			console.log("Error adding skills: ", err);
+		}
+	}
+
+	//function to reveal password input field to confirm account deletion
+	function deleteUserValidate(e) {
+		e.preventDefault();
+		document.querySelector(".edit__password").style.display = "flex";
+		alert("Are you sure you want to delete this user?");
+		document.querySelector('input[name="password"]').focus();
+	}
+
+	//function to delete user
+	async function deleteUser(e) {
+		e.preventDefault();
+		const passwordValidate = purify(password);
+		try {
+			await axios.delete(`${api}/users`, {
+				headers: {
+					// Add authorization header with token from local storage
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+				data: {
+					email: user.email,
+					userId: user.user_id,
+					password: passwordValidate,
+				},
+			});
+
+			////// DELETE USER SKILLS AND MESSAGES//////
+
+
+			//here if response is 200 then delete userskills and messages
+			setNeighbors([]);
+			setLoggedIn(false);
+			localStorage.removeItem("token");
+			setUser({});
+			return "You have been deleted";
+		} catch (err) {
+			console.log("Error deleting user: ", err);
 		}
 	}
 
@@ -317,7 +359,6 @@ export default function EditUserPage({
 						One or two words for each thing you'd like to barter for, separated
 						by commas
 					</p>
-
 					<button className="edit__btn">Edit Your Profile</button>
 					<button
 						onClick={(e) => {
@@ -328,6 +369,30 @@ export default function EditUserPage({
 					>
 						Cancel
 					</button>
+					<button className="edit__btn" onClick={deleteUserValidate}>
+						Delete Account
+					</button>
+					{/* add password field to verify user to delete account  */}
+					<div className="edit__password">
+						<label className="edit__label">
+							Enter your password to delete your account
+							<input
+								type="password"
+								className="edit__input"
+								name="password"
+								placeholder=""
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+						</label>
+						<p className="edit__desc">
+							This cannot be undone and will delete all of your data from
+							Helping Neighbors
+						</p>
+						<button className="edit__btn delete__btn" onClick={deleteUser}>
+							Delete Account
+						</button>
+					</div>
 				</div>
 			</form>
 		</div>
