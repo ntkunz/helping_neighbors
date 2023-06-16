@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
+import addSkills from "../../utils/addSkills";
 
 export default function EditUserPage({
 	user,
@@ -68,12 +69,27 @@ export default function EditUserPage({
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		const offersSplit = offers.trim(" ").split(",");
-		const offersArray = offersSplit.map((offer) => purify(offer.trim(" ")));
-		await editSkills(offersArray, user_id, true); //add offers to user skills table
+		// const offersSplit = offers.trim(" ").split(",");
+		// const offersArray = offersSplit.map((offer) => purify(offer.trim(" ")));
+		// await editSkills(offersArray, user_id, true); //add offers to user skills table
+		// const desiresSplit = desires.split(",");
+		// const desiresArray = desiresSplit.map((desire) => purify(desire.trim(" ")));
+		// await editSkills(desiresArray, user_id, false); //add barters to user skills table
+
+		const offersSplit = offers.split(",");
 		const desiresSplit = desires.split(",");
-		const desiresArray = desiresSplit.map((desire) => purify(desire.trim(" ")));
-		await editSkills(desiresArray, user_id, false); //add barters to user skills table
+
+		const skillsArray = [
+			...offersSplit.map((offer) => ({
+				skill: purify(offer.trim()),
+				offer: true, // Indicate it as an offer
+			})),
+			...desiresSplit.map((desire) => ({
+				skill: purify(desire.trim()),
+				offer: false, // Indicate it as a desire
+			})),
+		];
+		addSkills(skillsArray, user_id);
 
 		if (
 			address === "" ||
@@ -133,7 +149,7 @@ export default function EditUserPage({
 					}
 				});
 		} catch (err) {
-			console.log("Error creating new user: ", err);
+			console.log("Error editing user: ", err);
 		}
 	}
 

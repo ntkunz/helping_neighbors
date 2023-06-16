@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
+import addSkills from "../../utils/addSkills";
 // import setToken from "../../utils/setToken";
 export default function NewUserPage({
 	setUser,
@@ -68,18 +69,34 @@ export default function NewUserPage({
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
 		const status = "active";
 		const about = purify(e.target.about.value);
+		// const offers = purify(e.target.offers.value);
+		// const offersSplit = offers.split(",");
+		// const offersArray = offersSplit.map((offer) => offer.trim(" "));
+		// const desires = purify(e.target.desires.value);
+		// const desiresSplit = desires.split(",");
+		// const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
+
 		const offers = purify(e.target.offers.value);
 		const offersSplit = offers.split(",");
-		const offersArray = offersSplit.map((offer) => offer.trim(" "));
 		const desires = purify(e.target.desires.value);
 		const desiresSplit = desires.split(",");
-		const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
+
+		const skillsArray = [
+			...offersSplit.map((offer) => ({
+				skill: offer.trim(),
+				offer: true, // Indicate it as an offer
+			})),
+			...desiresSplit.map((desire) => ({
+				skill: desire.trim(),
+				offer: false, // Indicate it as a desire
+			})),
+		];
 
 		//add user to users table
 		try {
 			const response = await Promise.all([
 				// axios.post(`${api}/users/newuser`, {
-					axios.post(`${api}/users`, {
+				axios.post(`${api}/users`, {
 					user_id: user_id,
 					first_name: first_name,
 					last_name: last_name,
@@ -99,9 +116,9 @@ export default function NewUserPage({
 			const newUser = response[0].data;
 			const newUserId = newUser.userId;
 			await setToken(newUser.token);
-			await addSkills(desiresArray, newUserId, false);
-			await addSkills(offersArray, newUserId, true);
-			// setUser(newUser)
+			// await addSkills(desiresArray, newUserId, false);
+			// await addSkills(offersArray, newUserId, true);
+			await addSkills(skillsArray, newUserId);
 
 			//upload image to users api once user_id is created
 			await submitImage(newUserId);
@@ -110,7 +127,7 @@ export default function NewUserPage({
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				}
+				},
 			});
 
 			const getNewNeighbors = await axios.get(`${api}/users`, {
@@ -122,40 +139,34 @@ export default function NewUserPage({
 
 			setUser(getNewUser.data);
 			setNeighbors(getNewNeighbors.data.neighbors);
-			setLoggedIn(true);			
+			setLoggedIn(true);
 			navigate("/");
-
 		} catch (err) {
 			console.log("Error creating new user");
 		}
 	}
 
-	// MOVE THIS TO THE SERVER AND MAKE IT A SINGLE CALL
-	//add userskills to user page function
-	async function addSkills(arr, id, which) {
-		try {
-			const response = await Promise.all(
-				arr.map((item) =>
-					axios.post(
-						`${api}/userskills`,
-						{
-							user_id: id,
-							skill: item,
-							offer: which,
-						},
-						{
-							headers: {
-								Authorization: `Bearer ${localStorage.getItem("token")}`,
-							},
-						}
-					)
-				)
-			);
-			return response;
-		} catch (err) {
-			return console.log("Error adding skills: ", err);
-		}
-	}
+	// // Call the API to add user skills
+	// async function addSkills(arr, id) {
+	// 	try {
+	// 		const response = await axios.post(
+	// 			`${api}/userskills`,
+	// 			{
+	// 				user_id: id,
+	// 				skills: arr,
+	// 			},
+	// 			{
+	// 				headers: {
+	// 					Authorization: `Bearer ${localStorage.getItem("token")}`,
+	// 				},
+	// 			}
+	// 		);
+	// 		return response;
+	// 	} catch (err) {
+	// 		console.log("Error adding skills: ", err);
+	// 	}
+	// }
+
 
 	//upload image to users api
 	const submitImage = async (userId) => {
@@ -166,7 +177,7 @@ export default function NewUserPage({
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
-				"Content-Type": "multipart/form-data", 
+				"Content-Type": "multipart/form-data",
 			},
 		});
 		return response;
