@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
-// import setToken from "../../utils/setToken";
+
 export default function NewUserPage({
 	setUser,
 	setLoggedIn,
@@ -40,6 +40,8 @@ export default function NewUserPage({
 			errorElement.innerHTML = "Passwords do not match";
 			return;
 		}
+		//clear error if passwords match
+		errorElement.style.display = "none";
 
 		const user_id = v4();
 		const first_name = purify(capFirst(e.target.first_name.value));
@@ -69,12 +71,6 @@ export default function NewUserPage({
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
 		const status = "active";
 		const about = purify(e.target.about.value);
-		// const offers = purify(e.target.offers.value);
-		// const offersSplit = offers.split(",");
-		// const offersArray = offersSplit.map((offer) => offer.trim(" "));
-		// const desires = purify(e.target.desires.value);
-		// const desiresSplit = desires.split(",");
-		// const desiresArray = desiresSplit.map((desire) => desire.trim(" "));
 
 		const offers = purify(e.target.offers.value);
 		const offersSplit = offers.split(",");
@@ -95,7 +91,6 @@ export default function NewUserPage({
 		//add user to users table
 		try {
 			const response = await Promise.all([
-				// axios.post(`${api}/users/newuser`, {
 				axios.post(`${api}/users`, {
 					user_id: user_id,
 					first_name: first_name,
@@ -112,12 +107,13 @@ export default function NewUserPage({
 				}),
 			]);
 
+			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH, AND 
+			// STATE IS AS if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
+
 			// set new user and token from api response
 			const newUser = response[0].data;
 			const newUserId = newUser.userId;
 			await setToken(newUser.token);
-			// await addSkills(desiresArray, newUserId, false);
-			// await addSkills(offersArray, newUserId, true);
 			await addSkills(skillsArray, newUserId);
 
 			//upload image to users api once user_id is created
@@ -146,29 +142,7 @@ export default function NewUserPage({
 		}
 	}
 
-	// // Call the API to add user skills
-	// async function addSkills(arr, id) {
-	// 	try {
-	// 		const response = await axios.post(
-	// 			`${api}/userskills`,
-	// 			{
-	// 				user_id: id,
-	// 				skills: arr,
-	// 			},
-	// 			{
-	// 				headers: {
-	// 					Authorization: `Bearer ${localStorage.getItem("token")}`,
-	// 				},
-	// 			}
-	// 		);
-	// 		return response;
-	// 	} catch (err) {
-	// 		console.log("Error adding skills: ", err);
-	// 	}
-	// }
-
-
-	//upload image to users api
+	//upload image to users api function (move to utils file)
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
