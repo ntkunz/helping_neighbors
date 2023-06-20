@@ -89,8 +89,27 @@
 			cursor: pointer;
 		}
 	}
+
+	&__password {
+		display: none;
+		flex-wrap: wrap;
+
+		& label {
+			width: 100%;
+		}
+
+		& p {
+			width: 100%;
+		}
+	}
 }
 
 .textarea {
 	resize: none;
+}
+
+.delete__btn {
+	width: 100%;
+	color: $color-five;
+	background-color: $color-error;
 }

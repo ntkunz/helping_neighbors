@@ -2,15 +2,15 @@ import "./EditUserPage.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import setReturnedUsers from "../../utils/setReturnedUsers";
 import purify from "../../utils/purify";
+import getNewUserGeo from "../../utils/getNewUserGeo";
+import addSkills from "../../utils/addSkills";
 
 export default function EditUserPage({
 	user,
 	setNeighbors,
 	setUser,
 	setLoggedIn,
-	setToken,
 }) {
 	const navigate = useNavigate();
 
@@ -21,33 +21,40 @@ export default function EditUserPage({
 	const [first_name, setFirstName] = useState(user.first_name);
 	const [last_name, setLastName] = useState(user.last_name);
 	const [email, setEmail] = useState(user.email);
-	// const [password, setPassword] = useState(user.password);
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
-	// const [active, setActive] = useState(user.status);
+	const [originalAddress, setOriginalAddress] = useState(user.address);
+	const [active, setActive] = useState(user.status);
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
+	const [password, setPassword] = useState("");
 
+	/**
+	 * This effect runs once on component mount and updates the state with the user's barters
+	 */
 	useEffect(() => {
+		// Initialize newOffers and newDesires
 		let newOffers = "";
 		let newDesires = "";
+		// Loop through each key in user.barters
 		Object.keys(user.barters).forEach((key, index) => {
+			// If the value for the current key is 1, add it to newOffers
 			if (user.barters[key] === 1) {
 				newOffers += purify(` ${key},`);
 			} else {
+				// Otherwise, add it to newDesires
 				newDesires += purify(` ${key},`);
 			}
 		});
+		// Update state with the new offers and desires
 		setOffers(newOffers.trim().replace(/,$/, ""));
 		setDesires(newDesires.trim().replace(/,$/, ""));
-		//eslint-disable-next-line
+		// Ignore the "missing dependencies" warning for this effect
+		// because it only needs to run once on mount
+		// eslint-disable-next-line
 	}, []);
-
-	// function capFirst(string) {
-	// 	return string.charAt(0).toUpperCase() + string.slice(1);
-	// }
 
 	//==============need to add ability to change email, password, and image=================
 	//============also need to add ability to change status to active or inactive=============
@@ -58,19 +65,34 @@ export default function EditUserPage({
 
 		const cleanEmail = purify(email);
 		const user_id = user.user_id;
+
 		await removeSkills(purify(user_id)); //remove all user skills from table to add updated ones
 		const address = purify(`${home} ${city} ${province}`);
 		const addressRequest = address
 			.replaceAll(",", " ")
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
-		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		const offersSplit = offers.trim(" ").split(",");
-		const offersArray = offersSplit.map((offer) => purify(offer.trim(" ")));
-		await editSkills(offersArray, user_id, true); //add offers to user skills table
+
+		let coords = [user.location.x, user.location.y];
+		// Check if the address has changed
+		if (address !== originalAddress) {
+			coords = await getNewUserGeo(addressRequest); // get new address coordinates
+		}
+
+		const offersSplit = offers.split(",");
 		const desiresSplit = desires.split(",");
-		const desiresArray = desiresSplit.map((desire) => purify(desire.trim(" ")));
-		await editSkills(desiresArray, user_id, false); //add barters to user skills table
+		const skillsArray = [
+			...offersSplit.map((offer) => ({
+				skill: purify(offer.trim()),
+				offer: true, // Indicate it as an offer
+			})),
+			...desiresSplit.map((desire) => ({
+				skill: purify(desire.trim()),
+				offer: false, // Indicate it as a desire
+			})),
+		];
+
+		await addSkills(skillsArray, user_id);
 
 		if (
 			address === "" ||
@@ -89,61 +111,64 @@ export default function EditUserPage({
 		}
 		try {
 			const response = await Promise.all([
-				axios.post(`${api}/users/edituser`, {
-					user_id: purify(user_id),
-					first_name: purify(first_name),
-					last_name: purify(last_name),
-					email: cleanEmail,
-					// password: password,
-					// status: active,
-					coords: coords,
-					about: purify(about),
-					address: address,
-					home: purify(home),
-					city: purify(city),
-					province: purify(province),
-				}),
+				axios.put(
+					`${api}/users`,
+					{
+						user_id: purify(user_id),
+						first_name: purify(first_name),
+						last_name: purify(last_name),
+						email: cleanEmail,
+						coords: coords,
+						about: purify(about),
+						address: address,
+						home: purify(home),
+						city: purify(city),
+						province: purify(province),
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+					}
+				),
 			]);
+
+			//set user's new data
+			setUser(response[0].data);
+			//clear old neighbors incase address changed
 			setNeighbors([]);
-			//api call to return all users
+			//api call to return all neighbors
 			axios
-				.post(`${api}/users`, { email: response[0].data.email })
+				.get(`${api}/users`, {
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				})
 				.then((res) => {
 					if (res.data.length > 0) {
-						//set user and neighbor states, set token, set logged in
-						setReturnedUsers(
-							email,
-							res.data,
-							setNeighbors,
-							setLoggedIn,
-							setToken,
-							setUser
-						);
-
-						navigate("/neighbors");
+						//set new neighbors
+						setNeighbors(res.data.neighbors);
 					}
 				});
 		} catch (err) {
-			console.log("Error creating new user: ", err);
+			console.log("Error editing user: ", err);
 		}
 	}
 
-	//api call to return lat long from address
-	async function getNewUserGeo(addressRequest) {
-		try {
-			const res = await axios.get(
-				`${geoApi}?q=${addressRequest}&apiKey=${geoKey}`
-			);
-			return [res.data.items[0].position.lng, res.data.items[0].position.lat];
-		} catch (err) {
-			console.log("Error returning lat long from api ", err);
-		}
-	}
-
-	//function to remove skills from user
+	/**
+	 * Async function to remove skills from a user.
+	 * @param {string} id - The ID of the user whose skills are being removed.
+	 * @returns {Promise} - A promise that resolves to the response from the server.
+	 */
 	async function removeSkills(id) {
 		try {
-			const response = await axios.delete(`${api}/userskills/${id}`);
+			const response = await axios.delete(`${api}/userskills/${id}`, {
+				headers: {
+					// Add authorization header with token from local storage
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
 			return response;
 		} catch (err) {
 			console.log("Error removing skills: ", err);
@@ -155,16 +180,64 @@ export default function EditUserPage({
 		try {
 			const response = await Promise.all(
 				arr.map((item) =>
-					axios.post(`${api}/userskills`, {
-						user_id: id,
-						skill: item,
-						offer: which,
-					})
+					axios.post(
+						`${api}/userskills`,
+						{
+							user_id: id,
+							skill: item,
+							offer: which,
+						},
+						{
+							headers: {
+								// "Content-Type": "application/json",
+								Authorization: `Bearer ${localStorage.getItem("token")}`,
+							},
+						}
+					)
 				)
 			);
 			return response;
 		} catch (err) {
 			console.log("Error adding skills: ", err);
+		}
+	}
+
+	//function to reveal password input field to confirm account deletion
+	function deleteUserValidate(e) {
+		e.preventDefault();
+		document.querySelector(".edit__password").style.display = "flex";
+		alert("Are you sure you want to delete this user?");
+		document.querySelector('input[name="password"]').focus();
+	}
+
+	//function to delete user
+	async function deleteUser(e) {
+		e.preventDefault();
+		const passwordValidate = purify(password);
+		try {
+			await axios.delete(`${api}/users`, {
+				headers: {
+					// Add authorization header with token from local storage
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+				data: {
+					email: user.email,
+					userId: user.user_id,
+					password: passwordValidate,
+				},
+			});
+
+			////// DELETE USER SKILLS AND MESSAGES//////
+
+
+			//here if response is 200 then delete userskills and messages
+			setNeighbors([]);
+			setLoggedIn(false);
+			localStorage.removeItem("token");
+			setUser({});
+			return "You have been deleted";
+		} catch (err) {
+			console.log("Error deleting user: ", err);
 		}
 	}
 
@@ -200,12 +273,13 @@ export default function EditUserPage({
 					<label className="edit__label">
 						Your Email
 						<input
-							type="text"
+							type="email"
 							className="edit__input"
 							name="email"
 							placeholder="your email@something.com"
 							value={email}
 							onChange={(e) => setEmail(e.target.value.toLowerCase())}
+							readOnly
 						/>
 					</label>
 					<label className="edit__label">
@@ -285,7 +359,6 @@ export default function EditUserPage({
 						One or two words for each thing you'd like to barter for, separated
 						by commas
 					</p>
-
 					<button className="edit__btn">Edit Your Profile</button>
 					<button
 						onClick={(e) => {
@@ -296,6 +369,30 @@ export default function EditUserPage({
 					>
 						Cancel
 					</button>
+					<button className="edit__btn" onClick={deleteUserValidate}>
+						Delete Account
+					</button>
+					{/* add password field to verify user to delete account  */}
+					<div className="edit__password">
+						<label className="edit__label">
+							Enter your password to delete your account
+							<input
+								type="password"
+								className="edit__input"
+								name="password"
+								placeholder=""
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+						</label>
+						<p className="edit__desc">
+							This cannot be undone and will delete all of your data from
+							Helping Neighbors
+						</p>
+						<button className="edit__btn delete__btn" onClick={deleteUser}>
+							Delete Account
+						</button>
+					</div>
 				</div>
 			</form>
 		</div>
