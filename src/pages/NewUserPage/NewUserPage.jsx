@@ -40,6 +40,8 @@ export default function NewUserPage({
 			errorElement.innerHTML = "Passwords do not match";
 			return;
 		}
+		//clear error if passwords match
+		errorElement.style.display = "none";
 
 		const user_id = v4();
 		const first_name = purify(capFirst(e.target.first_name.value));
