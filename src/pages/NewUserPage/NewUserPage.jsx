@@ -40,6 +40,23 @@ export default function NewUserPage({
 			errorElement.innerHTML = "Passwords do not match";
 			return;
 		}
+
+		// Throw error if uploaded image is too large or not an image
+		const image = e.target.image.files[0];
+
+		if (image.size > 1000000) {
+			errorElement.style.display = "inline-block";
+			errorElement.innerHTML = "Image too large, please add an image under 1MB";
+			return;
+		}
+		//return alert if not an image
+		if (!image.type.includes("image")) {
+			errorElement.style.display = "inline-block";
+			errorElement.innerHTML = "Please add an image file";
+			return;
+		}
+
+
 		//clear error if passwords match
 		errorElement.style.display = "none";
 
@@ -157,7 +174,7 @@ export default function NewUserPage({
 		return response;
 	};
 
-	//set image function with file
+	//set image function with file input (move to utils file)
 	const handleFileChange = async (e) => {
 		//return alert if image too large
 		if (e.target.files[0].size > 1000000) {
