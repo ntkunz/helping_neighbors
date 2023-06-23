@@ -42,13 +42,13 @@ export default function NewUserPage({
 		}
 
 		// Throw error if uploaded image is too large or not an image
-		if (img.data.size > 1000000) {
+		if (img.data && img.data.size > 1000000) {
 			errorElement.style.display = "inline-block";
 			errorElement.innerHTML = "Image too large, please add an image under 1MB";
 			return;
 		}
 		//return alert if not an image
-		if (!img.data.type.includes("image")) {
+		if (img.data && !img.data.type.includes("image")) {
 			errorElement.style.display = "inline-block";
 			errorElement.innerHTML = "Please add an image file";
 			return;
@@ -156,6 +156,8 @@ export default function NewUserPage({
 			console.log("Error creating new user");
 		}
 	}
+
+	//NEED TO ADD A DEFAULT IMAGE IF NO IMAGE UPLOADED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	//upload image to users api function (move to utils file?)
 	const submitImage = async (userId) => {
