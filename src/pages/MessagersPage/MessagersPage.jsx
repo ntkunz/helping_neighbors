@@ -2,7 +2,7 @@ import "./MessagersPage.scss";
 import { Link } from "react-router-dom";
 
 export default function MessagersPage({ neighbors }) {
-	const imgUrl = process.env.REACT_APP_IMG_URL;
+	const api = process.env.REACT_APP_API_URL;
 
 	return (
 		<div className="Messager">
@@ -20,11 +20,20 @@ export default function MessagersPage({ neighbors }) {
 							className="messager__neighbor-link"
 						>
 							Message {neighbor.first_name}
-							<img
-								src={`${imgUrl}${neighbor.image_url}`}
-								alt="user profile"
-								className="messager__neighbor-img"
-							/>
+							{/* display unsplash image if no uploaded user image */}
+							{neighbor.image_url === "https://source.unsplash.com/featured" ? (
+								<img
+									src={`${neighbor.image_url}`}
+									alt="default user profile"
+									className="messager__neighbor-img"
+								/>
+							) : (
+								<img
+									src={`${api}/${neighbor.image_url}`}
+									alt="user profile"
+									className="messager__neighbor-img"
+								/>
+							)}
 						</Link>
 					</div>
 				))}

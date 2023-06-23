@@ -19,16 +19,12 @@ export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState({});
 	const [neighbors, setNeighbors] = useState([]);
-
-	let navigate = useNavigate();
-
+	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
 	
-	/**
-	 * This effect runs once on component mount and updates the state with the user's data
-	 * or redirects to the login page if the user is not authenticated
-	 */
+//TODO: only run getUser if token exists
 	useEffect(() => {
+		//TODO: move getUser function to utils folder??????
 		const getUser = async () => {
 			try {
 				const user = await sendRequest();
@@ -40,24 +36,21 @@ export default function App() {
 		getUser();
 	}, []);
 
-	// This effect runs whenever user is ChannelMergerNode, it gets the user's neighbors and udpates the neighbors state
 	useEffect(() => {
-		const fetchData = async () => {
-			//run fetchNeighbors function to get the neighbors with token
+		const getNeighbors = async () => {
 			const neighbors = await fetchNeighbors();
-			// set the neighbors, logged in, and navigate to /neighbors page
 			setNeighbors(neighbors);
 			setLoggedIn(true);
 			navigate("/neighbors");
 		};
 
-		// Check if user object has an email property and if so fetch neighbors
-		if ("email" in user) {
-			fetchData();
+		// if ("email" in user) {
+		if (user.email) {
+			getNeighbors();
 		}
 	}, [user]);
 
-	//handle login and set user state
+	//TODO : setup react type error handling rather than dom manipulation
 	async function handleLogin(e) {
 		e.preventDefault();
 		// errorElement ready if server returns an error
@@ -65,7 +58,7 @@ export default function App() {
 		//set email user signed in with
 		const email = purify(e.target.email.value.toLowerCase());
 
-		// regex to check for valid email input
+		//TODO: move email regex to utils folder??????
 		const emailRegex = /\S+@\S+\.\S+/;
 		if (!emailRegex.test(email)) {
 			//display error if email not valid
@@ -76,7 +69,7 @@ export default function App() {
 
 		const password = purify(e.target.password.value);
 
-		// regex to check for valid password
+		//TODO: move password regex to utils folder?????
 		const passwordRegex =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 		if (!passwordRegex.test(password)) {
@@ -92,32 +85,27 @@ export default function App() {
 
 		//api call to login user, not to return all neighbors yet
 		await axios
-			// .post(`${api}/users`, { email, password })
 			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
 				if (res.data.user.email === email) {
-					//set token in local storage
 					setToken(res.data.token);
-					//set user
 					setUser(res.data.user);
 				} else {
-					// error if no user found
+					//no user found error
 					errorElement.style.display = "inline-block";
 					errorElement.textContent = "User not found";
 				}
 			})
 			.catch((error) => {
 				//set error text based on error status
-				if (error.response.status === 404)
+				if (error.response.status === 404 || error.response.status === 400)
 					errorElement.textContent = "Invalid User";
 				if (error.response.status === 429)
 					errorElement.textContent = "Please try again later";
-				// //display error element
 				errorElement.style.display = "inline-block";
 			});
 	}
 
-	//handle logout and clear user state
 	function handleLogout(e) {
 		e.preventDefault();
 		if (loggedIn) {
@@ -139,7 +127,6 @@ export default function App() {
 						path="/"
 						element={
 							loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />
-							// <Neighbors loggedIn={loggedIn} />
 						}
 					/>
 					<Route

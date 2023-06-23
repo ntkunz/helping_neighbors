@@ -42,14 +42,14 @@ export default function Footer() {
 						/>
 						<p className="footer__paragraph first-paragraph">
 							There are many reasons why being a helping neighbor feels good,
-							and just as many reasons why having helping neighbors nearby will
-							help you feel safe connected.
+							and just as many reasons why having helping neighbors nearby creates 
+							more safety and human connection.
 						</p>
 
 						<p className="footer__paragraph">
 							Knowing your neighbors can provide numerous health benefits, such
 							as increased social support, which has been linked to better
-							mental health, and increased physical activity, which can improve
+							mental health and increased physical activity, which can improve
 							cardiovascular health, energy levels, and reduce the risk of
 							chronic health conditions. Additionally, spending time outdoors
 							with your neighbors can provide a mental health boost, as exposure
@@ -110,7 +110,7 @@ export default function Footer() {
 						</p>
 						<p className="footer__paragraph">
 							If you'd like to get ahold of us, please email us at
-							HelpingNeighbors@gmail.com
+							info.helping.neighbors@gmail.com
 						</p>
 					</div>
 				</Link>

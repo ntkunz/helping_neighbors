@@ -40,6 +40,31 @@ export default function NewUserPage({
 			errorElement.innerHTML = "Passwords do not match";
 			return;
 		}
+
+		// Image validation
+		if (img !== null && img !== "default") {
+			// Throw error if uploaded image is too large
+			if (img.data.size > 1000000) {
+				errorElement.style.display = "inline-block";
+				errorElement.innerHTML =
+					"Image too large, please add an image under 1MB";
+				return;
+			}
+
+			//return alert if not an image
+			if (!img.data.type.includes("image")) {
+				errorElement.style.display = "inline-block";
+				errorElement.innerHTML = "Please add an image file";
+				return;
+			}
+		}
+
+		//add default value for image if no image is uploaded
+		if (img === null) {
+			// setImg('"https://source.unsplash.com/featured"');
+			setImg('default');
+		}
+
 		//clear error if passwords match
 		errorElement.style.display = "none";
 
@@ -52,7 +77,7 @@ export default function NewUserPage({
 		const newEmail = await axios.post(`${api}/users/newemail`, { email });
 		if (newEmail.status === 202) {
 			errorElement.style.display = "inline-block";
-			errorElement.innerHTML = "Invalid email";
+			errorElement.innerHTML = "Invalid email, email may already be in use";
 			return;
 		}
 
@@ -77,6 +102,7 @@ export default function NewUserPage({
 		const desires = purify(e.target.desires.value);
 		const desiresSplit = desires.split(",");
 
+		//create skills array from offers and desires
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
 				skill: offer.trim(),
@@ -107,17 +133,19 @@ export default function NewUserPage({
 				}),
 			]);
 
-			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH, AND 
-			// STATE IS AS if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
+			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH?
+			//SOMETHING LIKE if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
 
-			// set new user and token from api response
-			const newUser = response[0].data;
-			const newUserId = newUser.userId;
-			await setToken(newUser.token);
+			const newUserToken = response[0].data.token;
+			const newUserId = response[0].data.userId;
+
+			await setToken(newUserToken);
 			await addSkills(skillsArray, newUserId);
 
-			//upload image to users api once user_id is created
-			await submitImage(newUserId);
+			//upload image to users api once user_id is created if img is not null or "default"
+			if (img !== null && img !== "default") {
+				await submitImage(newUserId);
+			}
 
 			const getNewUser = await axios.get(`${api}/users/verify`, {
 				headers: {
@@ -142,12 +170,11 @@ export default function NewUserPage({
 		}
 	}
 
-	//upload image to users api function (move to utils file)
+	//upload image to users function (move to utils file?)
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
 		formData.append("user_id", userId);
-		// const response = await axios.post(`${api}/users/image`, formData);
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -157,7 +184,7 @@ export default function NewUserPage({
 		return response;
 	};
 
-	//set image function with file
+	//set image function with file input (move to utils file?)
 	const handleFileChange = async (e) => {
 		//return alert if image too large
 		if (e.target.files[0].size > 1000000) {
@@ -172,7 +199,6 @@ export default function NewUserPage({
 			data: e.target.files[0],
 		};
 		setImg(img);
-		// console.log('img.data: ', img.data)
 	};
 
 	return (

@@ -118,7 +118,6 @@
 		text-align: center;
 		font-size: 0.75rem;
 		flex-grow: 1;
-		// letter-spacing: 0.025rem;
 		@include tablet {
 			@include bodyCopy;
 			flex-grow: 0;
