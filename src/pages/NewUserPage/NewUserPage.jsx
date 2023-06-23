@@ -131,8 +131,8 @@ export default function NewUserPage({
 			await setToken(newUser.token);
 			await addSkills(skillsArray, newUserId);
 
-			//upload image to users api once user_id is created
-			await submitImage(newUserId);
+			//upload image to users api once user_id is created if uploaded
+			if (img.data) await submitImage(newUserId);
 
 			const getNewUser = await axios.get(`${api}/users/verify`, {
 				headers: {
