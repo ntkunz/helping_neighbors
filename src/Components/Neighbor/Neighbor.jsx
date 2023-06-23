@@ -2,8 +2,9 @@ import "./Neighbor.scss";
 import { useEffect, useState } from "react";
 
 export default function Neighbor({ neighbor }) {
-	// const api = process.env.REACT_APP_API_URL;
-	const imgUrl = process.env.REACT_APP_IMG_URL;
+	// const imgUrl = process.env.REACT_APP_IMG_URL;
+	
+	const api = process.env.REACT_APP_API_URL;
 
 	const [offering, setOffering] = useState([]);
 	const [exchange, setExchange] = useState([]);
@@ -42,7 +43,8 @@ export default function Neighbor({ neighbor }) {
 							<img
 								id="neighbor__img"
 								className="neighbor__img"
-								src={`${imgUrl}${neighbor.image_url}`}
+								// src={`${imgUrl}${neighbor.image_url}`}
+								src={`${api}/${neighbor.image_url}`}
 								alt="user profile"
 							/>
 						</div>

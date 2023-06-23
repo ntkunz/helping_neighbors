@@ -114,6 +114,9 @@ export default function NewUserPage({
 				}),
 			]);
 
+			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH, AND 
+			// STATE IS AS if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
+
 			// set new user and token from api response
 			const newUser = response[0].data;
 			const newUserId = newUser.userId;
