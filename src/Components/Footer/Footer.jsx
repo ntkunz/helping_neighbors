@@ -8,6 +8,7 @@ export default function Footer() {
 	const [terms, setTerms] = useState(false);
 	const [contact, setContact] = useState(false);
 
+	//hide or display footer informations functions
 	function handleAbout(e) {
 		e.preventDefault();
 		setAbout(!about);
@@ -31,7 +32,7 @@ export default function Footer() {
 
 	return (
 		<div className="footer">
-						{about && (
+			{about && (
 				<Link className="footer__info" onClick={handleAbout}>
 					<div className="footer__section">
 						<img
@@ -135,8 +136,6 @@ export default function Footer() {
 					<h3 className="footer__label">Contact</h3>
 				</Link>
 			</section>
-
-
 		</div>
 	);
 }
