@@ -56,7 +56,6 @@ export default function NewUserPage({
 			return;
 		}
 
-
 		//clear error if passwords match
 		errorElement.style.display = "none";
 
@@ -69,7 +68,7 @@ export default function NewUserPage({
 		const newEmail = await axios.post(`${api}/users/newemail`, { email });
 		if (newEmail.status === 202) {
 			errorElement.style.display = "inline-block";
-			errorElement.innerHTML = "Invalid email";
+			errorElement.innerHTML = "Invalid email, email may already be in use";
 			return;
 		}
 
@@ -94,6 +93,7 @@ export default function NewUserPage({
 		const desires = purify(e.target.desires.value);
 		const desiresSplit = desires.split(",");
 
+		//create skills array from offers and desires
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
 				skill: offer.trim(),
@@ -124,8 +124,8 @@ export default function NewUserPage({
 				}),
 			]);
 
-			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH, AND 
-			// STATE IS AS if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
+			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH? 
+			//SOMETHING LIKE if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
 
 			// set new user and token from api response
 			const newUser = response[0].data;
@@ -159,7 +159,7 @@ export default function NewUserPage({
 		}
 	}
 
-	//upload image to users api function (move to utils file)
+	//upload image to users api function (move to utils file?)
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
@@ -174,7 +174,7 @@ export default function NewUserPage({
 		return response;
 	};
 
-	//set image function with file input (move to utils file)
+	//set image function with file input (move to utils file?)
 	const handleFileChange = async (e) => {
 		//return alert if image too large
 		if (e.target.files[0].size > 1000000) {
