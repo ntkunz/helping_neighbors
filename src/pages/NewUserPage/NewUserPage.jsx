@@ -42,15 +42,13 @@ export default function NewUserPage({
 		}
 
 		// Throw error if uploaded image is too large or not an image
-		const image = e.target.image.files[0];
-
-		if (image.size > 1000000) {
+		if (img.data.size > 1000000) {
 			errorElement.style.display = "inline-block";
 			errorElement.innerHTML = "Image too large, please add an image under 1MB";
 			return;
 		}
 		//return alert if not an image
-		if (!image.type.includes("image")) {
+		if (!img.data.type.includes("image")) {
 			errorElement.style.display = "inline-block";
 			errorElement.innerHTML = "Please add an image file";
 			return;
@@ -164,7 +162,6 @@ export default function NewUserPage({
 		let formData = new FormData();
 		formData.append("file", img.data);
 		formData.append("user_id", userId);
-		// const response = await axios.post(`${api}/users/image`, formData);
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -189,7 +186,6 @@ export default function NewUserPage({
 			data: e.target.files[0],
 		};
 		setImg(img);
-		// console.log('img.data: ', img.data)
 	};
 
 	return (
