@@ -15,8 +15,6 @@ export default function EditUserPage({
 	const navigate = useNavigate();
 
 	const api = process.env.REACT_APP_API_URL;
-	const geoKey = process.env.REACT_APP_HERE_API_KEY;
-	const geoApi = process.env.REACT_APP_GEO_URL;
 
 	const [first_name, setFirstName] = useState(user.first_name);
 	const [last_name, setLastName] = useState(user.last_name);
@@ -25,7 +23,7 @@ export default function EditUserPage({
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
 	const [originalAddress, setOriginalAddress] = useState(user.address);
-	const [active, setActive] = useState(user.status);
+	const [active, setActive] = useState(user.status); //to be used once user is able to change status
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
@@ -39,6 +37,7 @@ export default function EditUserPage({
 		let newOffers = "";
 		let newDesires = "";
 		// Loop through each key in user.barters
+
 		Object.keys(user.barters).forEach((key, index) => {
 			// If the value for the current key is 1, add it to newOffers
 			if (user.barters[key] === 1) {
@@ -79,6 +78,7 @@ export default function EditUserPage({
 			coords = await getNewUserGeo(addressRequest); // get new address coordinates
 		}
 
+		//separate offers and desires into skills array
 		const offersSplit = offers.split(",");
 		const desiresSplit = desires.split(",");
 		const skillsArray = [
@@ -92,6 +92,7 @@ export default function EditUserPage({
 			})),
 		];
 
+		//update skills in userskills table
 		await addSkills(skillsArray, user_id);
 
 		if (
@@ -152,7 +153,7 @@ export default function EditUserPage({
 					}
 				});
 		} catch (err) {
-			console.log("Error editing user: ", err);
+			console.log("Error editing user");
 		}
 	}
 
@@ -165,15 +166,17 @@ export default function EditUserPage({
 		try {
 			const response = await axios.delete(`${api}/userskills/${id}`, {
 				headers: {
-					// Add authorization header with token from local storage
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 			});
 			return response;
 		} catch (err) {
-			console.log("Error removing skills: ", err);
+			console.log("Error removing skills");
 		}
 	}
+
+	//UPDATE USER SKILLS IN THE SAME WAY AS ADDING, ALL AS ONE CALL!!
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	//function to add skills to user
 	async function editSkills(arr, id, which) {
@@ -189,7 +192,6 @@ export default function EditUserPage({
 						},
 						{
 							headers: {
-								// "Content-Type": "application/json",
 								Authorization: `Bearer ${localStorage.getItem("token")}`,
 							},
 						}
@@ -227,9 +229,6 @@ export default function EditUserPage({
 				},
 			});
 
-			////// DELETE USER SKILLS AND MESSAGES//////
-
-
 			//here if response is 200 then delete userskills and messages
 			setNeighbors([]);
 			setLoggedIn(false);
@@ -237,7 +236,8 @@ export default function EditUserPage({
 			setUser({});
 			return "You have been deleted";
 		} catch (err) {
-			console.log("Error deleting user: ", err);
+			console.log("Error deleting user");
+			alert("Unable to delete user. Check password and try again.");
 		}
 	}
 
