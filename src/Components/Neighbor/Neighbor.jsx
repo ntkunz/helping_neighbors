@@ -38,7 +38,7 @@ export default function Neighbor({ neighbor }) {
 							<p className="neighbor__since">{strDate}</p>
 						</div>
 						<div className="neighbor__img-box">
-							{/* if neighbor.image_url is https://source.unsplash.com/featured then src does not have api before it, else it does */}
+							{/* if neighbor.image_url is default then src does not have api before it, else it does */}
 							{neighbor.image_url === "https://source.unsplash.com/featured" ? (
 								<img
 									id="neighbor__img"
