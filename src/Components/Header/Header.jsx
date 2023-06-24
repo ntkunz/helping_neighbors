@@ -2,7 +2,6 @@ import "./Header.scss";
 import { NavLink } from "react-router-dom";
 
 export default function Header({ loggedIn, handleLogout }) {
-	// const navigate = useNavigate();
 
 	return (
 		<header className="header">

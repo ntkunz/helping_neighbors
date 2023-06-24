@@ -29,6 +29,7 @@ export default function App() {
 	 * or redirects to the login page if the user is not authenticated
 	 */
 	useEffect(() => {
+		//move getUser function to utils folder??????
 		const getUser = async () => {
 			try {
 				const user = await sendRequest();
@@ -40,7 +41,7 @@ export default function App() {
 		getUser();
 	}, []);
 
-	// This effect runs whenever user is ChannelMergerNode, it gets the user's neighbors and udpates the neighbors state
+	// This effect runs whenever user is changed, it gets the user's neighbors and udpates the neighbors state
 	useEffect(() => {
 		const fetchData = async () => {
 			//run fetchNeighbors function to get the neighbors with token
@@ -92,7 +93,6 @@ export default function App() {
 
 		//api call to login user, not to return all neighbors yet
 		await axios
-			// .post(`${api}/users`, { email, password })
 			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
 				if (res.data.user.email === email) {
@@ -108,7 +108,7 @@ export default function App() {
 			})
 			.catch((error) => {
 				//set error text based on error status
-				if (error.response.status === 404)
+				if (error.response.status === 404 || error.response.status === 400)
 					errorElement.textContent = "Invalid User";
 				if (error.response.status === 429)
 					errorElement.textContent = "Please try again later";

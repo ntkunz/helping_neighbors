@@ -2,8 +2,7 @@ import "./Neighbor.scss";
 import { useEffect, useState } from "react";
 
 export default function Neighbor({ neighbor }) {
-	// const api = process.env.REACT_APP_API_URL;
-	const imgUrl = process.env.REACT_APP_IMG_URL;
+	const api = process.env.REACT_APP_API_URL;
 
 	const [offering, setOffering] = useState([]);
 	const [exchange, setExchange] = useState([]);
@@ -39,12 +38,22 @@ export default function Neighbor({ neighbor }) {
 							<p className="neighbor__since">{strDate}</p>
 						</div>
 						<div className="neighbor__img-box">
-							<img
-								id="neighbor__img"
-								className="neighbor__img"
-								src={`${imgUrl}${neighbor.image_url}`}
-								alt="user profile"
-							/>
+							{/* if neighbor.image_url is default then src does not have api before it, else it does */}
+							{neighbor.image_url === "https://source.unsplash.com/featured" ? (
+								<img
+									id="neighbor__img"
+									className="neighbor__img"
+									src={`${neighbor.image_url}`}
+									alt="default user profile"
+								/>
+							) : (
+								<img
+									id="neighbor__img"
+									className="neighbor__img"
+									src={`${api}/${neighbor.image_url}`}
+									alt="user profile"
+								/>
+							)}
 						</div>
 					</div>
 
@@ -76,11 +85,6 @@ export default function Neighbor({ neighbor }) {
 						<p className="neighbor__barter-title semibold">About</p>
 						<p className="neighbor__barter-skill">{neighbor.about}</p>
 					</div>
-
-					{/* <div className="neighbor__bio">
-				<p className="neighbor__barter-title">Contact</p>
-				<p className="neighbor__barter-skill semibold">Click to send message</p>
-			</div> */}
 				</div>
 			) : (
 				<div className="neighbor__placeholder"></div>
