@@ -41,17 +41,27 @@ export default function NewUserPage({
 			return;
 		}
 
-		// Throw error if uploaded image is too large or not an image
-		if (img.data && img.data.size > 1000000) {
-			errorElement.style.display = "inline-block";
-			errorElement.innerHTML = "Image too large, please add an image under 1MB";
-			return;
+		// Image validation
+		if (img !== null && img !== "https://source.unsplash.com/featured/small") {
+			// Throw error if uploaded image is too large
+			if (img.data.size > 1000000) {
+				errorElement.style.display = "inline-block";
+				errorElement.innerHTML =
+					"Image too large, please add an image under 1MB";
+				return;
+			}
+
+			//return alert if not an image
+			if (!img.data.type.includes("image")) {
+				errorElement.style.display = "inline-block";
+				errorElement.innerHTML = "Please add an image file";
+				return;
+			}
 		}
-		//return alert if not an image
-		if (img.data && !img.data.type.includes("image")) {
-			errorElement.style.display = "inline-block";
-			errorElement.innerHTML = "Please add an image file";
-			return;
+
+		//add default value for image if no image is uploaded
+		if (img === null) {
+			setImg("https://source.unsplash.com/featured/small");
 		}
 
 		//clear error if passwords match
@@ -122,7 +132,7 @@ export default function NewUserPage({
 				}),
 			]);
 
-			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH? 
+			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH?
 			//SOMETHING LIKE if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
 
 			// set new user and token from api response
