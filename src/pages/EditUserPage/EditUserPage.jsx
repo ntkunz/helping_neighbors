@@ -38,6 +38,12 @@ export default function EditUserPage({
 		let newDesires = "";
 		// Loop through each key in user.barters
 
+		console.log(
+			'user.barters: ', user.barters
+		)
+
+
+
 		Object.keys(user.barters).forEach((key, index) => {
 			// If the value for the current key is 1, add it to newOffers
 			if (user.barters[key] === 1) {

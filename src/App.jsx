@@ -29,6 +29,7 @@ export default function App() {
 	 * or redirects to the login page if the user is not authenticated
 	 */
 	useEffect(() => {
+		//move getUser function to utils folder??????
 		const getUser = async () => {
 			try {
 				const user = await sendRequest();
@@ -40,7 +41,7 @@ export default function App() {
 		getUser();
 	}, []);
 
-	// This effect runs whenever user is ChannelMergerNode, it gets the user's neighbors and udpates the neighbors state
+	// This effect runs whenever user is changed, it gets the user's neighbors and udpates the neighbors state
 	useEffect(() => {
 		const fetchData = async () => {
 			//run fetchNeighbors function to get the neighbors with token

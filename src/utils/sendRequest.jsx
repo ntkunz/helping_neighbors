@@ -30,7 +30,6 @@ export default async function sendRequest() {
 			// Handle the response
 			if (response.data && response.data.email) {
 				// If the response data is valid, return it
-
 				return await response.data;
 			} else {
 				// If the response data is invalid, throw an error
