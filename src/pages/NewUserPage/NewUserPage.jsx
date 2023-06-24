@@ -61,7 +61,8 @@ export default function NewUserPage({
 
 		//add default value for image if no image is uploaded
 		if (img === null) {
-			setImg("https://source.unsplash.com/featured/small");
+			// setImg('"https://source.unsplash.com/featured"');
+			setImg('default');
 		}
 
 		//clear error if passwords match
@@ -136,13 +137,21 @@ export default function NewUserPage({
 			//SOMETHING LIKE if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
 
 			// set new user and token from api response
-			const newUser = response[0].data;
-			const newUserId = newUser.userId;
-			await setToken(newUser.token);
+			// const newUser = response[0].data;
+
+			const newUserToken = response[0].data.token;
+			const newUserId = response[0].data.userId;
+
+			// const newUserId = newUser.userId;
+			// await setToken(newUser.token);
+			await setToken(newUserToken);
 			await addSkills(skillsArray, newUserId);
 
-			//upload image to users api once user_id is created if uploaded
-			if (img.data) await submitImage(newUserId);
+			//upload image to users api once user_id is created if img is not null or "https://source.unsplash.com/featured"
+			if (img !== null && img !== "default") {
+				console.log('submitting image when it should not');
+				await submitImage(newUserId);
+			}
 
 			const getNewUser = await axios.get(`${api}/users/verify`, {
 				headers: {
@@ -163,11 +172,9 @@ export default function NewUserPage({
 			setLoggedIn(true);
 			navigate("/");
 		} catch (err) {
-			console.log("Error creating new user");
+			console.log("Error creating new user" + err);
 		}
 	}
-
-	//NEED TO ADD A DEFAULT IMAGE IF NO IMAGE UPLOADED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	//upload image to users api function (move to utils file?)
 	const submitImage = async (userId) => {
