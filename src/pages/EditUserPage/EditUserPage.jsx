@@ -38,12 +38,6 @@ export default function EditUserPage({
 		let newDesires = "";
 		// Loop through each key in user.barters
 
-		console.log(
-			'user.barters: ', user.barters
-		)
-
-
-
 		Object.keys(user.barters).forEach((key, index) => {
 			// If the value for the current key is 1, add it to newOffers
 			if (user.barters[key] === 1) {
@@ -72,6 +66,7 @@ export default function EditUserPage({
 		const user_id = user.user_id;
 
 		await removeSkills(purify(user_id)); //remove all user skills from table to add updated ones
+
 		const address = purify(`${home} ${city} ${province}`);
 		const addressRequest = address
 			.replaceAll(",", " ")
@@ -81,7 +76,7 @@ export default function EditUserPage({
 		let coords = [user.location.x, user.location.y];
 		// Check if the address has changed
 		if (address !== originalAddress) {
-			coords = await getNewUserGeo(addressRequest); // get new address coordinates
+			coords = await getNewUserGeo(addressRequest); // get new address coordinates if address changed
 		}
 
 		//separate offers and desires into skills array
@@ -181,34 +176,6 @@ export default function EditUserPage({
 		}
 	}
 
-	//UPDATE USER SKILLS IN THE SAME WAY AS ADDING, ALL AS ONE CALL!!
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	//function to add skills to user
-	async function editSkills(arr, id, which) {
-		try {
-			const response = await Promise.all(
-				arr.map((item) =>
-					axios.post(
-						`${api}/userskills`,
-						{
-							user_id: id,
-							skill: item,
-							offer: which,
-						},
-						{
-							headers: {
-								Authorization: `Bearer ${localStorage.getItem("token")}`,
-							},
-						}
-					)
-				)
-			);
-			return response;
-		} catch (err) {
-			console.log("Error adding skills: ", err);
-		}
-	}
 
 	//function to reveal password input field to confirm account deletion
 	function deleteUserValidate(e) {
@@ -235,12 +202,16 @@ export default function EditUserPage({
 				},
 			});
 
+			console.log('user deleted')
+
+			//add removal of all userskills and messages later
+
 			//here if response is 200 then delete userskills and messages
 			setNeighbors([]);
 			setLoggedIn(false);
 			localStorage.removeItem("token");
 			setUser({});
-			return "You have been deleted";
+			return;
 		} catch (err) {
 			console.log("Error deleting user");
 			alert("Unable to delete user. Check password and try again.");
