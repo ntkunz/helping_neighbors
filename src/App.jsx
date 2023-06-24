@@ -92,7 +92,6 @@ export default function App() {
 
 		//api call to login user, not to return all neighbors yet
 		await axios
-			// .post(`${api}/users`, { email, password })
 			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
 				if (res.data.user.email === email) {
@@ -108,7 +107,7 @@ export default function App() {
 			})
 			.catch((error) => {
 				//set error text based on error status
-				if (error.response.status === 404)
+				if (error.response.status === 404 || error.response.status === 400)
 					errorElement.textContent = "Invalid User";
 				if (error.response.status === 429)
 					errorElement.textContent = "Please try again later";
