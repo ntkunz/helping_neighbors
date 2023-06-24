@@ -42,7 +42,7 @@ export default function NewUserPage({
 		}
 
 		// Image validation
-		if (img !== null && img !== "https://source.unsplash.com/featured/small") {
+		if (img !== null && img !== "default") {
 			// Throw error if uploaded image is too large
 			if (img.data.size > 1000000) {
 				errorElement.style.display = "inline-block";
