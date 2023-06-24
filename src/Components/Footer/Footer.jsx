@@ -110,7 +110,7 @@ export default function Footer() {
 						</p>
 						<p className="footer__paragraph">
 							If you'd like to get ahold of us, please email us at
-							HelpingNeighbors@gmail.com
+							info.helping.neighbors@gmail.com
 						</p>
 					</div>
 				</Link>

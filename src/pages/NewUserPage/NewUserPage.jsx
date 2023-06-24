@@ -170,7 +170,7 @@ export default function NewUserPage({
 		}
 	}
 
-	//upload image to users api function (move to utils file?)
+	//upload image to users function (move to utils file?)
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
