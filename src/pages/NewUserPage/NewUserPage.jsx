@@ -149,7 +149,6 @@ export default function NewUserPage({
 
 			//upload image to users api once user_id is created if img is not null or "https://source.unsplash.com/featured"
 			if (img !== null && img !== "default") {
-				console.log('submitting image when it should not');
 				await submitImage(newUserId);
 			}
 
