@@ -136,18 +136,13 @@ export default function NewUserPage({
 			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH?
 			//SOMETHING LIKE if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
 
-			// set new user and token from api response
-			// const newUser = response[0].data;
-
 			const newUserToken = response[0].data.token;
 			const newUserId = response[0].data.userId;
 
-			// const newUserId = newUser.userId;
-			// await setToken(newUser.token);
 			await setToken(newUserToken);
 			await addSkills(skillsArray, newUserId);
 
-			//upload image to users api once user_id is created if img is not null or "https://source.unsplash.com/featured"
+			//upload image to users api once user_id is created if img is not null or "default"
 			if (img !== null && img !== "default") {
 				await submitImage(newUserId);
 			}
@@ -171,7 +166,7 @@ export default function NewUserPage({
 			setLoggedIn(true);
 			navigate("/");
 		} catch (err) {
-			console.log("Error creating new user" + err);
+			console.log("Error creating new user");
 		}
 	}
 
