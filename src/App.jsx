@@ -12,34 +12,43 @@ import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import purify from "./utils/purify";
 import setToken from "./utils/setToken";
-import sendRequest from "./utils/sendRequest";
+import verifyUser from "./utils/verifyUser";
 import fetchNeighbors from "./utils/fetchNeighbors";
 
 export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState({});
 	const [neighbors, setNeighbors] = useState([]);
-
-	let navigate = useNavigate();
-
+	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
-	
-	/**
-	 * This effect runs once on component mount and updates the state with the user's data
-	 * or redirects to the login page if the user is not authenticated
-	 */
+
 	useEffect(() => {
 		//move getUser function to utils folder??????
-		const getUser = async () => {
+		const token = localStorage.getItem("token");
+		if (token) {
 			try {
-				const user = await sendRequest();
+				const user = verifyUser(token);
 				setUser(user);
 			} catch (error) {
 				navigate("/login");
 			}
-		};
-		getUser();
+		} else {
+			navigate("/login");
+		}
 	}, []);
+
+	//PREVIOUS WAY OF GETTING USER WITH TOKEN, CHANGED TO GET USER ONLY IF TOKEN EXISTS
+	// useEffect(() => {
+	// 	const getUser = async () => {
+	// 		try {
+	// 			const user = await verifyUser();
+	// 			setUser(user);
+	// 		} catch (error) {
+	// 			navigate("/login");
+	// 		}
+	// 	};
+	// 	getUser();
+	// }, []);
 
 	// This effect runs whenever user is changed, it gets the user's neighbors and udpates the neighbors state
 	useEffect(() => {
@@ -88,33 +97,37 @@ export default function App() {
 			return;
 		}
 
-		//remove error if user has corrected input
 		document.querySelector(".error").style.display = "none";
 
-		//api call to login user, not to return all neighbors yet
-		await axios
-			.post(`${api}/users/login`, { email, password })
-			.then((res) => {
-				if (res.data.user.email === email) {
-					//set token in local storage
-					setToken(res.data.token);
-					//set user
-					setUser(res.data.user);
-				} else {
-					// error if no user found
-					errorElement.style.display = "inline-block";
-					errorElement.textContent = "User not found";
-				}
-			})
-			.catch((error) => {
-				//set error text based on error status
-				if (error.response.status === 404 || error.response.status === 400)
-					errorElement.textContent = "Invalid User";
-				if (error.response.status === 429)
-					errorElement.textContent = "Please try again later";
-				// //display error element
+		try {
+			console.log("Email: ", email);
+			console.log("Password: ", password);
+			const response = await axios
+				.post(`${api}/login`, {
+					email: email,
+					password: password,
+				})
+				.catch(function (error) {
+					console.log(error.response.status);
+					// throw new Error(error.response.status);
+					return Promise.reject(error.response.status);
+				});
+			localStorage.setItem("token", response.data.token);
+			setLoggedIn(true);
+			setUser(response.data.user);
+		} catch (error) {
+			console.log("Error logging in: ", error);
+			if (error === 404 || error === 400) {
+				errorElement.textContent = "Invalid User";
 				errorElement.style.display = "inline-block";
-			});
+			}
+			//error if too many login attempts in a short time
+			if (error === 429) {
+				errorElement.textContent =
+					"Please try again later" + error.response.status;
+				errorElement.style.display = "inline-block";
+			}
+		}
 	}
 
 	//handle logout and clear user state
