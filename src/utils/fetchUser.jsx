@@ -10,7 +10,7 @@ const api = process.env.REACT_APP_API_URL;
  * Sends a GET request to verify the user's token and return the user's data.
  * @return {Promise<object>} The user's data or an error object.
  */
-export default async function sendRequest() {
+export default async function fetchUser() {
 	// Get the user's token from local storage
 	const token = localStorage.getItem("token");
 

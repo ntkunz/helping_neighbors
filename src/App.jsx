@@ -1,5 +1,4 @@
 import "./App.scss";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
@@ -10,9 +9,8 @@ import EditUserPage from "./pages/EditUserPage/EditUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
-import purify from "./utils/purify";
 import setToken from "./utils/setToken";
-import sendRequest from "./utils/sendRequest";
+import fetchUser from "./utils/fetchUser";
 import fetchNeighbors from "./utils/fetchNeighbors";
 
 export default function App() {
@@ -20,32 +18,32 @@ export default function App() {
 	const [user, setUser] = useState({});
 	const [neighbors, setNeighbors] = useState([]);
 	const navigate = useNavigate();
-	const api = process.env.REACT_APP_API_URL;
 
-	//TODO: only run getUser if token exists
 	useEffect(() => {
 		//TODO: move getUser function to utils folder??????
-		const getUser = async () => {
-			try {
-				const user = await sendRequest();
-				setUser(user);
-			} catch (error) {
-				navigate("/login");
-			}
-		};
-		getUser();
+		const token = localStorage.getItem("token");
+		if (token) {
+			const getUser = async () => {
+				try {
+					const user = await fetchUser();
+					setUser(user);
+				} catch (error) {
+					navigate("/login");
+				}
+			};
+			getUser();
+		}
 	}, []);
 
 	useEffect(() => {
 		//TODO: move getNeighbors function to utils folder?????
-		const getNeighbors = async () => {
-			const neighbors = await fetchNeighbors();
-			setNeighbors(neighbors);
-			setLoggedIn(true);
-			navigate("/neighbors");
-		};
-
 		if (user.email) {
+			const getNeighbors = async () => {
+				const neighbors = await fetchNeighbors();
+				setNeighbors(neighbors);
+				setLoggedIn(true);
+				navigate("/neighbors");
+			};
 			getNeighbors();
 		}
 	}, [user]);
@@ -63,57 +61,72 @@ export default function App() {
 		}
 	}
 
+	if (!loggedIn) {
+		return (
+			<div className="App">
+				<Header loggedIn={loggedIn} handleLogout={handleLogout} />
+				<div className="App__routes">
+					<Routes>
+						<Route
+							path="/login"
+							element={
+								<LoginPage
+									setUser={setUser}
+									setToken={setToken}
+									setLoggedIn={setLoggedIn}
+								/>
+							}
+						/>
+
+						<Route
+							path="/signup"
+							element={
+								<NewUserPage
+									setUser={setUser}
+									setLoggedIn={setLoggedIn}
+									setNeighbors={setNeighbors}
+									setToken={setToken}
+								/>
+							}
+						/>
+						<Route path="*" element={<Navigate to="/login" />} />
+					</Routes>
+				</div>
+				<Footer />
+			</div>
+		);
+	}
+
 	return (
 		<div className="App">
 			<Header loggedIn={loggedIn} handleLogout={handleLogout} />
 			<div className="App__routes">
 				<Routes>
-					<Route
-						path="/"
-						element={
-							loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />
-						}
-					/>
+					<Route path="/" element={<Navigate to="/neighbors" />} />
 					<Route
 						path="/neighbors"
 						element={
-							loggedIn ? (
-								<Neighbors
-									loggedIn={loggedIn}
-									user={user}
-									neighbors={neighbors}
-								/>
-							) : (
-								<Navigate to="/login" />
-							)
-						}
-					/>
-					<Route
-						path="/login"
-						element={
-							<LoginPage
-								// loggedIn={loggedIn}
-								setUser={setUser}
-								setToken={setToken}
-								// handleLogin={handleLogin}
-								// handleLogout={handleLogout}
+							<Neighbors
+								loggedIn={loggedIn}
+								user={user}
+								neighbors={neighbors}
 							/>
 						}
 					/>
 					<Route
+						path="/login"
+						element={<LoginPage setUser={setUser} setToken={setToken} />}
+					/>
+					<Route
 						path="/profile"
 						element={
-							loggedIn ? (
-								<EditUserPage
-									user={user}
-									setNeighbors={setNeighbors}
-									setUser={setUser}
-									setToken={setToken}
-									setLoggedIn={setLoggedIn}
-								/>
-							) : (
-								<Navigate to="/login" />
-							)
+							<EditUserPage
+								user={user}
+								setNeighbors={setNeighbors}
+								setUser={setUser}
+								setToken={setToken}
+								setLoggedIn={setLoggedIn}
+							/>
 						}
 					/>
 					<Route
