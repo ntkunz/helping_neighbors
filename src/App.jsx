@@ -43,7 +43,7 @@ export default function App() {
 
 	// This effect runs whenever user is changed, it gets the user's neighbors and udpates the neighbors state
 	useEffect(() => {
-		const fetchData = async () => {
+		const getNeighbors = async () => {
 			//run fetchNeighbors function to get the neighbors with token
 			const neighbors = await fetchNeighbors();
 			// set the neighbors, logged in, and navigate to /neighbors page
@@ -54,7 +54,7 @@ export default function App() {
 
 		// Check if user object has an email property and if so fetch neighbors
 		if ("email" in user) {
-			fetchData();
+			getNeighbors();
 		}
 	}, [user]);
 
