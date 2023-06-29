@@ -26,11 +26,10 @@
 		@include sectionHeader;
 		color: $color-five;
 		text-align: center;
-		margin: 1rem .5rem 0;
+		margin: 1rem 0.5rem 0;
 		@include desktop {
 			margin: 2rem 1rem 0;
 		}
-		
 	}
 
 	&-info {
@@ -48,7 +47,7 @@
 		@include tablet {
 			padding: $box-padding-tablet;
 		}
-		@include desktop{
+		@include desktop {
 			height: 21rem;
 			padding: $box-padding-desktop;
 		}
@@ -86,7 +85,6 @@
 			padding: $box-padding-tablet;
 			width: auto;
 			min-width: 18rem;
-			
 		}
 
 		@include desktop {
@@ -100,7 +98,7 @@
 			display: flex;
 			flex-direction: column;
 		}
-		
+
 		// &__label {
 		// }
 
@@ -108,9 +106,9 @@
 			border-radius: 0.25rem;
 			border: 1px solid $color-five;
 			padding: 0.25rem;
-			margin: 0.25rem 0 .5rem;
-			
-			@include tablet{
+			margin: 0.25rem 0 0.5rem;
+
+			@include tablet {
 				margin: 0.5rem 0 1.5rem;
 			}
 		}
@@ -143,11 +141,10 @@
 	text-align: center;
 }
 
-.error {
+.login-error {
 	background-color: $color-error;
 	color: $color-one;
-	display: none;
-	margin: 0 0 .25rem;
-	padding: .125rem .25rem;
-	border-radius: .25rem;
+	margin: 0 0 0.25rem;
+	padding: 0.125rem 0.25rem;
+	border-radius: 0.25rem;
 }
