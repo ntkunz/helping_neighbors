@@ -37,7 +37,6 @@ export default function App() {
 
 	useEffect(() => {
 		//TODO: move getNeighbors function to utils folder?????
-
 		if (user.email) {
 			const getNeighbors = async () => {
 				const neighbors = await fetchNeighbors();
