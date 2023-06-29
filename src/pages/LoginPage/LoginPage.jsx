@@ -4,11 +4,10 @@ import { useState } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
 export default function LoginPage({ setToken, setUser }) {
-
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
-
 	const api = process.env.REACT_APP_API_URL;
+
 	async function handleLogin(loginForm) {
 		loginForm.preventDefault();
 
@@ -28,7 +27,9 @@ export default function LoginPage({ setToken, setUser }) {
 		const passwordRegex =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 		if (!passwordRegex.test(password)) {
-			setErrorMessage("Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number");
+			setErrorMessage(
+				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number"
+			);
 			setErrorActive(true);
 			return;
 		}
@@ -54,7 +55,7 @@ export default function LoginPage({ setToken, setUser }) {
 				if (error.response.status === 429) {
 					setErrorMessage("Please try again later");
 				}
-					setErrorActive(true);
+				setErrorActive(true);
 			});
 	}
 
@@ -94,32 +95,36 @@ export default function LoginPage({ setToken, setUser }) {
 				</div>
 
 				<div className="login-form">
-					<form className="login-form__form" onSubmit={handleLogin} method="post" noValidate>
-					<div className="login-form__box">
-						<p className="login-form__label">Email</p>
-						<input
-							type="email"
-							
-							autoComplete="username"
-							className="login-form__input"
-							name="email"
-							placeholder="your email@something.com"
-							required
-						/>
-						{errorActive && <p className="login-error">{errorMessage}</p>}
-						<p className="login-form__label">Password</p>
-						<input
-							type="password"
-							autoComplete="current-password"
-							className="login-form__input"
-							name="password"
-						/>
-					</div>
-					<div className="login-form__box">
-						<button className="login-form__btn">Sign In</button>
-						<Link className="login-form__btn signup" to="/signup">
-							Sign Up
-						</Link>
+					<form
+						className="login-form__form"
+						onSubmit={handleLogin}
+						method="post"
+						noValidate
+					>
+						<div className="login-form__box">
+							<p className="login-form__label">Email</p>
+							<input
+								type="email"
+								autoComplete="username"
+								className="login-form__input"
+								name="email"
+								placeholder="your email@something.com"
+								required
+							/>
+							{errorActive && <p className="login-error">{errorMessage}</p>}
+							<p className="login-form__label">Password</p>
+							<input
+								type="password"
+								autoComplete="current-password"
+								className="login-form__input"
+								name="password"
+							/>
+						</div>
+						<div className="login-form__box">
+							<button className="login-form__btn">Sign In</button>
+							<Link className="login-form__btn signup" to="/signup">
+								Sign Up
+							</Link>
 						</div>
 					</form>
 				</div>
