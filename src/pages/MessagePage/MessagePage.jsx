@@ -9,28 +9,22 @@ import purify from "../../utils/purify";
 
 export default function Message({ user, neighbors }) {
 	const api = process.env.REACT_APP_API_URL;
-
 	const { id } = useParams();
-
 	const [receiver, setReceiver] = useState([]);
 	const [messages, setMessages] = useState([]);
 
-	//set receiver of messages on load based on id in url
 	useEffect(() => {
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
 		//eslint-disable-next-line
 	}, [neighbors]);
 
-	//function to get messages from api for user and receiver
 	useEffect(() => {
-		//only retrieve messages once receiver is set to avoid 400 error
 		if (receiver.user_id) {
 			getMessages(user.user_id, receiver.user_id);
 			//set interval to retrieve messages every 2 seconds
 			const messageInt = setInterval(() => {
 				getMessages(user.user_id, receiver.user_id);
 			}, 2000);
-			//clear interval when component unmounts
 			return () => {
 				clearInterval(messageInt);
 			};
