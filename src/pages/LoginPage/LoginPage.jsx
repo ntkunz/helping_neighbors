@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
-export default function LoginPage({ setToken, setUser }) {
+export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const api = process.env.REACT_APP_API_URL;
@@ -43,6 +43,7 @@ export default function LoginPage({ setToken, setUser }) {
 				if (res.data.user.email === email) {
 					setToken(res.data.token);
 					setUser(res.data.user);
+					setLoggedIn(true);
 				} else {
 					setErrorMessage("User not found");
 					setErrorActive(true);

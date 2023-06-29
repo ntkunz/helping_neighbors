@@ -60,7 +60,47 @@ export default function App() {
 		}
 	}
 
-	
+	if (!loggedIn) {
+		return (
+			<div className="App">
+				<Header loggedIn={loggedIn} handleLogout={handleLogout} />
+				<div className="App__routes">
+					<Routes>
+						{/* <Route path="/" element={<Navigate to="/login" />} />
+						<Route path="/neighbors" element={<Navigate to="/login" />} /> */}
+
+						<Route
+							path="/login"
+							element={
+								<LoginPage
+									// loggedIn={loggedIn}
+									setUser={setUser}
+									setToken={setToken}
+									setLoggedIn={setLoggedIn}
+									// handleLogin={handleLogin}
+									// handleLogout={handleLogout}
+								/>
+							}
+						/>
+
+						<Route
+							path="/signup"
+							element={
+								<NewUserPage
+									setUser={setUser}
+									setLoggedIn={setLoggedIn}
+									setNeighbors={setNeighbors}
+									setToken={setToken}
+								/>
+							}
+						/>
+						<Route path="*" element={<Navigate to="/login" />} />
+					</Routes>
+				</div>
+				<Footer />
+			</div>
+		);
+	}
 
 	return (
 		<div className="App">
