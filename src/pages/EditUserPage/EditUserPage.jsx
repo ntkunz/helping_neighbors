@@ -357,6 +357,7 @@ export default function EditUserPage({
 								type="password"
 								className="edit__input"
 								name="password"
+								autoComplete="current-password"
 								placeholder=""
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
