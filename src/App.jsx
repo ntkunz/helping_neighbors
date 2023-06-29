@@ -44,7 +44,8 @@ export default function App() {
 			navigate("/neighbors");
 		};
 
-		if ("email" in user) {
+		// if ("email" in user) {
+		if (user.email) {
 			getNeighbors();
 		}
 	}, [user]);
