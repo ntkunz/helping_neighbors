@@ -1,5 +1,4 @@
 import "./Header.scss";
-import { NavLink } from "react-router-dom";
 import HeaderLoggedOut from "./Headers/HeaderLoggedOut";
 import HeaderLoggedIn from "./Headers/HeaderLoggedIn";
 

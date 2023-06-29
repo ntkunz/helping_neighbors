@@ -10,7 +10,6 @@ import EditUserPage from "./pages/EditUserPage/EditUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
-import purify from "./utils/purify";
 import setToken from "./utils/setToken";
 import sendRequest from "./utils/sendRequest";
 import fetchNeighbors from "./utils/fetchNeighbors";
@@ -20,7 +19,6 @@ export default function App() {
 	const [user, setUser] = useState({});
 	const [neighbors, setNeighbors] = useState([]);
 	const navigate = useNavigate();
-	const api = process.env.REACT_APP_API_URL;
 
 	//TODO: only run getUser if token exists
 	useEffect(() => {
