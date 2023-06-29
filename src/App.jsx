@@ -19,30 +19,32 @@ export default function App() {
 	const [neighbors, setNeighbors] = useState([]);
 	const navigate = useNavigate();
 
-	//TODO: only run getUser if token exists
 	useEffect(() => {
 		//TODO: move getUser function to utils folder??????
-		const getUser = async () => {
-			try {
-				const user = await fetchUser();
-				setUser(user);
-			} catch (error) {
-				navigate("/login");
-			}
-		};
-		getUser();
+		const token = localStorage.getItem("token");
+		if (token) {
+			const getUser = async () => {
+				try {
+					const user = await fetchUser();
+					setUser(user);
+				} catch (error) {
+					navigate("/login");
+				}
+			};
+			getUser();
+		}
 	}, []);
 
 	useEffect(() => {
 		//TODO: move getNeighbors function to utils folder?????
-		const getNeighbors = async () => {
-			const neighbors = await fetchNeighbors();
-			setNeighbors(neighbors);
-			setLoggedIn(true);
-			navigate("/neighbors");
-		};
 
 		if (user.email) {
+			const getNeighbors = async () => {
+				const neighbors = await fetchNeighbors();
+				setNeighbors(neighbors);
+				setLoggedIn(true);
+				navigate("/neighbors");
+			};
 			getNeighbors();
 		}
 	}, [user]);
