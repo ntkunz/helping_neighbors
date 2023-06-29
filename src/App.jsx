@@ -37,6 +37,7 @@ export default function App() {
 	}, []);
 
 	useEffect(() => {
+		//TODO: move getNeighbors function to utils folder?????
 		const getNeighbors = async () => {
 			const neighbors = await fetchNeighbors();
 			setNeighbors(neighbors);
@@ -44,68 +45,68 @@ export default function App() {
 			navigate("/neighbors");
 		};
 
-		// if ("email" in user) {
 		if (user.email) {
 			getNeighbors();
 		}
 	}, [user]);
 
 	//TODO : setup react type error handling rather than dom manipulation
-	async function handleLogin(e) {
-		e.preventDefault();
-		// errorElement ready if server returns an error
-		const errorElement = document.querySelector(".error");
-		//set email user signed in with
-		const email = purify(e.target.email.value.toLowerCase());
+	// async function handleLogin(e) {
+	// 	e.preventDefault();
+	// 	// errorElement ready if server returns an error
+	// 	const errorElement = document.querySelector(".error");
+	// 	//set email user signed in with
+	// 	const email = purify(e.target.email.value.toLowerCase());
 
-		//TODO: move email regex to utils folder??????
-		const emailRegex = /\S+@\S+\.\S+/;
-		if (!emailRegex.test(email)) {
-			//display error if email not valid
-			errorElement.textContent = "Please enter a valid email";
-			errorElement.style.display = "inline-block";
-			return;
-		}
+	// 	//TODO: move email regex to utils folder??????
+	// 	const emailRegex = /\S+@\S+\.\S+/;
+	// 	if (!emailRegex.test(email)) {
+	// 		//display error if email not valid
+	// 		errorElement.textContent = "Please enter a valid email";
+	// 		errorElement.style.display = "inline-block";
+	// 		return;
+	// 	}
 
-		const password = purify(e.target.password.value);
+	// 	const password = purify(e.target.password.value);
 
-		//TODO: move password regex to utils folder?????
-		const passwordRegex =
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
-		if (!passwordRegex.test(password)) {
-			//display error if password not valid
-			errorElement.textContent =
-				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
-			errorElement.style.display = "inline-block";
-			return;
-		}
+	// 	//TODO: move password regex to utils folder?????
+	// 	const passwordRegex =
+	// 		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
+	// 	if (!passwordRegex.test(password)) {
+	// 		//display error if password not valid
+	// 		errorElement.textContent =
+	// 			"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
+	// 		errorElement.style.display = "inline-block";
+	// 		return;
+	// 	}
 
-		//remove error if user has corrected input
-		document.querySelector(".error").style.display = "none";
+	// 	//remove error if user has corrected input
+	// 	document.querySelector(".error").style.display = "none";
 
-		//api call to login user, not to return all neighbors yet
-		await axios
-			.post(`${api}/users/login`, { email, password })
-			.then((res) => {
-				if (res.data.user.email === email) {
-					setToken(res.data.token);
-					setUser(res.data.user);
-				} else {
-					//no user found error
-					errorElement.style.display = "inline-block";
-					errorElement.textContent = "User not found";
-				}
-			})
-			.catch((error) => {
-				//set error text based on error status
-				if (error.response.status === 404 || error.response.status === 400)
-					errorElement.textContent = "Invalid User";
-				if (error.response.status === 429)
-					errorElement.textContent = "Please try again later";
-				errorElement.style.display = "inline-block";
-			});
-	}
+	// 	//api call to login user, not to return all neighbors yet
+	// 	await axios
+	// 		.post(`${api}/users/login`, { email, password })
+	// 		.then((res) => {
+	// 			if (res.data.user.email === email) {
+	// 				setToken(res.data.token);
+	// 				setUser(res.data.user);
+	// 			} else {
+	// 				//no user found error
+	// 				errorElement.style.display = "inline-block";
+	// 				errorElement.textContent = "User not found";
+	// 			}
+	// 		})
+	// 		.catch((error) => {
+	// 			//set error text based on error status
+	// 			if (error.response.status === 404 || error.response.status === 400)
+	// 				errorElement.textContent = "Invalid User";
+	// 			if (error.response.status === 429)
+	// 				errorElement.textContent = "Please try again later";
+	// 			errorElement.style.display = "inline-block";
+	// 		});
+	// }
 
+	//TODO : move handleLogout to header page?
 	function handleLogout(e) {
 		e.preventDefault();
 		if (loggedIn) {
@@ -147,10 +148,11 @@ export default function App() {
 						path="/login"
 						element={
 							<LoginPage
-								loggedIn={loggedIn}
+								// loggedIn={loggedIn}
 								setUser={setUser}
-								handleLogin={handleLogin}
-								handleLogout={handleLogout}
+								setToken={setToken}
+								// handleLogin={handleLogin}
+								// handleLogout={handleLogout}
 							/>
 						}
 					/>
