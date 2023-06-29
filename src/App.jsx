@@ -66,19 +66,13 @@ export default function App() {
 				<Header loggedIn={loggedIn} handleLogout={handleLogout} />
 				<div className="App__routes">
 					<Routes>
-						{/* <Route path="/" element={<Navigate to="/login" />} />
-						<Route path="/neighbors" element={<Navigate to="/login" />} /> */}
-
 						<Route
 							path="/login"
 							element={
 								<LoginPage
-									// loggedIn={loggedIn}
 									setUser={setUser}
 									setToken={setToken}
 									setLoggedIn={setLoggedIn}
-									// handleLogin={handleLogin}
-									// handleLogout={handleLogout}
 								/>
 							}
 						/>
@@ -107,52 +101,31 @@ export default function App() {
 			<Header loggedIn={loggedIn} handleLogout={handleLogout} />
 			<div className="App__routes">
 				<Routes>
-					<Route
-						path="/"
-						element={
-							loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />
-						}
-					/>
+					<Route path="/" element={<Navigate to="/neighbors" />} />
 					<Route
 						path="/neighbors"
 						element={
-							loggedIn ? (
-								<Neighbors
-									loggedIn={loggedIn}
-									user={user}
-									neighbors={neighbors}
-								/>
-							) : (
-								<Navigate to="/login" />
-							)
-						}
-					/>
-					<Route
-						path="/login"
-						element={
-							<LoginPage
-								// loggedIn={loggedIn}
-								setUser={setUser}
-								setToken={setToken}
-								// handleLogin={handleLogin}
-								// handleLogout={handleLogout}
+							<Neighbors
+								loggedIn={loggedIn}
+								user={user}
+								neighbors={neighbors}
 							/>
 						}
 					/>
 					<Route
+						path="/login"
+						element={<LoginPage setUser={setUser} setToken={setToken} />}
+					/>
+					<Route
 						path="/profile"
 						element={
-							loggedIn ? (
-								<EditUserPage
-									user={user}
-									setNeighbors={setNeighbors}
-									setUser={setUser}
-									setToken={setToken}
-									setLoggedIn={setLoggedIn}
-								/>
-							) : (
-								<Navigate to="/login" />
-							)
+							<EditUserPage
+								user={user}
+								setNeighbors={setNeighbors}
+								setUser={setUser}
+								setToken={setToken}
+								setLoggedIn={setLoggedIn}
+							/>
 						}
 					/>
 					<Route
