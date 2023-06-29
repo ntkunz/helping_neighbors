@@ -1,16 +1,20 @@
 import "./LoginPage.scss";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
 export default function LoginPage({ setToken, setUser }) {
 
+	const [errorActive, setErrorActive] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
+
 	const api = process.env.REACT_APP_API_URL;
-	async function handleLogin(e) {
-		e.preventDefault();
+	async function handleLogin(loginForm) {
+		loginForm.preventDefault();
 		// errorElement ready if server returns an error
 		const errorElement = document.querySelector(".error");
 		//set email user signed in with
-		const email = purify(e.target.email.value.toLowerCase());
+		const email = purify(loginForm.target.email.value.toLowerCase());
 
 		//TODO: move email regex to utils folder??????
 		const emailRegex = /\S+@\S+\.\S+/;
@@ -21,7 +25,7 @@ export default function LoginPage({ setToken, setUser }) {
 			return;
 		}
 
-		const password = purify(e.target.password.value);
+		const password = purify(loginForm.target.password.value);
 
 		//TODO: move password regex to utils folder?????
 		const passwordRegex =
