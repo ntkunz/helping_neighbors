@@ -21,7 +21,7 @@ export default function MessagersPage({ neighbors }) {
 						>
 							Message {neighbor.first_name}
 							{/* display unsplash image if no uploaded user image */}
-							{neighbor.image_url === "https://source.unsplash.com/featured" ? (
+							{neighbor.image_url === "hassan-rafhaan--unsplash.jpg" ? (
 								<img
 									src={`${neighbor.image_url}`}
 									alt="default user profile"
