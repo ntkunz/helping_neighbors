@@ -48,8 +48,8 @@ export default function App() {
 	}, [user]);
 
 	//TODO : move handleLogout to header page?
-	function handleLogout(e) {
-		e.preventDefault();
+	function handleLogout(logoutEvent) {
+		logoutEvent.preventDefault();
 		if (loggedIn) {
 			setLoggedIn(!loggedIn);
 			setUser({});
