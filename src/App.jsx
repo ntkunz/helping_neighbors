@@ -92,11 +92,8 @@ export default function App() {
 						path="/login"
 						element={
 							<LoginPage
-								// loggedIn={loggedIn}
 								setUser={setUser}
 								setToken={setToken}
-								// handleLogin={handleLogin}
-								// handleLogout={handleLogout}
 							/>
 						}
 					/>
