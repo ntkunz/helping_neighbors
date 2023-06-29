@@ -20,10 +20,9 @@ export default function MessagersPage({ neighbors }) {
 							className="messager__neighbor-link"
 						>
 							Message {neighbor.first_name}
-							{/* display unsplash image if no uploaded user image */}
 							{neighbor.image_url === "hassan-rafhaan--unsplash.jpg" ? (
 								<img
-									src={`${neighbor.image_url}`}
+									src={`${api}/${neighbor.image_url}`}
 									alt="default user profile"
 									className="messager__neighbor-img"
 								/>
