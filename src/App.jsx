@@ -10,7 +10,7 @@ import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
 import MessagersPage from "./pages/MessagersPage/MessagersPage";
 import setToken from "./utils/setToken";
-import sendRequest from "./utils/sendRequest";
+import fetchUser from "./utils/fetchUser";
 import fetchNeighbors from "./utils/fetchNeighbors";
 
 export default function App() {
@@ -24,7 +24,7 @@ export default function App() {
 		//TODO: move getUser function to utils folder??????
 		const getUser = async () => {
 			try {
-				const user = await sendRequest();
+				const user = await fetchUser();
 				setUser(user);
 			} catch (error) {
 				navigate("/login");
