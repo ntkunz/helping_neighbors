@@ -1,5 +1,4 @@
 import "./App.scss";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Components/Header/Header";
@@ -49,8 +48,8 @@ export default function App() {
 	}, [user]);
 
 	//TODO : move handleLogout to header page?
-	function handleLogout(logoutEvent) {
-		logoutEvent.preventDefault();
+	function handleLogout(e) {
+		e.preventDefault();
 		if (loggedIn) {
 			setLoggedIn(!loggedIn);
 			setUser({});
@@ -61,55 +60,59 @@ export default function App() {
 		}
 	}
 
-	if (!loggedIn) {
-		return (
-			<div className="App">
-				<Header loggedIn={loggedIn} handleLogout={handleLogout} />
-				<div className="App__routes">
-					<Routes>
-						<Route
-							path="/login"
-							element={<LoginPage setUser={setUser} setToken={setToken} />}
-						/>
-						<Route path="/signup" element={<NewUserPage />} />
-						<Route path="*" element={<Navigate to="/login" />} />
-					</Routes>
-				</div>
-				<Footer />
-			</div>
-		);
-	}
+	
 
 	return (
 		<div className="App">
 			<Header loggedIn={loggedIn} handleLogout={handleLogout} />
 			<div className="App__routes">
 				<Routes>
-					<Route path="/" element={<Navigate to="/neighbors" />} />
+					<Route
+						path="/"
+						element={
+							loggedIn ? <Navigate to="/neighbors" /> : <Navigate to="/login" />
+						}
+					/>
 					<Route
 						path="/neighbors"
 						element={
-							<Neighbors
-								loggedIn={loggedIn}
-								user={user}
-								neighbors={neighbors}
-							/>
+							loggedIn ? (
+								<Neighbors
+									loggedIn={loggedIn}
+									user={user}
+									neighbors={neighbors}
+								/>
+							) : (
+								<Navigate to="/login" />
+							)
 						}
 					/>
 					<Route
 						path="/login"
-						element={<LoginPage setUser={setUser} setToken={setToken} />}
+						element={
+							<LoginPage
+								// loggedIn={loggedIn}
+								setUser={setUser}
+								setToken={setToken}
+								// handleLogin={handleLogin}
+								// handleLogout={handleLogout}
+							/>
+						}
 					/>
 					<Route
 						path="/profile"
 						element={
-							<EditUserPage
-								user={user}
-								setNeighbors={setNeighbors}
-								setUser={setUser}
-								setToken={setToken}
-								setLoggedIn={setLoggedIn}
-							/>
+							loggedIn ? (
+								<EditUserPage
+									user={user}
+									setNeighbors={setNeighbors}
+									setUser={setUser}
+									setToken={setToken}
+									setLoggedIn={setLoggedIn}
+								/>
+							) : (
+								<Navigate to="/login" />
+							)
 						}
 					/>
 					<Route
