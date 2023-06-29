@@ -11,17 +11,14 @@ export default function LoginPage({ setToken, setUser }) {
 	const api = process.env.REACT_APP_API_URL;
 	async function handleLogin(loginForm) {
 		loginForm.preventDefault();
-		// errorElement ready if server returns an error
-		const errorElement = document.querySelector(".error");
-		//set email user signed in with
+
 		const email = purify(loginForm.target.email.value.toLowerCase());
 
 		//TODO: move email regex to utils folder??????
 		const emailRegex = /\S+@\S+\.\S+/;
 		if (!emailRegex.test(email)) {
-			//display error if email not valid
-			errorElement.textContent = "Please enter a valid email";
-			errorElement.style.display = "inline-block";
+			setErrorMessage("Please enter a valid email");
+			setErrorActive(true);
 			return;
 		}
 
@@ -31,17 +28,14 @@ export default function LoginPage({ setToken, setUser }) {
 		const passwordRegex =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 		if (!passwordRegex.test(password)) {
-			//display error if password not valid
-			errorElement.textContent =
-				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number";
-			errorElement.style.display = "inline-block";
+			setErrorMessage("Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number");
+			setErrorActive(true);
 			return;
 		}
 
-		//remove error if user has corrected input
-		document.querySelector(".error").style.display = "none";
+		//email and password valid formats
+		setErrorActive(false);
 
-		//api call to login user, not to return all neighbors yet
 		await axios
 			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
@@ -49,18 +43,18 @@ export default function LoginPage({ setToken, setUser }) {
 					setToken(res.data.token);
 					setUser(res.data.user);
 				} else {
-					//no user found error
-					errorElement.style.display = "inline-block";
-					errorElement.textContent = "User not found";
+					setErrorMessage("User not found");
+					setErrorActive(true);
 				}
 			})
 			.catch((error) => {
-				//set error text based on error status
-				if (error.response.status === 404 || error.response.status === 400)
-					errorElement.textContent = "Invalid User";
-				if (error.response.status === 429)
-					errorElement.textContent = "Please try again later";
-				errorElement.style.display = "inline-block";
+				if (error.response.status === 404 || error.response.status === 400) {
+					setErrorMessage("Invalid User");
+				}
+				if (error.response.status === 429) {
+					setErrorMessage("Please try again later");
+				}
+					setErrorActive(true);
 			});
 	}
 
@@ -112,7 +106,7 @@ export default function LoginPage({ setToken, setUser }) {
 							placeholder="your email@something.com"
 							required
 						/>
-						<p className="error"></p>
+						{errorActive && <p className="login-error">{errorMessage}</p>}
 						<p className="login-form__label">Password</p>
 						<input
 							type="password"
