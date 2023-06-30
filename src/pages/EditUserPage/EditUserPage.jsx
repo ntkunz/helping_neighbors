@@ -16,8 +16,8 @@ export default function EditUserPage({
 
 	const api = process.env.REACT_APP_API_URL;
 
-	const [first_name, setFirstName] = useState(user.first_name);
-	const [last_name, setLastName] = useState(user.last_name);
+	const [firstName, setFirstName] = useState(user.first_name);
+	const [lastName, setLastName] = useState(user.last_name);
 	const [email, setEmail] = useState(user.email);
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
@@ -101,8 +101,8 @@ export default function EditUserPage({
 			about === "" ||
 			offers === "" ||
 			desires === "" ||
-			first_name === "" ||
-			last_name === "" ||
+			firstName === "" ||
+			lastName === "" ||
 			email === "" ||
 			home === "" ||
 			city === "" ||
@@ -117,8 +117,8 @@ export default function EditUserPage({
 					`${api}/users`,
 					{
 						user_id: purify(user_id),
-						first_name: purify(first_name),
-						last_name: purify(last_name),
+						first_name: purify(firstName),
+						last_name: purify(lastName),
 						email: cleanEmail,
 						coords: coords,
 						about: purify(about),
@@ -229,9 +229,9 @@ export default function EditUserPage({
 						<input
 							type="text"
 							className="edit__input"
-							name="first_name"
+							name="firstName"
 							placeholder="First name"
-							value={first_name}
+							value={firstName}
 							onChange={(e) => setFirstName(e.target.value)}
 						/>
 					</label>
@@ -241,9 +241,9 @@ export default function EditUserPage({
 						<input
 							type="text"
 							className="edit__input"
-							name="last_name"
+							name="lastName"
 							placeholder="Last name"
-							value={last_name}
+							value={lastName}
 							onChange={(e) => setLastName(e.target.value)}
 						/>
 					</label>
@@ -357,6 +357,7 @@ export default function EditUserPage({
 								type="password"
 								className="edit__input"
 								name="password"
+								autoComplete="current-password"
 								placeholder=""
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}

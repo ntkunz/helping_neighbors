@@ -1,7 +1,65 @@
 import "./LoginPage.scss";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import purify from "../../utils/purify";
+import axios from "axios";
+export default function LoginPage({ setToken, setUser, setLoggedIn }) {
+	const [errorActive, setErrorActive] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
+	const api = process.env.REACT_APP_API_URL;
 
-export default function LoginPage({ handleLogin }) {
+	async function handleLogin(loginForm) {
+		loginForm.preventDefault();
+
+		const email = purify(loginForm.target.email.value.toLowerCase());
+
+		//TODO: move email regex to utils folder??????
+		const emailRegex = /\S+@\S+\.\S+/;
+		if (!emailRegex.test(email)) {
+			setErrorMessage("Please enter a valid email");
+			setErrorActive(true);
+			return;
+		}
+
+		const password = purify(loginForm.target.password.value);
+
+		//TODO: move password regex to utils folder?????
+		const passwordRegex =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
+		if (!passwordRegex.test(password)) {
+			setErrorMessage(
+				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number"
+			);
+			setErrorActive(true);
+			return;
+		}
+
+		//email and password valid formats
+		setErrorActive(false);
+
+		await axios
+			.post(`${api}/users/login`, { email, password })
+			.then((res) => {
+				if (res.data.user.email === email) {
+					setToken(res.data.token);
+					setUser(res.data.user);
+					setLoggedIn(true);
+				} else {
+					setErrorMessage("User not found");
+					setErrorActive(true);
+				}
+			})
+			.catch((error) => {
+				if (error.response.status === 404 || error.response.status === 400) {
+					setErrorMessage("Invalid User");
+				}
+				if (error.response.status === 429) {
+					setErrorMessage("Please try again later");
+				}
+				setErrorActive(true);
+			});
+	}
+
 	return (
 		<div className="login__container">
 			<h1 className="login__title">
@@ -38,32 +96,36 @@ export default function LoginPage({ handleLogin }) {
 				</div>
 
 				<div className="login-form">
-					<form className="login-form__form" onSubmit={handleLogin} method="post" noValidate>
-					<div className="login-form__box">
-						<p className="login-form__label">Email</p>
-						<input
-							type="email"
-							
-							autoComplete="username"
-							className="login-form__input"
-							name="email"
-							placeholder="your email@something.com"
-							required
-						/>
-						<p className="error"></p>
-						<p className="login-form__label">Password</p>
-						<input
-							type="password"
-							autoComplete="current-password"
-							className="login-form__input"
-							name="password"
-						/>
-					</div>
-					<div className="login-form__box">
-						<button className="login-form__btn">Sign In</button>
-						<Link className="login-form__btn signup" to="/signup">
-							Sign Up
-						</Link>
+					<form
+						className="login-form__form"
+						onSubmit={handleLogin}
+						method="post"
+						noValidate
+					>
+						<div className="login-form__box">
+							<p className="login-form__label">Email</p>
+							<input
+								type="email"
+								autoComplete="username"
+								className="login-form__input"
+								name="email"
+								placeholder="your email@something.com"
+								required
+							/>
+							{errorActive && <p className="login-error">{errorMessage}</p>}
+							<p className="login-form__label">Password</p>
+							<input
+								type="password"
+								autoComplete="current-password"
+								className="login-form__input"
+								name="password"
+							/>
+						</div>
+						<div className="login-form__box">
+							<button className="login-form__btn">Sign In</button>
+							<Link className="login-form__btn signup" to="/signup">
+								Sign Up
+							</Link>
 						</div>
 					</form>
 				</div>
