@@ -62,7 +62,7 @@ export default function NewUserPage({
 		//add default value for image if no image is uploaded
 		if (img === null) {
 			// setImg('"https://source.unsplash.com/featured"');
-			setImg('default');
+			setImg("default");
 		}
 
 		//clear error if passwords match
@@ -94,6 +94,7 @@ export default function NewUserPage({
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
+		//VALIDATE THAT COORDINATES EXISTS??
 		const status = "active";
 		const about = purify(e.target.about.value);
 
@@ -133,9 +134,6 @@ export default function NewUserPage({
 				}),
 			]);
 
-			//BLAIR!!!!!!!!!!! SHOULD I ADD THESE ACTIONS BETWEEN HERE AND THE CATCH BELOW TO AFTER THE CATCH?
-			//SOMETHING LIKE if (response) {then do all the stuff below}?!!!!!!!!!!!!!!!!!!1
-
 			const newUserToken = response[0].data.token;
 			const newUserId = response[0].data.userId;
 
@@ -166,7 +164,7 @@ export default function NewUserPage({
 			setLoggedIn(true);
 			navigate("/");
 		} catch (err) {
-			console.log("Error creating new user");
+			console.log("Error creating new user" + err);
 		}
 	}
 
