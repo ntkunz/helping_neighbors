@@ -117,7 +117,7 @@ export default function NewUserPage({
 
 		//add user to users table
 		try {
-			const response = await Promise.all([
+			const response = await 
 				axios.post(`${api}/users`, {
 					user_id: user_id,
 					first_name: first_name,
@@ -131,8 +131,7 @@ export default function NewUserPage({
 					home: home,
 					city: city,
 					province: province,
-				}),
-			]);
+				});
 
 			const newUserToken = response[0].data.token;
 			const newUserId = response[0].data.userId;
