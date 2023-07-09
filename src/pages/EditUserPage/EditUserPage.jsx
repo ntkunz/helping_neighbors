@@ -36,17 +36,18 @@ export default function EditUserPage({
 		// Initialize newOffers and newDesires
 		let newOffers = "";
 		let newDesires = "";
-		// Loop through each key in user.barters
 
-		Object.keys(user.barters).forEach((key, index) => {
-			// If the value for the current key is 1, add it to newOffers
-			if (user.barters[key] === 1) {
-				newOffers += purify(` ${key},`);
+		// Set user offers and desires based on offer value
+		for (let i = 0; i < user.barters.length; i++) {
+			if (user.barters[i].offer === 1) {
+				if (newOffers !== "") newOffers += purify(', ' + user.barters[i].skill)
+				else newOffers += purify(user.barters[i].skill)
 			} else {
-				// Otherwise, add it to newDesires
-				newDesires += purify(` ${key},`);
+				if (newDesires !== "") newDesires += purify(', ' + user.barters[i].skill)
+				else newDesires += purify(user.barters[i].skill)
 			}
-		});
+		};
+
 		// Update state with the new offers and desires
 		setOffers(newOffers.trim().replace(/,$/, ""));
 		setDesires(newDesires.trim().replace(/,$/, ""));
@@ -112,7 +113,7 @@ export default function EditUserPage({
 			return;
 		}
 		try {
-			const response = await Promise.all([
+			const response = await 
 				axios.put(
 					`${api}/users`,
 					{
@@ -132,11 +133,10 @@ export default function EditUserPage({
 							Authorization: `Bearer ${localStorage.getItem("token")}`,
 						},
 					}
-				),
-			]);
+				);
 
 			//set user's new data
-			setUser(response[0].data);
+			setUser(response.data);
 			//clear old neighbors incase address changed
 			setNeighbors([]);
 			//api call to return all neighbors

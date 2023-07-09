@@ -55,6 +55,8 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 				}
 				if (error.response.status === 429) {
 					setErrorMessage("Please try again later");
+				} else {
+					console.log('errror getting user: ', error);
 				}
 				setErrorActive(true);
 			});

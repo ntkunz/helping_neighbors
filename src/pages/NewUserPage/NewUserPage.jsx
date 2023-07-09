@@ -44,7 +44,9 @@ export default function NewUserPage({
 		// Image validation
 		if (img !== null && img !== "default") {
 			// Throw error if uploaded image is too large
+			console.log('reading image validation')
 			if (img.data.size > 1000000) {
+				console.log('reading image size')
 				errorElement.style.display = "inline-block";
 				errorElement.innerHTML =
 					"Image too large, please add an image under 1MB";
@@ -94,7 +96,7 @@ export default function NewUserPage({
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
-		//VALIDATE THAT COORDINATES EXISTS??
+		//TODO : create break and return if unable to get new user geo
 		const status = "active";
 		const about = purify(e.target.about.value);
 
@@ -117,7 +119,7 @@ export default function NewUserPage({
 
 		//add user to users table
 		try {
-			const response = await Promise.all([
+			const response = await 
 				axios.post(`${api}/users`, {
 					user_id: user_id,
 					first_name: first_name,
@@ -131,11 +133,10 @@ export default function NewUserPage({
 					home: home,
 					city: city,
 					province: province,
-				}),
-			]);
+				});
 
-			const newUserToken = response[0].data.token;
-			const newUserId = response[0].data.userId;
+			const newUserToken = response.data.token;
+			const newUserId = response.data.userId;
 
 			await setToken(newUserToken);
 			await addSkills(skillsArray, newUserId);
