@@ -14,11 +14,7 @@ export default function NewUserPage({
 	setNeighbors,
 }) {
 	const navigate = useNavigate();
-
 	const api = process.env.REACT_APP_API_URL;
-	const geoKey = process.env.REACT_APP_HERE_API_KEY;
-	const geoApi = process.env.REACT_APP_GEO_URL;
-
 	const [img, setImg] = useState(null);
 
 	function capFirst(string) {
@@ -63,7 +59,6 @@ export default function NewUserPage({
 
 		//add default value for image if no image is uploaded
 		if (img === null) {
-			// setImg('"https://source.unsplash.com/featured"');
 			setImg("default");
 		}
 
