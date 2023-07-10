@@ -33,6 +33,7 @@ export default function App() {
 			};
 			getUser();
 		}
+		// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
@@ -46,6 +47,7 @@ export default function App() {
 			};
 			getNeighbors();
 		}
+	// eslint-disable-next-line
 	}, [user]);
 
 	//TODO : move handleLogout to header page?
