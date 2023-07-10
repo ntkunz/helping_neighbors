@@ -22,7 +22,8 @@ export default function EditUserPage({
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
-	const [originalAddress, setOriginalAddress] = useState(user.address);
+	// const [originalAddress, setOriginalAddress] = useState(user.address);
+	const originalAddress = user.address;
 	const [active, setActive] = useState(user.status); //to be used once user is able to change status
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
