@@ -236,6 +236,11 @@ export default function NewUserPage({
 							placeholder="your email@something.com"
 						/>
 					</label>
+					<p className="new__requirement">
+						Password must be at least 8 characters, contain at least one
+						uppercase letter, one lowercase letter, one number and one special
+						character. Temporarily no way to reset password, so please remember it.
+					</p>
 					<label className="new__label">
 						Password
 						<input
@@ -256,11 +261,6 @@ export default function NewUserPage({
 							placeholder="Password again"
 						/>
 					</label>
-					<p className="new__requirement">
-						Password must be at least 8 characters and contain at least one
-						uppercase letter, one lowercase letter, one number and one special
-						character
-					</p>
 					<label className="new__label">
 						Home Address
 						<input
