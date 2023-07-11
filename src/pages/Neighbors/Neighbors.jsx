@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function Neighbors({ neighbors, user }) {
 	if (!neighbors.length) {
 		return (
-			<div className="neighbors__container">
+			<div className="neighbors__container--alt">
 				<h1 className="neighbors_title">
 					Welcome to the Helping Neighbors site {user.first_name}
 				</h1>
