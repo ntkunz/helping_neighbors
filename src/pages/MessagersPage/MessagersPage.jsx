@@ -6,7 +6,7 @@ export default function MessagersPage({ neighbors }) {
 
 	if (!neighbors.length) {
 		return (
-			<div className="messager">
+			<div className="messager--alt">
 				<h1 className="messager__title">Bummer, you currently have no neighbors currently utilizing the site</h1>
 				<Link to="/neighbors" className="messager__link">
 					Back to the neighbors page for suggestions

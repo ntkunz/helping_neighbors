@@ -18,6 +18,13 @@
 		align-items: flex-start;
 	}
 
+	&__container {
+		&--alt {
+			align-items: center;
+			color: $color-five;
+		}
+	}
+
 	&__title {
 		@include sectionHeader;
 		color: $color-five;
