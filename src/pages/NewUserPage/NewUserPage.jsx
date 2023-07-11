@@ -112,7 +112,6 @@ export default function NewUserPage({
 			})),
 		];
 
-		//add user to users table
 		try {
 			const response = await axios.post(`${api}/users`, {
 				user_id: user_id,
@@ -163,7 +162,8 @@ export default function NewUserPage({
 		}
 	}
 
-	//upload image to users function (move to utils file?)
+	//upload image to users function 
+	//TODO: move to utils file
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
@@ -177,17 +177,16 @@ export default function NewUserPage({
 		return response;
 	};
 
-	//set image function with file input (move to utils file?)
+	//set image function with file input 
+	//TODO: move to utils file?
 	const handleFileChange = async (e) => {
-		//return alert if image too large
 		if (e.target.files[0].size > 1000000) {
+			e.target.value = "";
 			return alert("Image too large, please add an image under 1MB");
 		}
-		//return alert if not an image
 		if (!e.target.files[0].type.includes("image")) {
 			return alert("Please add an image file");
 		}
-		//set image state if image is valid
 		const img = {
 			data: e.target.files[0],
 		};
