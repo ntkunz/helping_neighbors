@@ -40,9 +40,9 @@ export default function NewUserPage({
 		// Image validation
 		if (img !== null && img !== "default") {
 			// Throw error if uploaded image is too large
-			console.log('reading image validation')
+			console.log("reading image validation");
 			if (img.data.size > 1000000) {
-				console.log('reading image size')
+				console.log("reading image size");
 				errorElement.style.display = "inline-block";
 				errorElement.innerHTML =
 					"Image too large, please add an image under 1MB";
@@ -114,21 +114,20 @@ export default function NewUserPage({
 
 		//add user to users table
 		try {
-			const response = await 
-				axios.post(`${api}/users`, {
-					user_id: user_id,
-					first_name: first_name,
-					last_name: last_name,
-					email: email,
-					password: password,
-					status: status,
-					coords: coords,
-					about: about,
-					address: address,
-					home: home,
-					city: city,
-					province: province,
-				});
+			const response = await axios.post(`${api}/users`, {
+				user_id: user_id,
+				first_name: first_name,
+				last_name: last_name,
+				email: email,
+				password: password,
+				status: status,
+				coords: coords,
+				about: about,
+				address: address,
+				home: home,
+				city: city,
+				province: province,
+			});
 
 			const newUserToken = response.data.token;
 			const newUserId = response.data.userId;
@@ -195,6 +194,12 @@ export default function NewUserPage({
 		setImg(img);
 	};
 
+	const removeImage = (e) => {
+		e.preventDefault();
+		setImg(null);
+		document.getElementById("image-input").value = "";
+	};
+
 	return (
 		<div className="new">
 			<h1 className="new__title">
@@ -239,7 +244,8 @@ export default function NewUserPage({
 					<p className="new__requirement">
 						Password must be at least 8 characters, contain at least one
 						uppercase letter, one lowercase letter, one number and one special
-						character. Temporarily no way to reset password, so please remember it.
+						character. Temporarily no way to reset password, so please remember
+						it.
 					</p>
 					<label className="new__label">
 						Password
@@ -328,10 +334,17 @@ export default function NewUserPage({
 					</p>
 					<label className="new__label upload">
 						Upload a profile picture
-						<input type="file" name="file" onChange={handleFileChange}></input>
+						<input
+							type="file"
+							name="file"
+							id="image-input"
+							onChange={handleFileChange}
+						></input>
+						<p className="upload__desc">File size limit: 1mb</p>
+						<button className="new__default-img-btn" onClick={removeImage}>
+							Use default image
+						</button>
 					</label>
-					<p className="edit__desc">File size limit: 1mb</p>
-
 					<p className="error"></p>
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>
