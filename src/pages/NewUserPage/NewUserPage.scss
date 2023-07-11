@@ -40,7 +40,7 @@
 		flex-basis: 30%;
 		background-color: $color-one;
 		border-radius: 0.25rem;
-		padding: .5rem 1rem 0;
+		padding: 0.5rem 1rem 0;
 
 		@include tablet {
 			padding: 2rem;
@@ -54,7 +54,7 @@
 		flex-grow: 1;
 		background-color: $color-one;
 		border-radius: 0.25rem;
-		padding: .5rem 1rem;
+		padding: 0.5rem 1rem;
 
 		@include tablet {
 			padding: 2rem;
@@ -101,6 +101,12 @@
 		text-align: left;
 	}
 
+	&__default-img-btn {
+		width: 40vw;
+		max-width: 10.5rem;
+		max-height: 1.5rem;
+	}
+
 	&__btn {
 		align-self: center;
 		text-decoration: none;
@@ -129,5 +135,15 @@
 .upload {
 	display: flex;
 	justify-content: flex-start;
-	gap: 3rem;
+	gap: 1rem;
+
+	@include tablet {
+		gap: 3rem;
+	}
+
+	&__desc {
+		@include bodyCopy;
+		color: $color-six;
+		text-align: left;
+	}
 }
