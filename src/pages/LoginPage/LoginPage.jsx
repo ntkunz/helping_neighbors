@@ -1,6 +1,6 @@
 import "./LoginPage.scss";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
 export default function LoginPage({ setToken, setUser, setLoggedIn }) {
@@ -8,12 +8,18 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 	const [errorMessage, setErrorMessage] = useState("");
 	const api = process.env.REACT_APP_API_URL;
 
+	//wakeup server on page load
+	useEffect(() => {
+		axios.get(`${api}/users/newemail`);
+		//eslint-disable-next-line
+	}, []);
+
 	async function handleLogin(loginForm) {
 		loginForm.preventDefault();
 
 		const email = purify(loginForm.target.email.value.toLowerCase());
 
-		//TODO: move email regex to utils folder??????
+		//TODO: move email regex to utils folder
 		const emailRegex = /\S+@\S+\.\S+/;
 		if (!emailRegex.test(email)) {
 			setErrorMessage("Please enter a valid email");
@@ -23,7 +29,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 
 		const password = purify(loginForm.target.password.value);
 
-		//TODO: move password regex to utils folder?????
+		//TODO: move password regex to utils folder
 		const passwordRegex =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 		if (!passwordRegex.test(password)) {
@@ -34,7 +40,6 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 			return;
 		}
 
-		//email and password valid formats
 		setErrorActive(false);
 
 		await axios
@@ -56,7 +61,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 				if (error.response.status === 429) {
 					setErrorMessage("Please try again later");
 				} else {
-					console.log('errror getting user: ', error);
+					console.log("errror getting user: ", error);
 				}
 				setErrorActive(true);
 			});

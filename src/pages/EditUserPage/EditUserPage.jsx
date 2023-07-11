@@ -22,44 +22,37 @@ export default function EditUserPage({
 	const [home, setHome] = useState(user.home);
 	const [city, setCity] = useState(user.city);
 	const [province, setProvince] = useState(user.province);
-	// const [originalAddress, setOriginalAddress] = useState(user.address);
 	const originalAddress = user.address;
-	// const [active, setActive] = useState(user.status); //to be used once user is able to change status
-	// const active = user.status;
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
 	const [desires, setDesires] = useState("");
 	const [password, setPassword] = useState("");
 
-	/**
-	 * This effect runs once on component mount and updates the state with the user's barters
-	 */
 	useEffect(() => {
-		// Initialize newOffers and newDesires
 		let newOffers = "";
 		let newDesires = "";
 
 		// Set user offers and desires based on offer value
 		for (let i = 0; i < user.barters.length; i++) {
 			if (user.barters[i].offer === 1) {
-				if (newOffers !== "") newOffers += purify(', ' + user.barters[i].skill)
-				else newOffers += purify(user.barters[i].skill)
+				if (newOffers !== "") newOffers += purify(", " + user.barters[i].skill);
+				else newOffers += purify(user.barters[i].skill);
 			} else {
-				if (newDesires !== "") newDesires += purify(', ' + user.barters[i].skill)
-				else newDesires += purify(user.barters[i].skill)
+				if (newDesires !== "")
+					newDesires += purify(", " + user.barters[i].skill);
+				else newDesires += purify(user.barters[i].skill);
 			}
-		};
+		}
 
 		// Update state with the new offers and desires
 		setOffers(newOffers.trim().replace(/,$/, ""));
 		setDesires(newDesires.trim().replace(/,$/, ""));
-		// Ignore the "missing dependencies" warning for this effect
-		// because it only needs to run once on mount
 		// eslint-disable-next-line
 	}, []);
 
-	//==============need to add ability to change email, password, and image=================
-	//============also need to add ability to change status to active or inactive=============
+	//TODO: add ability to change email, password, and image
+	//TODO: add ability to change status to active or inactive
+	//TODO: add ability to block neighbor(s)
 
 	//submit the edit user form
 	async function editUser(e) {
@@ -67,9 +60,7 @@ export default function EditUserPage({
 
 		const cleanEmail = purify(email);
 		const user_id = user.user_id;
-
-		await removeSkills(purify(user_id)); //remove all user skills from table to add updated ones
-
+		await removeSkills(purify(user_id));
 		const address = purify(`${home} ${city} ${province}`);
 		const addressRequest = address
 			.replaceAll(",", " ")
@@ -77,9 +68,8 @@ export default function EditUserPage({
 			.replaceAll(".", "+");
 
 		let coords = [user.location.x, user.location.y];
-		// Check if the address has changed
 		if (address !== originalAddress) {
-			coords = await getNewUserGeo(addressRequest); // get new address coordinates if address changed
+			coords = await getNewUserGeo(addressRequest);
 		}
 
 		//separate offers and desires into skills array
@@ -115,33 +105,29 @@ export default function EditUserPage({
 			return;
 		}
 		try {
-			const response = await 
-				axios.put(
-					`${api}/users`,
-					{
-						user_id: purify(user_id),
-						first_name: purify(firstName),
-						last_name: purify(lastName),
-						email: cleanEmail,
-						coords: coords,
-						about: purify(about),
-						address: address,
-						home: purify(home),
-						city: purify(city),
-						province: purify(province),
+			const response = await axios.put(
+				`${api}/users`,
+				{
+					user_id: purify(user_id),
+					first_name: purify(firstName),
+					last_name: purify(lastName),
+					email: cleanEmail,
+					coords: coords,
+					about: purify(about),
+					address: address,
+					home: purify(home),
+					city: purify(city),
+					province: purify(province),
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
 					},
-					{
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
-						},
-					}
-				);
+				}
+			);
 
-			//set user's new data
 			setUser(response.data);
-			//clear old neighbors incase address changed
 			setNeighbors([]);
-			//api call to return all neighbors
 			axios
 				.get(`${api}/users`, {
 					headers: {
@@ -151,7 +137,6 @@ export default function EditUserPage({
 				})
 				.then((res) => {
 					if (res.data.length > 0) {
-						//set new neighbors
 						setNeighbors(res.data.neighbors);
 					}
 				});
@@ -165,6 +150,7 @@ export default function EditUserPage({
 	 * @param {string} id - The ID of the user whose skills are being removed.
 	 * @returns {Promise} - A promise that resolves to the response from the server.
 	 */
+	//TODO: reloacte remove skills function to utils folder
 	async function removeSkills(id) {
 		try {
 			const response = await axios.delete(`${api}/userskills/${id}`, {
@@ -178,7 +164,6 @@ export default function EditUserPage({
 		}
 	}
 
-
 	//function to reveal password input field to confirm account deletion
 	function deleteUserValidate(e) {
 		e.preventDefault();
@@ -187,14 +172,12 @@ export default function EditUserPage({
 		document.querySelector('input[name="password"]').focus();
 	}
 
-	//function to delete user
 	async function deleteUser(e) {
 		e.preventDefault();
 		const passwordValidate = purify(password);
 		try {
 			await axios.delete(`${api}/users`, {
 				headers: {
-					// Add authorization header with token from local storage
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 				data: {
@@ -204,11 +187,10 @@ export default function EditUserPage({
 				},
 			});
 
-			console.log('user deleted')
+			console.log("user deleted");
 
-			//add removal of all userskills and messages later
+			//TODO: add removal of all userskills and messages from database
 
-			//here if response is 200 then delete userskills and messages
 			setNeighbors([]);
 			setLoggedIn(false);
 			localStorage.removeItem("token");

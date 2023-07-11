@@ -1,11 +1,27 @@
+//CURRENTLY DISABLED UNTIL I REFACTOR TO ADD ALERTS OF NEW MESSAGES//
+//TODO: Add alerts for new messages and re-design ui of this page
+
 import "./MessagersPage.scss";
 import { Link } from "react-router-dom";
 
 export default function MessagersPage({ neighbors }) {
 	const api = process.env.REACT_APP_API_URL;
 
+	if (!neighbors.length) {
+		return (
+			<div className="messager--alt">
+				<h1 className="messager__title">
+					Bummer, you currently have no neighbors currently utilizing the site
+				</h1>
+				<Link to="/neighbors" className="messager__link">
+					Back to the neighbors page for suggestions
+				</Link>
+			</div>
+		);
+	}
+
 	return (
-		<div className="Messager">
+		<div className="messager">
 			<h1 className="messager__title">
 				Message a neighbor to arrange a barter, or{" "}
 				<Link to="/neighbors" className="messager__link">

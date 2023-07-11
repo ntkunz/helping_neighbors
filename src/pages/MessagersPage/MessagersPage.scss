@@ -78,4 +78,10 @@
 			box-shadow: none;
 		}
 	}
+
+	&--alt {
+		flex-direction: column;
+		align-items: center;
+		background-color: $color-one;
+	}
 }
