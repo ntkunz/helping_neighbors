@@ -16,6 +16,9 @@ export default function NewUserPage({
 	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
 	const [img, setImg] = useState(null);
+	const [errorActive, setErrorActive] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [apiCalled, setApiCalled] = useState(false);
 
 	function capFirst(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
@@ -26,33 +29,57 @@ export default function NewUserPage({
 		setUser({});
 		setNeighbors({});
 		e.preventDefault();
-		const errorElement = document.querySelector(".error");
+		const email = purify(e.target.email.value.toLowerCase());
+		// const errorElement = document.querySelector(".error");
+
+		//TODO: move email regex to utils folder??????
+		const emailRegex = /\S+@\S+\.\S+/;
+		if (!emailRegex.test(email)) {
+			setErrorMessage("Please enter a valid email");
+			setErrorActive(true);
+			return;
+		}
 
 		const password = purify(e.target.password.value);
 		const passwordConfirm = purify(e.target.password_confirm.value);
+
+		//TODO: move password regex to utils folder?????
+		const passwordRegex =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
+		if (!passwordRegex.test(password)) {
+			setErrorMessage(
+				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number"
+			);
+			setErrorActive(true);
+			return;
+		}
+
 		// Throw error if passwords do not match
 		if (password !== passwordConfirm) {
-			errorElement.style.display = "inline-block";
-			errorElement.innerHTML = "Passwords do not match";
+			// errorElement.style.display = "inline-block";
+			// errorElement.innerHTML = "Passwords do not match";
+			setErrorMessage("Passwords do not match");
+			setErrorActive(true);
 			return;
 		}
 
 		// Image validation
 		if (img !== null && img !== "default") {
-			// Throw error if uploaded image is too large
-			console.log("reading image validation");
 			if (img.data.size > 1000000) {
-				console.log("reading image size");
-				errorElement.style.display = "inline-block";
-				errorElement.innerHTML =
-					"Image too large, please add an image under 1MB";
+				setErrorMessage("Image too large, please add an image under 1MB");
+				setErrorActive(true);
+				// errorElement.style.display = "inline-block";
+				// errorElement.innerHTML =
+				// 	"Image too large, please add an image under 1MB";
 				return;
 			}
 
 			//return alert if not an image
 			if (!img.data.type.includes("image")) {
-				errorElement.style.display = "inline-block";
-				errorElement.innerHTML = "Please add an image file";
+				// errorElement.style.display = "inline-block";
+				// errorElement.innerHTML = "Please add an image file";
+				setErrorMessage("Please add a valid image file");
+				setErrorActive(true);
 				return;
 			}
 		}
@@ -63,24 +90,27 @@ export default function NewUserPage({
 		}
 
 		//clear error if passwords match
-		errorElement.style.display = "none";
+		// errorElement.style.display = "none";
 
 		const user_id = v4();
 		const first_name = purify(capFirst(e.target.first_name.value));
 		const last_name = purify(capFirst(e.target.last_name.value));
-		const email = purify(e.target.email.value.toLowerCase());
 
 		// Throw error if email is already in use in databse
 		const newEmail = await axios.post(`${api}/users/newemail`, { email });
 		if (newEmail.status === 202) {
-			errorElement.style.display = "inline-block";
-			errorElement.innerHTML = "Invalid email, email may already be in use";
+			// errorElement.style.display = "inline-block";
+			// errorElement.innerHTML = "Invalid email, email may already be in use";
+			setErrorMessage("Invalid email, email may already be in use");
+			setErrorActive(true);
 			return;
 		}
 
 		// Clear error if passwords match
-		errorElement.style.display = "none";
-		errorElement.innerHTML = "";
+		// errorElement.style.display = "none";
+		// errorElement.innerHTML = "";
+		setErrorMessage("");
+		setErrorActive(false);
 
 		const home = purify(capFirst(e.target.home.value));
 		const city = purify(capFirst(e.target.city.value));
@@ -111,6 +141,30 @@ export default function NewUserPage({
 				offer: false, // Indicate it as a desire
 			})),
 		];
+
+		if (
+			user_id === "" ||
+			first_name === "" ||
+			last_name === "" ||
+			email === "" ||
+			password === "" ||
+			passwordConfirm === "" ||
+			home === "" ||
+			city === "" ||
+			province === "" ||
+			address === "" ||
+			about === "" ||
+			offers === "" ||
+			desires === ""
+		) {
+			setErrorMessage("Oops, you missed a field, please fill out all fields");
+			setErrorActive(true);
+			return;
+		}
+
+		setErrorMessage("Creating new user, please be patient");
+		setErrorActive(true);
+		setApiCalled(true);
 
 		try {
 			const response = await axios.post(`${api}/users`, {
@@ -158,11 +212,13 @@ export default function NewUserPage({
 			setLoggedIn(true);
 			navigate("/");
 		} catch (err) {
+			setErrorMessage("Error creating new user");
+			setErrorActive(true);
 			console.log("Error creating new user" + err);
 		}
 	}
 
-	//upload image to users function 
+	//upload image to users function
 	//TODO: move to utils file
 	const submitImage = async (userId) => {
 		let formData = new FormData();
@@ -177,12 +233,15 @@ export default function NewUserPage({
 		return response;
 	};
 
-	//set image function with file input 
+	//set image function with file input
 	//TODO: move to utils file?
 	const handleFileChange = async (e) => {
 		if (e.target.files[0].size > 1000000) {
 			e.target.value = "";
-			return alert("Image too large, please add an image under 1MB");
+			// return alert("Image too large, please add an image under 1MB");
+			setErrorMessage("Image too large, please add an image under 1MB");
+			setErrorActive(true);
+			return;
 		}
 		if (!e.target.files[0].type.includes("image")) {
 			return alert("Please add an image file");
@@ -344,7 +403,13 @@ export default function NewUserPage({
 							Use default image
 						</button>
 					</label>
-					<p className="error"></p>
+					{/* <p className="error"></p> */}
+					{errorActive && (
+						<p className="new__error">{errorMessage}</p>
+					)}
+					{apiCalled && (
+						<p className="new__in-progress">{errorMessage}</p>
+					)}
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>
 			</form>
