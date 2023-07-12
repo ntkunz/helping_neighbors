@@ -29,6 +29,12 @@ export default function NewUserPage({
 		setUser({});
 		setNeighbors({});
 		e.preventDefault();
+
+		setErrorMessage("Creating new user, please be patient");
+		setErrorActive(false);
+		setApiCalled(true);
+
+
 		const email = purify(e.target.email.value.toLowerCase());
 		// const errorElement = document.querySelector(".error");
 
@@ -37,6 +43,7 @@ export default function NewUserPage({
 		if (!emailRegex.test(email)) {
 			setErrorMessage("Please enter a valid email");
 			setErrorActive(true);
+			setApiCalled(false);
 			return;
 		}
 
@@ -51,6 +58,7 @@ export default function NewUserPage({
 				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number"
 			);
 			setErrorActive(true);
+			setApiCalled(false);
 			return;
 		}
 
@@ -60,6 +68,7 @@ export default function NewUserPage({
 			// errorElement.innerHTML = "Passwords do not match";
 			setErrorMessage("Passwords do not match");
 			setErrorActive(true);
+			setApiCalled(false);
 			return;
 		}
 
@@ -68,6 +77,7 @@ export default function NewUserPage({
 			if (img.data.size > 1000000) {
 				setErrorMessage("Image too large, please add an image under 1MB");
 				setErrorActive(true);
+				setApiCalled(false);
 				// errorElement.style.display = "inline-block";
 				// errorElement.innerHTML =
 				// 	"Image too large, please add an image under 1MB";
@@ -80,6 +90,7 @@ export default function NewUserPage({
 				// errorElement.innerHTML = "Please add an image file";
 				setErrorMessage("Please add a valid image file");
 				setErrorActive(true);
+				setApiCalled(false);
 				return;
 			}
 		}
@@ -103,14 +114,15 @@ export default function NewUserPage({
 			// errorElement.innerHTML = "Invalid email, email may already be in use";
 			setErrorMessage("Invalid email, email may already be in use");
 			setErrorActive(true);
+			setApiCalled(false);
 			return;
 		}
 
 		// Clear error if passwords match
 		// errorElement.style.display = "none";
 		// errorElement.innerHTML = "";
-		setErrorMessage("");
-		setErrorActive(false);
+		// setErrorMessage("");
+		// setErrorActive(false);
 
 		const home = purify(capFirst(e.target.home.value));
 		const city = purify(capFirst(e.target.city.value));
@@ -159,12 +171,10 @@ export default function NewUserPage({
 		) {
 			setErrorMessage("Oops, you missed a field, please fill out all fields");
 			setErrorActive(true);
+			setApiCalled(false);
 			return;
 		}
 
-		setErrorMessage("Creating new user, please be patient");
-		setErrorActive(true);
-		setApiCalled(true);
 
 		try {
 			const response = await axios.post(`${api}/users`, {
@@ -214,6 +224,7 @@ export default function NewUserPage({
 		} catch (err) {
 			setErrorMessage("Error creating new user");
 			setErrorActive(true);
+			setApiCalled(false);
 			console.log("Error creating new user" + err);
 		}
 	}
