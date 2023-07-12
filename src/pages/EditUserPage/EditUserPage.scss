@@ -89,9 +89,13 @@
 		@include bodyCopy;
 		color: $color-six;
 		text-align: left;
-		
+
+		@include tablet {
+			margin: -0.5rem 0 0;
+		}
+
 		@include desktop {
-			margin: -2.5rem 0 0;
+			margin: -1rem 0 0;
 		}
 	}
 
