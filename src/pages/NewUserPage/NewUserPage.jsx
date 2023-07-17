@@ -24,6 +24,11 @@ export default function NewUserPage({
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
+	//wakeup server on page load
+	useEffect(() => {
+		axios.get(`${api}/users/newemail`);
+	}, []);
+
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
 		setUser({});
@@ -33,7 +38,6 @@ export default function NewUserPage({
 		setErrorMessage("Creating new user, please be patient");
 		setErrorActive(false);
 		setApiCalled(true);
-
 
 		const email = purify(e.target.email.value.toLowerCase());
 		// const errorElement = document.querySelector(".error");
@@ -174,7 +178,6 @@ export default function NewUserPage({
 			setApiCalled(false);
 			return;
 		}
-
 
 		try {
 			const response = await axios.post(`${api}/users`, {
@@ -415,12 +418,8 @@ export default function NewUserPage({
 						</button>
 					</label>
 					{/* <p className="error"></p> */}
-					{errorActive && (
-						<p className="new__error">{errorMessage}</p>
-					)}
-					{apiCalled && (
-						<p className="new__in-progress">{errorMessage}</p>
-					)}
+					{errorActive && <p className="new__error">{errorMessage}</p>}
+					{apiCalled && <p className="new__in-progress">{errorMessage}</p>}
 					<button className="new__btn">Start Meeting Your Neighbors</button>
 				</div>
 			</form>

@@ -8,6 +8,11 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 	const [errorMessage, setErrorMessage] = useState("");
 	const api = process.env.REACT_APP_API_URL;
 
+	//wakeup server on page load
+	useEffect(() => {
+		axios.get(`${api}/users/newemail`);
+	}, []);
+
 	async function handleLogin(loginForm) {
 		loginForm.preventDefault();
 
@@ -56,7 +61,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 				if (error.response.status === 429) {
 					setErrorMessage("Please try again later");
 				} else {
-					console.log('errror getting user: ', error);
+					console.log("errror getting user: ", error);
 				}
 				setErrorActive(true);
 			});
