@@ -1,6 +1,6 @@
 import "./LoginPage.scss";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
 export default function LoginPage({ setToken, setUser, setLoggedIn }) {

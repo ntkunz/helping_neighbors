@@ -1,7 +1,7 @@
 import "./NewUserPage.scss";
 import { v4 } from "uuid";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
