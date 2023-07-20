@@ -6,10 +6,10 @@ export default function Neighbors({ neighbors, user }) {
 	if (!neighbors.length) {
 		return (
 			<div className="neighbors__container--alt">
-				<h1 className="neighbors_title">
+				<h1 className="neighbors__title">
 					Welcome to the Helping Neighbors site {user.first_name}
 				</h1>
-				<h2 className="neighbors_subtitle">
+				<h2 className="neighbors__subtitle">
 					You do not currently have any neighbors using the site. Please spread
 					the word!
 				</h2>
