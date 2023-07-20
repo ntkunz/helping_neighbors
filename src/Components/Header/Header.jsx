@@ -6,6 +6,5 @@ export default function Header({ loggedIn, handleLogout }) {
 	if (!loggedIn) {
 		return <HeaderLoggedOut />;
 	}
-
 	return <HeaderLoggedIn handleLogout={handleLogout} />;
 }
