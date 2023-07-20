@@ -31,6 +31,15 @@
 		text-align: center;
 		margin: 2rem 1rem 0;
 	}
+
+	&__subtitle {
+		@include subHeader;
+
+		@include tablet{ 
+			@include subHeaderLarge;
+		}
+	}
+
 }
 
 .neighbor__link {
@@ -38,5 +47,13 @@
 	height: fit-content;
 	@include tablet {
 		width: clamp(18.75rem, 25%, 32rem);
+	}
+}
+
+p {
+	@include bodyCopy;
+
+	@include tablet {
+		@include bodyCopyLarge;
 	}
 }
