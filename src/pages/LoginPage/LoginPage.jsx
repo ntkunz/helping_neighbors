@@ -11,6 +11,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 	//wakeup server on page load
 	useEffect(() => {
 		axios.get(`${api}/users/newemail`);
+		//eslint-disable-next-line
 	}, []);
 
 	async function handleLogin(loginForm) {
