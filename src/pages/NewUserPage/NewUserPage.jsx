@@ -27,6 +27,7 @@ export default function NewUserPage({
 	//wakeup server on page load
 	useEffect(() => {
 		axios.get(`${api}/users/newemail`);
+		//eslint-disable-next-line
 	}, []);
 
 	//create new user on form submit and redirect to user page
