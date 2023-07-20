@@ -22,9 +22,10 @@ export default function HeaderLoggedIn({ handleLogout }) {
 						Your Neighbors
 					</NavLink>
 
-					<NavLink to="/neighbor" className="header__btn">
+					{/* TODO: Add alerts for new messages then re-introduce this */}
+					{/* <NavLink to="/neighbor" className="header__btn">
 						Messages
-					</NavLink>
+					</NavLink> */}
 
 					<NavLink to="/profile" className="header__btn">
 						Profile

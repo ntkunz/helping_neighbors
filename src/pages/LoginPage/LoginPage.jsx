@@ -19,7 +19,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 
 		const email = purify(loginForm.target.email.value.toLowerCase());
 
-		//TODO: move email regex to utils folder??????
+		//TODO: move email regex to utils folder
 		const emailRegex = /\S+@\S+\.\S+/;
 		if (!emailRegex.test(email)) {
 			setErrorMessage("Please enter a valid email");
@@ -29,7 +29,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 
 		const password = purify(loginForm.target.password.value);
 
-		//TODO: move password regex to utils folder?????
+		//TODO: move password regex to utils folder
 		const passwordRegex =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 		if (!passwordRegex.test(password)) {
@@ -40,7 +40,6 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 			return;
 		}
 
-		//email and password valid formats
 		setErrorActive(false);
 
 		await axios
