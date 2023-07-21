@@ -23,11 +23,12 @@
 		background-color: $color-one;
 		border-radius: 0.25rem;
 		padding: 1rem 0.5rem 0;
-		margin: 0.5rem 1rem;
+		margin: 0.5rem 1rem 0;
 		text-align: center;
 
 		@include tablet {
-			padding: 2rem 2rem 0;
+			margin: 3rem;
+			padding: 1rem;
 		}
 	}
 
@@ -35,6 +36,7 @@
 		@include sectionHeader;
 		color: $color-five;
 		text-align: center;
+		margin: 1rem 0.5rem 0;
 
 		@include tablet {
 			margin: 2rem 1rem 0;
@@ -54,20 +56,20 @@
 	&__paragraph {
 		@include bodyCopyLarge;
 		color: $color-six;
-		margin-bottom: 1rem;
+		padding-bottom: 1rem;
 
 		@include tablet {
-			margin-bottom: 2rem;
+			padding-bottom: 2rem;
 		}
 	}
 
 	&__tip {
 		@include bodyCopy;
 		color: $color-five;
-		margin-bottom: 1rem;
+		padding-bottom: 1rem;
 
 		@include tablet {
-			margin-bottom: 2rem;
+			padding-bottom: 2rem;
 		}
 	}
 }
