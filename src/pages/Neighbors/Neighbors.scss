@@ -22,10 +22,11 @@
 	&--alt {
 		background-color: $color-one;
 		border-radius: 0.25rem;
-		padding: 0.5rem 1rem;
+		padding: 1rem 0.5rem 0;
+		margin: .5rem 1rem;
 
 		@include tablet {
-			padding: 2rem;
+			padding: 2rem 2rem 0;
 		}
 	}
 
@@ -41,15 +42,22 @@
 
 	&__subtitle {
 		@include subHeader;
-		margin: 1rem 0.5rem 0;
+		color: $color-six;
+		margin: 1rem 0.5rem;
 
 		@include tablet {
-			margin: 2rem 1rem 0;
+			margin: 2rem 1rem;
 		}
 	}
 
 	&__paragraph {
 		@include bodyCopyLarge;
+		color: $color-five;
+		margin-bottom: 1rem;
+
+		@include tablet {
+			margin-bottom: 2rem;
+		}
 	}
 }
 
