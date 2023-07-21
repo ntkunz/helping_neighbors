@@ -19,9 +19,20 @@
 		align-items: flex-start;
 	}
 
+	&--alt {
+		background-color: $color-one;
+		border-radius: 0.25rem;
+		padding: 0.5rem 1rem;
+
+		@include tablet {
+			padding: 2rem;
+		}
+	}
+
 	&__title {
 		@include sectionHeader;
 		color: $color-five;
+		text-align: center;
 
 		@include tablet {
 			margin: 2rem 1rem 0;

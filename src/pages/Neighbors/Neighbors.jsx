@@ -7,9 +7,9 @@ export default function Neighbors({ neighbors, user }) {
 		return (
 			<div className="neighbors__container">
 				<h1 className="neighbors__title">
-					Welcome to the Helping Neighbors site {user.first_name}
+					Welcome to Helping Neighbors {user.first_name}
 				</h1>
-				<main className="neighbors">
+				<main className="neighbors--alt">
 					<h2 className="neighbors__subtitle">
 						You do not currently have any neighbors using the site. Please
 						spread the word!
