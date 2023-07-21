@@ -40,7 +40,7 @@
 		flex-basis: 30%;
 		background-color: $color-one;
 		border-radius: 0.25rem;
-				padding: 0.5rem 1rem 0;
+		padding: 0.5rem 1rem 0;
 
 		@include tablet {
 			padding: 2rem;
@@ -54,7 +54,7 @@
 		flex-grow: 1;
 		background-color: $color-one;
 		border-radius: 0.25rem;
-				padding: 0.5rem 1rem;
+		padding: 0.5rem 1rem;
 
 		@include tablet {
 			padding: 2rem;
@@ -79,7 +79,7 @@
 		border-radius: 0.25rem;
 		border: 1px solid $color-five;
 		padding: 0.125rem 0.5rem;
-		
+
 		@include tablet {
 			width: 15rem;
 		}
