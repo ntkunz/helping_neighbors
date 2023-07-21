@@ -42,6 +42,7 @@
 
 	&__subtitle {
 		@include subHeader;
+		color: $color-six;
 		margin: 1rem 0.5rem;
 
 		@include tablet {
@@ -51,6 +52,7 @@
 
 	&__paragraph {
 		@include bodyCopyLarge;
+		color: $color-five;
 		margin-bottom: 1rem;
 
 		@include tablet {
