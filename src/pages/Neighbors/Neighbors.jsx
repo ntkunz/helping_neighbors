@@ -14,7 +14,7 @@ export default function Neighbors({ neighbors, user }) {
 						You do not currently have any neighbors using the site. Please
 						spread the word!
 					</h2>
-					<p className="neighbors__paragraph">
+					<p className="neighbors__tip">
 						Tip: Edit your address in the profile tab to be within 1/2 kilometer
 						of 455 Granville St, Vancouver, BC to see some test users
 					</p>
