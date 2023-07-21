@@ -19,18 +19,9 @@
 		align-items: flex-start;
 	}
 
-	&__container {
-		&--alt {
-			color: $color-five;
-			text-align: center;
-		}
-	}
-
 	&__title {
 		@include sectionHeader;
 		color: $color-five;
-		text-align: center;
-		margin: 1rem 0.5rem 0;
 
 		@include tablet {
 			margin: 2rem 1rem 0;
@@ -39,22 +30,15 @@
 
 	&__subtitle {
 		@include subHeader;
-		text-align: center;
 		margin: 1rem 0.5rem 0;
-		
+
 		@include tablet {
 			margin: 2rem 1rem 0;
 		}
 	}
 
 	&__paragraph {
-		@include bodyCopy;
-		padding: 1rem 0;
-
-
-		@include tablet {
-			padding: 1.5rem 1rem;
-		}
+		@include bodyCopyLarge;
 	}
 }
 
@@ -65,4 +49,3 @@
 		width: clamp(18.75rem, 25%, 32rem);
 	}
 }
-
