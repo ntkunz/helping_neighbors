@@ -28,11 +28,6 @@ export default function Neighbors({ neighbors, user }) {
 						This may help get your neighbors involved so that everyone around
 						you can benefit.{" "}
 					</p>
-					<p className="neighbors__paragraph">
-						If you'd like to see the site in action before you put the work in,
-						you can edit your profile address to be within 1/2 kilometer of 455
-						Granville St, Vancouver, BC to see some test users.
-					</p>
 				</main>
 			</div>
 		);
