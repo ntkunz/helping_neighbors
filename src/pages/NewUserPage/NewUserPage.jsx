@@ -34,6 +34,8 @@ export default function NewUserPage({
 
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
+		setUser({});
+		setNeighbors({});
 		e.preventDefault();
 		setUser({});
 		setNeighbors({});

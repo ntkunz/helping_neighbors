@@ -19,6 +19,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 
 	async function handleLogin(loginForm) {
 		loginForm.preventDefault();
+
 		const email = purify(loginForm.target.email.value.toLowerCase());
 		if (validateEmail(email)) {
 			setErrorMessage("Invalid email");

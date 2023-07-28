@@ -46,6 +46,7 @@ export default function EditUserPage({
 		// Update state with the new offers and exchanges
 		setOffers(newOffers.trim().replace(/,$/, ""));
 		setExchanges(newExchanges.trim().replace(/,$/, ""));
+
 		// eslint-disable-next-line
 	}, []);
 
@@ -71,6 +72,7 @@ export default function EditUserPage({
 			coords = await getNewUserGeo(addressRequest);
 		}
 
+
 		//separate offers and exchanges into skills array
 		const offersSplit = offers.split(",");
 		const exchangesSplit = exchanges.split(",");
@@ -84,10 +86,8 @@ export default function EditUserPage({
 				offer: false, // Indicate it as a desire
 			})),
 		];
-
 		//update skills in userskills table
 		await addSkills(skillsArray, user_id);
-
 		if (
 			address === "" ||
 			about === "" ||

@@ -35,8 +35,9 @@ export default function Message({ user, neighbors }) {
 	//function to send new message if message input is not empty
 	function sendMessage(e) {
 		e.preventDefault();
+		//get message from input
 		const message = document.querySelector(".message__input").value;
-		
+
 		if (message === "") {
 			document.querySelector(".error").style.display = "inline-block";
 			return;
@@ -59,6 +60,7 @@ export default function Message({ user, neighbors }) {
 				}
 			)
 			.then((response) => {
+				//set message field to empty
 				document.querySelector(".message__input").value = "";
 			})
 			.catch((error) => {
@@ -84,9 +86,11 @@ export default function Message({ user, neighbors }) {
 				}
 			)
 			.then((response) => {
+				//sort messages by timestamp
 				const sortedMessages = response.data.sort(function (x, y) {
 					return y.unix_timestamp - x.unix_timestamp;
 				});
+				//set messages to sorted messages
 				setMessages(sortedMessages);
 			})
 			.catch((error) => {
