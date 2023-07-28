@@ -14,16 +14,16 @@ export default function Message({ user, neighbors }) {
 	const [messages, setMessages] = useState([]);
 
 	useEffect(() => {
-		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
+		setReceiver(neighbors.find((neighbor) => neighbor.userId === id));
 		//eslint-disable-next-line
 	}, [neighbors]);
 
 	useEffect(() => {
-		if (receiver.user_id) {
-			getMessages(user.user_id, receiver.user_id);
+		if (receiver.userId) {
+			getMessages(user.userId, receiver.userId);
 			//set interval to retrieve messages every 2 seconds
 			const messageInt = setInterval(() => {
-				getMessages(user.user_id, receiver.user_id);
+				getMessages(user.userId, receiver.userId);
 			}, 2000);
 			return () => {
 				clearInterval(messageInt);
@@ -37,7 +37,7 @@ export default function Message({ user, neighbors }) {
 		e.preventDefault();
 		//get message from input
 		const message = document.querySelector(".message__input").value;
-		//if message is empty, display error message
+
 		if (message === "") {
 			document.querySelector(".error").style.display = "inline-block";
 			return;
@@ -48,8 +48,8 @@ export default function Message({ user, neighbors }) {
 			.post(
 				`${api}/messages`,
 				{
-					senderId: user.user_id,
-					receiverId: receiver.user_id,
+					senderId: user.userId,
+					receiverId: receiver.userId,
 					message: purify(message),
 				},
 				{
@@ -94,7 +94,7 @@ export default function Message({ user, neighbors }) {
 				setMessages(sortedMessages);
 			})
 			.catch((error) => {
-				console.log("error", error);
+				console.log("error retrieving messages");
 			});
 	}
 
@@ -109,7 +109,7 @@ export default function Message({ user, neighbors }) {
 			</h1>
 			<div className="message">
 				{/* ternary to allow update once receiver set and display card */}
-				{receiver.user_id && (
+				{receiver.userId && (
 					<div className="message__receiver">
 						<Neighbor neighbor={receiver} />
 					</div>
@@ -134,7 +134,7 @@ export default function Message({ user, neighbors }) {
 					<div className="message__output">
 						{messages.map((message) => (
 							<div className="message__box" key={message.id}>
-								{message.sender_id === user.user_id ? (
+								{message.sender_id === user.userId ? (
 									<>
 										<p className="message__info sent">
 											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}

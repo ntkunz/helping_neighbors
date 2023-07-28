@@ -25,28 +25,28 @@ export default function EditUserPage({
 	const originalAddress = user.address;
 	const [about, setAbout] = useState(user.about);
 	const [offers, setOffers] = useState("");
-	const [desires, setDesires] = useState("");
+	const [exchanges, setExchanges] = useState("");
 	const [password, setPassword] = useState("");
 
 	useEffect(() => {
 		let newOffers = "";
-		let newDesires = "";
+		let newExchanges = "";
 
-		// Set user offers and desires based on offer value
-		for (let i = 0; i < user.barters.length; i++) {
-			if (user.barters[i].offer === 1) {
-				if (newOffers !== "") newOffers += purify(", " + user.barters[i].skill);
-				else newOffers += purify(user.barters[i].skill);
+		// Set user offers and exchanges based on offer value
+		user.barters.forEach((barter) => {
+			if (barter.offer === 1) {
+				if (newOffers !== "") newOffers += purify(", " + barter.skill);
+				else newOffers += purify(barter.skill);
 			} else {
-				if (newDesires !== "")
-					newDesires += purify(", " + user.barters[i].skill);
-				else newDesires += purify(user.barters[i].skill);
+				if (newExchanges !== "") newExchanges += purify(", " + barter.skill);
+				else newExchanges += purify(barter.skill);
 			}
-		}
+		});
 
-		// Update state with the new offers and desires
+		// Update state with the new offers and exchanges
 		setOffers(newOffers.trim().replace(/,$/, ""));
-		setDesires(newDesires.trim().replace(/,$/, ""));
+		setExchanges(newExchanges.trim().replace(/,$/, ""));
+
 		// eslint-disable-next-line
 	}, []);
 
@@ -72,28 +72,27 @@ export default function EditUserPage({
 			coords = await getNewUserGeo(addressRequest);
 		}
 
-		//separate offers and desires into skills array
+
+		//separate offers and exchanges into skills array
 		const offersSplit = offers.split(",");
-		const desiresSplit = desires.split(",");
+		const exchangesSplit = exchanges.split(",");
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
 				skill: purify(offer.trim()),
 				offer: true, // Indicate it as an offer
 			})),
-			...desiresSplit.map((desire) => ({
+			...exchangesSplit.map((desire) => ({
 				skill: purify(desire.trim()),
 				offer: false, // Indicate it as a desire
 			})),
 		];
-
 		//update skills in userskills table
 		await addSkills(skillsArray, user_id);
-
 		if (
 			address === "" ||
 			about === "" ||
 			offers === "" ||
-			desires === "" ||
+			exchanges === "" ||
 			firstName === "" ||
 			lastName === "" ||
 			email === "" ||
@@ -310,10 +309,10 @@ export default function EditUserPage({
 						<input
 							type="text"
 							className="edit__input"
-							name="desires"
+							name="exchanges"
 							placeholder="ie Cooking, Running Errands, Cat Sitting"
-							value={desires}
-							onChange={(e) => setDesires(e.target.value)}
+							value={exchanges}
+							onChange={(e) => setExchanges(e.target.value)}
 						/>
 					</label>
 					<p className="edit__desc">

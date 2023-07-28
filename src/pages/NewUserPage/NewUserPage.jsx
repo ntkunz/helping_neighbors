@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
+import validateEmail from "../../utils/validateEmail";
+import validatePassword from "../../utils/validatePassword";
 
 export default function NewUserPage({
 	setUser,
@@ -35,16 +37,15 @@ export default function NewUserPage({
 		setUser({});
 		setNeighbors({});
 		e.preventDefault();
+		setUser({});
+		setNeighbors({});
 
 		setErrorMessage("Creating new user, please be patient");
 		setErrorActive(false);
 		setApiCalled(true);
 
 		const email = purify(e.target.email.value.toLowerCase());
-
-		//TODO: move email regex to utils folder
-		const emailRegex = /\S+@\S+\.\S+/;
-		if (!emailRegex.test(email)) {
+		if (validateEmail(email)) {
 			setErrorMessage("Please enter a valid email");
 			setErrorActive(true);
 			setApiCalled(false);
@@ -54,10 +55,7 @@ export default function NewUserPage({
 		const password = purify(e.target.password.value);
 		const passwordConfirm = purify(e.target.password_confirm.value);
 
-		//TODO: move password regex to utils folder
-		const passwordRegex =
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
-		if (!passwordRegex.test(password)) {
+		if (validatePassword(password)) {
 			setErrorMessage(
 				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number"
 			);
@@ -96,9 +94,9 @@ export default function NewUserPage({
 			setImg("default");
 		}
 
-		const user_id = v4();
-		const first_name = purify(capFirst(e.target.first_name.value));
-		const last_name = purify(capFirst(e.target.last_name.value));
+		const userId = v4();
+		const firstName = purify(capFirst(e.target.firstName.value));
+		const lastName = purify(capFirst(e.target.lastName.value));
 
 		// Throw error if email is already in use in databse
 		const newEmail = await axios.post(`${api}/users/newemail`, { email });
@@ -124,25 +122,25 @@ export default function NewUserPage({
 
 		const offers = purify(e.target.offers.value);
 		const offersSplit = offers.split(",");
-		const desires = purify(e.target.desires.value);
-		const desiresSplit = desires.split(",");
+		const exchanges = purify(e.target.exchanges.value);
+		const exchangesSplit = exchanges.split(",");
 
-		//create skills array from offers and desires
+		//create skills array from offers and exchanges
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
 				skill: offer.trim(),
 				offer: true, // Indicate it as an offer
 			})),
-			...desiresSplit.map((desire) => ({
+			...exchangesSplit.map((desire) => ({
 				skill: desire.trim(),
 				offer: false, // Indicate it as a desire
 			})),
 		];
 
 		if (
-			user_id === "" ||
-			first_name === "" ||
-			last_name === "" ||
+			userId === "" ||
+			firstName === "" ||
+			lastName === "" ||
 			email === "" ||
 			password === "" ||
 			passwordConfirm === "" ||
@@ -152,7 +150,7 @@ export default function NewUserPage({
 			address === "" ||
 			about === "" ||
 			offers === "" ||
-			desires === ""
+			exchanges === ""
 		) {
 			setErrorMessage("Oops, you missed a field, please fill out all fields");
 			setErrorActive(true);
@@ -162,9 +160,9 @@ export default function NewUserPage({
 
 		try {
 			const response = await axios.post(`${api}/users`, {
-				user_id: user_id,
-				first_name: first_name,
-				last_name: last_name,
+				userId: userId,
+				firstName: firstName,
+				lastName: lastName,
 				email: email,
 				password: password,
 				status: status,
@@ -182,7 +180,7 @@ export default function NewUserPage({
 			await setToken(newUserToken);
 			await addSkills(skillsArray, newUserId);
 
-			//upload image to users api once user_id is created if img is not null or "default"
+			//upload image to users api once userId is created if img is not null or "default"
 			if (img !== null && img !== "default") {
 				await submitImage(newUserId);
 			}
@@ -218,7 +216,7 @@ export default function NewUserPage({
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
-		formData.append("user_id", userId);
+		formData.append("userId", userId);
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -271,7 +269,7 @@ export default function NewUserPage({
 						<input
 							type="text"
 							className="new__input"
-							name="first_name"
+							name="firstName"
 							placeholder="First name"
 						/>
 					</label>
@@ -280,7 +278,7 @@ export default function NewUserPage({
 						<input
 							type="text"
 							className="new__input"
-							name="last_name"
+							name="lastName"
 							placeholder="Last name"
 						/>
 					</label>
@@ -377,7 +375,7 @@ export default function NewUserPage({
 						<input
 							type="text"
 							className="new__input"
-							name="desires"
+							name="exchanges"
 							placeholder="ie Cooking, Running Errands, Cat Sitting"
 						/>
 					</label>
