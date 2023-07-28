@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
+import validateEmail from "../../utils/validateEmail";
+import validatePassword from "../../utils/validatePassword";
+
 export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -16,26 +19,16 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 
 	async function handleLogin(loginForm) {
 		loginForm.preventDefault();
-
 		const email = purify(loginForm.target.email.value.toLowerCase());
-
-		//TODO: move email regex to utils folder
-		const emailRegex = /\S+@\S+\.\S+/;
-		if (!emailRegex.test(email)) {
-			setErrorMessage("Please enter a valid email");
+		if (validateEmail(email)) {
+			setErrorMessage("Invalid email");
 			setErrorActive(true);
 			return;
 		}
 
 		const password = purify(loginForm.target.password.value);
-
-		//TODO: move password regex to utils folder
-		const passwordRegex =
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])?[a-zA-Z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
-		if (!passwordRegex.test(password)) {
-			setErrorMessage(
-				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number"
-			);
+		if (validatePassword(password)) {
+			setErrorMessage("Invalid password");
 			setErrorActive(true);
 			return;
 		}
@@ -61,7 +54,7 @@ export default function LoginPage({ setToken, setUser, setLoggedIn }) {
 				if (error.response.status === 429) {
 					setErrorMessage("Please try again later");
 				} else {
-					console.log("errror getting user: ", error);
+					console.log("errror getting user");
 				}
 				setErrorActive(true);
 			});

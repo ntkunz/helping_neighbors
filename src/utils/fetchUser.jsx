@@ -14,7 +14,6 @@ export default async function fetchUser() {
 	// Get the user's token from local storage
 	const token = localStorage.getItem("token");
 
-	// If the token is not found, throw an error
 	if (!token) {
 		throw new Error("User not authenticated");
 	} else {
