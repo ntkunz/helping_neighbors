@@ -11,7 +11,7 @@
 	gap: 2rem;
 	padding: 1rem 1rem 0;
 	flex-wrap: wrap;
-	text-align: center;
+
 	@include tablet {
 		gap: 3rem;
 		padding: 3rem 3rem 0;
@@ -77,6 +77,12 @@
 .neighbor__link {
 	width: 100%;
 	height: fit-content;
+	transition: box-shadow 0.125s ease-in-out;
+
+	&:hover {
+		box-shadow: 0px 0px 3px 4px $color-four;
+	}
+
 	@include tablet {
 		width: clamp(18.75rem, 25%, 32rem);
 	}
