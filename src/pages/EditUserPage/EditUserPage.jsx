@@ -72,7 +72,6 @@ export default function EditUserPage({
 			coords = await getNewUserGeo(addressRequest);
 		}
 
-
 		//separate offers and exchanges into skills array
 		const offersSplit = offers.split(",");
 		const exchangesSplit = exchanges.split(",");
@@ -202,155 +201,154 @@ export default function EditUserPage({
 	}
 
 	return (
-		<div className="edit">
-			<h1 className="edit__title">Edit your profile and barter on my friend</h1>
-			<form onSubmit={editUser} method="post" className="edit__form">
-				<div className="edit__signup">
-					<label className="edit__label">
+		<div className='edit'>
+			<h1 className='edit__title'>Edit your profile and barter on my friend</h1>
+			<form onSubmit={editUser} method='post' className='edit__form'>
+				<div className='edit__signup'>
+					<label className='edit__label'>
 						{" "}
 						First Name
 						<input
-							type="text"
-							className="edit__input"
-							name="firstName"
-							placeholder="First name"
+							type='text'
+							className='edit__input'
+							name='firstName'
+							placeholder='First name'
 							value={firstName}
 							onChange={(e) => setFirstName(e.target.value)}
 						/>
 					</label>
 
-					<label className="edit__label">
+					<label className='edit__label'>
 						Last Name
 						<input
-							type="text"
-							className="edit__input"
-							name="lastName"
-							placeholder="Last name"
+							type='text'
+							className='edit__input'
+							name='lastName'
+							placeholder='Last name'
 							value={lastName}
 							onChange={(e) => setLastName(e.target.value)}
 						/>
 					</label>
-					<label className="edit__label">
+					<label className='edit__label'>
 						Your Email
 						<input
-							type="email"
-							className="edit__input"
-							name="email"
-							placeholder="your email@something.com"
+							type='email'
+							className='edit__input'
+							name='email'
+							placeholder='your email@something.com'
 							value={email}
 							onChange={(e) => setEmail(e.target.value.toLowerCase())}
 							readOnly
 						/>
 					</label>
-					<label className="edit__label">
+					<label className='edit__label'>
 						Home Address
 						<input
-							type="text"
-							className="edit__input"
-							name="home"
-							placeholder="123 Main St"
+							type='text'
+							className='edit__input'
+							name='home'
+							placeholder='123 Main St'
 							value={home}
 							onChange={(e) => setHome(e.target.value)}
 						/>
 					</label>
-					<label className="edit__label">
+					<label className='edit__label'>
 						City
 						<input
-							type="text"
-							className="edit__input"
-							name="city"
-							placeholder="Any Town"
+							type='text'
+							className='edit__input'
+							name='city'
+							placeholder='Any Town'
 							value={city}
 							onChange={(e) => setCity(e.target.value)}
 						/>
 					</label>
-					<label className="edit__label">
+					<label className='edit__label'>
 						State/Province
 						<input
-							type="text"
-							className="edit__input"
-							name="province"
-							placeholder="British Columbia"
+							type='text'
+							className='edit__input'
+							name='province'
+							placeholder='British Columbia'
 							value={province}
 							onChange={(e) => setProvince(e.target.value)}
 						/>
 					</label>
 				</div>
 
-				<div className="edit__personalize">
-					<label className="edit__label">
+				<div className='edit__personalize'>
+					<label className='edit__label'>
 						Tell your neighbors about yourself
 						<textarea
-							className="edit__input textarea"
-							name="about"
-							rows="3"
+							className='edit__input textarea'
+							name='about'
+							rows='3'
 							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 							value={about}
 							onChange={(e) => setAbout(e.target.value)}
 						/>
 					</label>
-					<label className="edit__label">
+					<label className='edit__label'>
 						Skills you can offer
 						<input
-							type="text"
-							className="edit__input"
-							name="offers"
-							placeholder="ie Gardening, Landscaping, Construction"
+							type='text'
+							className='edit__input'
+							name='offers'
+							placeholder='ie Gardening, Landscaping, Construction'
 							value={offers}
 							onChange={(e) => setOffers(e.target.value)}
 						/>
 					</label>
-					<p className="edit__desc">
+					<p className='edit__desc'>
 						One or two words for each offering, separated by commas
 					</p>
-					<label className="edit__label">
+					<label className='edit__label'>
 						What you would like to barter for
 						<input
-							type="text"
-							className="edit__input"
-							name="exchanges"
-							placeholder="ie Cooking, Running Errands, Cat Sitting"
+							type='text'
+							className='edit__input'
+							name='exchanges'
+							placeholder='ie Cooking, Running Errands, Cat Sitting'
 							value={exchanges}
 							onChange={(e) => setExchanges(e.target.value)}
 						/>
 					</label>
-					<p className="edit__desc">
+					<p className='edit__desc'>
 						One or two words for each thing you'd like to barter for, separated
 						by commas
 					</p>
-					<button className="edit__btn">Edit Your Profile</button>
+					<button className='edit__btn'>Edit Your Profile</button>
 					<button
 						onClick={(e) => {
 							e.preventDefault();
 							navigate("/neighbors");
 						}}
-						className="edit__btn"
-					>
+						className='edit__btn'>
 						Cancel
 					</button>
-					<button className="edit__btn" onClick={deleteUserValidate}>
+					<span className='edit__btn' onClick={deleteUserValidate}>
 						Delete Account
-					</button>
+					</span>
 					{/* add password field to verify user to delete account  */}
-					<div className="edit__password">
-						<label className="edit__label">
+					<div className='edit__password'>
+						<label className='edit__label'>
 							Enter your password to delete your account
 							<input
-								type="password"
-								className="edit__input"
-								name="password"
-								autoComplete="current-password"
-								placeholder=""
+								type='password'
+								className='edit__input'
+								name='password'
+								autoComplete='current-password'
+								placeholder=''
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</label>
-						<p className="edit__desc">
+						<p className='edit__desc'>
 							This cannot be undone and will delete all of your data from
 							Helping Neighbors
 						</p>
-						<button className="edit__btn delete__btn" onClick={deleteUser}>
+						<button className='edit__btn delete__btn' onClick={deleteUser}>
 							Delete Account
 						</button>
 					</div>
