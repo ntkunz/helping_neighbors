@@ -108,7 +108,7 @@ export default function Message({ user, neighbors }) {
 			</h1>
 			<div className='message'>
 				{/* ternary to allow update once receiver set and display card */}
-				{receiver.userId && (
+				{receiver.user_id && (
 					<div className='message__receiver'>
 						<Neighbor neighbor={receiver} />
 					</div>
@@ -133,7 +133,7 @@ export default function Message({ user, neighbors }) {
 					<div className='message__output'>
 						{messages.map((message) => (
 							<div className='message__box' key={message.id}>
-								{message.sender_id === user.userId ? (
+								{message.sender_id === user.user_id ? (
 									<>
 										<p className='message__info sent'>
 											Sent {dynamictimestamp(message.unix_timestamp)} by{" "}
