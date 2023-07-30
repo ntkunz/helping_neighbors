@@ -327,14 +327,9 @@ export default function EditUserPage({
 						className='edit__btn'>
 						Cancel
 					</button>
-					<button
-						className='edit__btn'
-						onClick={(e) => {
-							e.preventDefault();
-							deleteUserValidate;
-						}}>
+					<span className='edit__btn' onClick={deleteUserValidate}>
 						Delete Account
-					</button>
+					</span>
 					{/* add password field to verify user to delete account  */}
 					<div className='edit__password'>
 						<label className='edit__label'>
