@@ -34,8 +34,6 @@ export default function NewUserPage({
 
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
-		setUser({});
-		setNeighbors({});
 		e.preventDefault();
 		setUser({});
 		setNeighbors({});
@@ -160,9 +158,9 @@ export default function NewUserPage({
 
 		try {
 			const response = await axios.post(`${api}/users`, {
-				userId: userId,
-				firstName: firstName,
-				lastName: lastName,
+				user_id: userId,
+				first_name: firstName,
+				last_name: lastName,
 				email: email,
 				password: password,
 				status: status,
@@ -216,7 +214,7 @@ export default function NewUserPage({
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
-		formData.append("userId", userId);
+		formData.append("user_id", userId);
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -252,154 +250,152 @@ export default function NewUserPage({
 	};
 
 	return (
-		<div className="new">
-			<h1 className="new__title">
+		<div className='new'>
+			<h1 className='new__title'>
 				Sign up to start bartering your way to a better neighborhood
 			</h1>
 			<form
 				onSubmit={createNewUser}
-				method="post"
-				className="new__form"
-				noValidate
-			>
-				<div className="new__signup">
-					<label className="new__label">
+				method='post'
+				className='new__form'
+				noValidate>
+				<div className='new__signup'>
+					<label className='new__label'>
 						{" "}
 						First Name
 						<input
-							type="text"
-							className="new__input"
-							name="firstName"
-							placeholder="First name"
+							type='text'
+							className='new__input'
+							name='firstName'
+							placeholder='First name'
 						/>
 					</label>
-					<label className="new__label">
+					<label className='new__label'>
 						Last Name
 						<input
-							type="text"
-							className="new__input"
-							name="lastName"
-							placeholder="Last name"
+							type='text'
+							className='new__input'
+							name='lastName'
+							placeholder='Last name'
 						/>
 					</label>
-					<label className="new__label">
+					<label className='new__label'>
 						Your Email
 						<input
-							type="email"
-							autoComplete="username"
-							className="new__input"
-							name="email"
-							placeholder="your email@something.com"
+							type='email'
+							autoComplete='username'
+							className='new__input'
+							name='email'
+							placeholder='your email@something.com'
 						/>
 					</label>
-					<p className="new__requirement">
+					<p className='new__requirement'>
 						Password must be at least 8 characters, contain at least one
 						uppercase letter, one lowercase letter, one number and one special
 						character. Temporarily no way to reset password, so please remember
 						it.
 					</p>
-					<label className="new__label">
+					<label className='new__label'>
 						Password
 						<input
-							type="password"
-							autoComplete="new-password"
-							className="new__input"
-							name="password"
-							placeholder="Password"
+							type='password'
+							autoComplete='new-password'
+							className='new__input'
+							name='password'
+							placeholder='Password'
 						/>
 					</label>
-					<label className="new__label">
+					<label className='new__label'>
 						Confirm
 						<input
-							type="password"
-							autoComplete="new-password"
-							className="new__input"
-							name="password_confirm"
-							placeholder="Password again"
+							type='password'
+							autoComplete='new-password'
+							className='new__input'
+							name='password_confirm'
+							placeholder='Password again'
 						/>
 					</label>
-					<label className="new__label">
+					<label className='new__label'>
 						Home Address
 						<input
-							type="text"
-							className="new__input"
-							name="home"
-							placeholder="123 Main St"
+							type='text'
+							className='new__input'
+							name='home'
+							placeholder='123 Main St'
 						/>
 					</label>
-					<label className="new__label">
+					<label className='new__label'>
 						City
 						<input
-							type="text"
-							className="new__input"
-							name="city"
-							placeholder="Any Town"
+							type='text'
+							className='new__input'
+							name='city'
+							placeholder='Any Town'
 						/>
 					</label>
-					<label className="new__label">
+					<label className='new__label'>
 						State/Province
 						<input
-							type="text"
-							className="new__input"
-							name="province"
-							placeholder="British Columbia"
+							type='text'
+							className='new__input'
+							name='province'
+							placeholder='British Columbia'
 						/>
 					</label>
 				</div>
 
-				<div className="new__personalize">
-					<label className="new__label">
+				<div className='new__personalize'>
+					<label className='new__label'>
 						Tell your neighbors about yourself
 						<textarea
-							className="new__input textarea"
-							name="about"
-							rows="3"
+							className='new__input textarea'
+							name='about'
+							rows='3'
 							maxLength={240}
 							placeholder="Feel free to describe your interests here, and why you're excited to connect with your fellow neighbors."
 						/>
 					</label>
-					<label className="new__label">
+					<label className='new__label'>
 						Skills you can offer
 						<input
-							type="text"
-							className="new__input"
-							name="offers"
-							placeholder="ie Gardening, Landscaping, Construction"
+							type='text'
+							className='new__input'
+							name='offers'
+							placeholder='ie Gardening, Landscaping, Construction'
 						/>
 					</label>
-					<p className="new__desc">
+					<p className='new__desc'>
 						One or two words for each offering, separated by commas
 					</p>
-					<label className="new__label">
+					<label className='new__label'>
 						What you would like to barter for
 						<input
-							type="text"
-							className="new__input"
-							name="exchanges"
-							placeholder="ie Cooking, Running Errands, Cat Sitting"
+							type='text'
+							className='new__input'
+							name='exchanges'
+							placeholder='ie Cooking, Running Errands, Cat Sitting'
 						/>
 					</label>
-					<p className="new__desc">
+					<p className='new__desc'>
 						One or two words for each thing you'd like to barter for, separated
 						by commas
 					</p>
-					<label className="new__label upload">
+					<label className='new__label upload'>
 						Upload a profile picture
 						<input
-							type="file"
-							name="file"
-							id="image-input"
-							onChange={handleFileChange}
-						></input>
-						<p className="upload__desc">File size limit: 1mb</p>
-						<button className="new__default-img-btn" onClick={removeImage}>
+							type='file'
+							name='file'
+							id='image-input'
+							onChange={handleFileChange}></input>
+						<p className='upload__desc'>File size limit: 1mb</p>
+						<button className='new__default-img-btn' onClick={removeImage}>
 							Use default image
 						</button>
 					</label>
 					{/* <p className="error"></p> */}
-					{errorActive && <p className="new__error">{errorMessage}</p>}
-					{apiCalled && <p className="new__in-progress">{errorMessage}</p>}
-					<button className="new__btn">Start Meeting Your Neighbors</button>
+					{errorActive && <p className='new__error'>{errorMessage}</p>}
+					{apiCalled && <p className='new__in-progress'>{errorMessage}</p>}
+					<button className='new__btn'>Start Meeting Your Neighbors</button>
 				</div>
 			</form>
 		</div>
