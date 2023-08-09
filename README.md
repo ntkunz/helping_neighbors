@@ -1,6 +1,6 @@
 ### Welcome to the Helping Neighbors frontend repository 👋
 
-View live beta site - [Helping Neighbors](https://www.helping-neighbors.nicholaskunz.com) - :couple: :hammer: :dizzy:
+View live beta site - [Helping Neighbors](https://helping-neighbors.nicholaskunz.com) - :couple: :hammer: :dizzy:
 
 ![screencast of helping neighbors site](https://user-images.githubusercontent.com/33107555/233460679-af674c66-0b78-4ad7-a2e3-a20fb94c11af.gif)
 
