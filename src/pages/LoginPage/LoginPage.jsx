@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { useState } from "react";
 import axios from "axios";
 import setToken from "../../utils/setToken";
-import fetchUser from "../../utils/fetchUser";
 
 export default function LoginPage({ setLoggedIn, setUser }) {
 	const api = process.env.REACT_APP_API_URL;
