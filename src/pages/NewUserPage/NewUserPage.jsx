@@ -14,6 +14,8 @@ export default function NewUserPage({
 	setLoggedIn,
 	setToken,
 	setNeighbors,
+	user,
+	setUser,
 }) {
 	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
@@ -213,6 +215,7 @@ export default function NewUserPage({
 	//TODO: move to utils file
 	const submitImage = async (userId) => {
 		let formData = new FormData();
+		return <h1>Hello UserForm!</h1>;
 		formData.append("file", img.data);
 		formData.append("user_id", userId);
 		const response = await axios.post(`${api}/users/image`, formData, {

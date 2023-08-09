@@ -21,6 +21,7 @@ export default function App() {
 
 	useEffect(() => {
 		//TODO: move getUser function to utils folder??????
+		//TODO: refactor for readability, removing at least one layer
 		const token = localStorage.getItem("token");
 		if (token) {
 			const getUser = async () => {
@@ -47,7 +48,7 @@ export default function App() {
 			};
 			getNeighbors();
 		}
-	// eslint-disable-next-line
+		// eslint-disable-next-line
 	}, [user]);
 
 	//TODO : move handleLogout to header page?
@@ -65,12 +66,17 @@ export default function App() {
 
 	if (!loggedIn) {
 		return (
-			<div className="App">
-				<Header loggedIn={loggedIn} handleLogout={handleLogout} />
-				<div className="App__routes">
+			<div className='App'>
+				<Header
+					loggedIn={loggedIn}
+					handleLogout={handleLogout}
+					user={user}
+					setUser={setUser}
+				/>
+				<div className='App__routes'>
 					<Routes>
 						<Route
-							path="/login"
+							path='/login'
 							element={
 								<LoginPage
 									setUser={setUser}
@@ -81,7 +87,7 @@ export default function App() {
 						/>
 
 						<Route
-							path="/signup"
+							path='/signup'
 							element={
 								<NewUserPage
 									setUser={setUser}
@@ -91,7 +97,7 @@ export default function App() {
 								/>
 							}
 						/>
-						<Route path="*" element={<Navigate to="/login" />} />
+						<Route path='*' element={<Navigate to='/login' />} />
 					</Routes>
 				</div>
 				<Footer />
@@ -100,13 +106,13 @@ export default function App() {
 	}
 
 	return (
-		<div className="App">
+		<div className='App'>
 			<Header loggedIn={loggedIn} handleLogout={handleLogout} />
-			<div className="App__routes">
+			<div className='App__routes'>
 				<Routes>
-					<Route path="/" element={<Navigate to="/neighbors" />} />
+					<Route path='/' element={<Navigate to='/neighbors' />} />
 					<Route
-						path="/neighbors"
+						path='/neighbors'
 						element={
 							<Neighbors
 								loggedIn={loggedIn}
@@ -116,11 +122,11 @@ export default function App() {
 						}
 					/>
 					<Route
-						path="/login"
+						path='/login'
 						element={<LoginPage setUser={setUser} setToken={setToken} />}
 					/>
 					<Route
-						path="/profile"
+						path='/profile'
 						element={
 							<EditUserPage
 								user={user}
@@ -132,7 +138,7 @@ export default function App() {
 						}
 					/>
 					<Route
-						path="/signup"
+						path='/signup'
 						element={
 							<NewUserPage
 								setUser={setUser}
@@ -143,14 +149,14 @@ export default function App() {
 						}
 					/>
 					<Route
-						path="/neighbor/:id"
+						path='/neighbor/:id'
 						element={<MessagePage user={user} neighbors={neighbors} />}
 					/>
 					<Route
-						path="/neighbor"
+						path='/neighbor'
 						element={<MessagersPage user={user} neighbors={neighbors} />}
 					/>
-					<Route path="*" element={<Navigate to="/" />} />
+					<Route path='*' element={<Navigate to='/' />} />
 				</Routes>
 			</div>
 			<Footer />
