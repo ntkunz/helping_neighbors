@@ -14,8 +14,6 @@ export default function NewUserPage({
 	setLoggedIn,
 	setToken,
 	setNeighbors,
-	user,
-	setUser,
 }) {
 	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
