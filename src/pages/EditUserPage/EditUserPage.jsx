@@ -106,9 +106,9 @@ export default function EditUserPage({
 			const response = await axios.put(
 				`${api}/users`,
 				{
-					user_id: purify(user_id),
-					first_name: purify(firstName),
-					last_name: purify(lastName),
+					userId: purify(user_id),
+					firstName: purify(firstName),
+					lastName: purify(lastName),
 					email: cleanEmail,
 					coords: coords,
 					about: purify(about),

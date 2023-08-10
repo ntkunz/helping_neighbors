@@ -158,9 +158,9 @@ export default function NewUserPage({
 
 		try {
 			const response = await axios.post(`${api}/users`, {
-				user_id: userId,
-				first_name: firstName,
-				last_name: lastName,
+				userId: userId,
+				firstName: firstName,
+				lastName: lastName,
 				email: email,
 				password: password,
 				status: status,
@@ -214,7 +214,7 @@ export default function NewUserPage({
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
-		formData.append("user_id", userId);
+		formData.append("userId", userId);
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -229,6 +229,7 @@ export default function NewUserPage({
 	const handleFileChange = async (e) => {
 		if (e.target.files[0].size > 1000000) {
 			e.target.value = "";
+			setImg(null);
 			// return alert("Image too large, please add an image under 1MB");
 			setErrorMessage("Image too large, please add an image under 1MB");
 			setErrorActive(true);
