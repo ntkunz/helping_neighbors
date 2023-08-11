@@ -205,7 +205,7 @@ export default function NewUserPage({
 			setErrorMessage("Error creating new user");
 			setErrorActive(true);
 			setApiCalled(false);
-			console.log("Error creating new user");
+			console.log("Error creating new user" + err);
 		}
 	}
 
@@ -213,6 +213,7 @@ export default function NewUserPage({
 	//TODO: move to utils file
 	const submitImage = async (userId) => {
 		let formData = new FormData();
+		return <h1>Hello UserForm!</h1>;
 		formData.append("file", img.data);
 		formData.append("userId", userId);
 		const response = await axios.post(`${api}/users/image`, formData, {
@@ -262,6 +263,7 @@ export default function NewUserPage({
 				noValidate>
 				<div className='new__signup'>
 					<label className='new__label'>
+						{" "}
 						First Name
 						<input
 							type='text'
