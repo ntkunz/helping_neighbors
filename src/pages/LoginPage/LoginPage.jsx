@@ -40,7 +40,7 @@ export default function LoginPage({ setLoggedIn, setUser }) {
 			// TODO : create ui notice that they are being logged in
 			// TODO : create loginUser function in utils to clean up code in LoginPage
 			axios
-				.post(`${api}/users/login`, { email, password })
+				.post(`${api}/users/login`, { email: email, password: password })
 				.then((response) => {
 					if (response.data.user.email === email) {
 						setToken(response.data.token);
@@ -54,10 +54,10 @@ export default function LoginPage({ setLoggedIn, setUser }) {
 					console.log("error: ", error);
 					// TODO : handle error and update ui accordingly
 
-					if (error.response.status === 404 || error.response.status === 400) {
+					if (error.response.status == 404 || error.response.status == 400) {
 						setUserInfoDisplay("Invalid User");
 					}
-					if (error.response.status === 429) {
+					if (error.response.status == 429) {
 						setUserInfoDisplay("Please try again later");
 					} else {
 						console.log("Error getting user");
