@@ -171,8 +171,9 @@ import purify from "../../utils/purify";
 import axios from "axios";
 import validateEmail from "../../utils/validateEmail";
 import validatePassword from "../../utils/validatePassword";
+import setToken from "../../utils/setToken";
 
-export default function LoginPage({ setToken, setUser, setLoggedIn }) {
+export default function LoginPage({ setUser, setLoggedIn }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const api = process.env.REACT_APP_API_URL;
