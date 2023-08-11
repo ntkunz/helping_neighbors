@@ -213,7 +213,6 @@ export default function NewUserPage({
 	//TODO: move to utils file
 	const submitImage = async (userId) => {
 		let formData = new FormData();
-		return <h1>Hello UserForm!</h1>;
 		formData.append("file", img.data);
 		formData.append("userId", userId);
 		const response = await axios.post(`${api}/users/image`, formData, {

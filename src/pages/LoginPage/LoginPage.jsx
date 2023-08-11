@@ -59,7 +59,7 @@ export default function LoginPage({ setLoggedIn, setUser }) {
 					if (error.response.status === 429) {
 						setUserInfoDisplay("Please try again later");
 					} else {
-						console.log("errror getting user");
+						console.log("Error getting user");
 						setUserInfoDisplay("Error logging in, please try again");
 					}
 					// setErrorActive(true);
