@@ -216,16 +216,17 @@ export default function LoginPage({ setUser, setLoggedIn }) {
 				}
 			})
 			.catch((error) => {
-				if (error.response.status === 404 || error.response.status === 400) {
-					setErrorMessage("Invalid User");
-				}
-				if (error.response.status === 429) {
-					setErrorMessage("Please try again later");
-				} else {
-					console.log("errror getting user");
-				}
+				// if (error.response.status === 404 || error.response.status === 400) {
+				// 	setErrorMessage("Invalid User");
+				// }
+				// if (error.response.status === 429) {
+				// 	setErrorMessage("Please try again later");
+				// } else {
+				console.log("error getting user: ", error);
+				setErrorMessage("Invalid User");
 				setErrorActive(true);
 			});
+		// });
 	}
 
 	return (
