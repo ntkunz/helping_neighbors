@@ -51,6 +51,7 @@ export default function LoginPage({ setLoggedIn, setUser }) {
 					}
 				})
 				.catch((error) => {
+					console.log("error: ", error);
 					// TODO : handle error and update ui accordingly
 
 					if (error.response.status === 404 || error.response.status === 400) {
