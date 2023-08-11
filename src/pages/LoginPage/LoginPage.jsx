@@ -54,116 +54,113 @@ export default function LoginPage({ setLoggedIn, setUser }) {
 					// TODO : handle error and update ui accordingly
 
 					if (error.response.status === 404 || error.response.status === 400) {
-						setErrorMessage("Invalid User");
+						setUserInfoDisplay("Invalid User");
 					}
 					if (error.response.status === 429) {
-						setErrorMessage("Please try again later");
+						setUserInfoDisplay("Please try again later");
 					} else {
 						console.log("errror getting user");
 						setUserInfoDisplay("Error logging in, please try again");
 					}
-					setErrorActive(true);
+					// setErrorActive(true);
 				});
 		},
 	});
 
-	if (noToken) {
-		return (
-			<div className='login__container'>
-				<div className='login'>
-					<div className='login-info'>
-						<div className='login-info__qa'>
-							<h2 className='login-info__quest'>Why Helping Neighbors?</h2>
-							<p className='login-info__answer'>
-								Offering your skills to neighbors can be a great way to connect
-								with people in your community who need help with something that
-								you're skilled in. You can also encourage your neighbors to
-								share their skills and expertise, creating a community where
-								everyone contributes and benefits. This can not only help your
-								neighbors but also create a sense of belonging, safety, and
-								mutual support within your community.
-							</p>
-						</div>
+	// if (noToken) {
+	return (
+		<div className='login__container'>
+			<div className='login'>
+				<div className='login-info'>
+					<div className='login-info__qa'>
+						<h2 className='login-info__quest'>Why Helping Neighbors?</h2>
+						<p className='login-info__answer'>
+							Offering your skills to neighbors can be a great way to connect
+							with people in your community who need help with something that
+							you're skilled in. You can also encourage your neighbors to share
+							their skills and expertise, creating a community where everyone
+							contributes and benefits. This can not only help your neighbors
+							but also create a sense of belonging, safety, and mutual support
+							within your community.
+						</p>
 					</div>
-
-					<div className='login-info'>
-						<div className='login-info__qa'>
-							<h2 className='login-info__quest'>Get Involved</h2>
-							<p className='login-info__answer'>
-								Identify your skills and think about how they can benefit your
-								neighbors. For example, if you have experience in gardening, you
-								could offer to help your neighbors with their garden or give
-								them tips on how to grow their own vegetables. Similarly, if
-								you're skilled in carpentry, you could offer to help with
-								repairs or build something for a neighbor who needs it.
-							</p>
-						</div>
-					</div>
-
-					<form
-						className='login-form'
-						onSubmit={formik.handleSubmit}
-						noValidate>
-						<div className='login-form__group'>
-							<label htmlFor='email'> Email </label>
-							<input
-								name='email'
-								type='email'
-								className={
-									"form-control" +
-									(formik.errors.email && formik.touched.email
-										? " is-invalid"
-										: "")
-								}
-								onChange={formik.handleChange}
-								value={formik.values.email}
-							/>
-							<div className='invalid-feedback'>
-								{formik.errors.email && formik.touched.email
-									? formik.errors.email
-									: null}
-							</div>
-						</div>
-
-						<div className='login-form__group'>
-							<label htmlFor='password'> Password </label>
-							<input
-								name='password'
-								type='password'
-								className={
-									"form-control" +
-									(formik.errors.password && formik.touched.password
-										? " is-invalid"
-										: "")
-								}
-								onChange={formik.handleChange}
-								value={formik.values.password}
-							/>
-							<div className='invalid-feedback'>
-								{formik.errors.password && formik.touched.password
-									? formik.errors.password
-									: null}
-							</div>
-						</div>
-
-						<div className='login-form__group'>
-							<button type='submit' className='login-form__btn'>
-								Login
-							</button>
-							<button
-								type='button'
-								className='login-form__btn'
-								onClick={formik.handleReset}>
-								Reset
-							</button>
-							{userInfoDisplay && <p>{userInfoDisplay}</p>}
-						</div>
-					</form>
 				</div>
+
+				<div className='login-info'>
+					<div className='login-info__qa'>
+						<h2 className='login-info__quest'>Get Involved</h2>
+						<p className='login-info__answer'>
+							Identify your skills and think about how they can benefit your
+							neighbors. For example, if you have experience in gardening, you
+							could offer to help your neighbors with their garden or give them
+							tips on how to grow their own vegetables. Similarly, if you're
+							skilled in carpentry, you could offer to help with repairs or
+							build something for a neighbor who needs it.
+						</p>
+					</div>
+				</div>
+
+				<form className='login-form' onSubmit={formik.handleSubmit} noValidate>
+					<div className='login-form__group'>
+						<label htmlFor='email'> Email </label>
+						<input
+							name='email'
+							type='email'
+							className={
+								"form-control" +
+								(formik.errors.email && formik.touched.email
+									? " is-invalid"
+									: "")
+							}
+							onChange={formik.handleChange}
+							value={formik.values.email}
+						/>
+						<div className='invalid-feedback'>
+							{formik.errors.email && formik.touched.email
+								? formik.errors.email
+								: null}
+						</div>
+					</div>
+
+					<div className='login-form__group'>
+						<label htmlFor='password'> Password </label>
+						<input
+							name='password'
+							type='password'
+							className={
+								"form-control" +
+								(formik.errors.password && formik.touched.password
+									? " is-invalid"
+									: "")
+							}
+							onChange={formik.handleChange}
+							value={formik.values.password}
+						/>
+						<div className='invalid-feedback'>
+							{formik.errors.password && formik.touched.password
+								? formik.errors.password
+								: null}
+						</div>
+					</div>
+
+					<div className='login-form__group'>
+						<button type='submit' className='login-form__btn'>
+							Login
+						</button>
+						<button
+							type='button'
+							className='login-form__btn'
+							onClick={formik.handleReset}>
+							Reset
+						</button>
+						{userInfoDisplay && <p>{userInfoDisplay}</p>}
+					</div>
+				</form>
 			</div>
-		);
-	}
+		</div>
+	);
 }
+// }
 
 // ================PREVIOUS WORKING VERSION ON AUG 9 2023====================
 // import "./LoginPage.scss";
