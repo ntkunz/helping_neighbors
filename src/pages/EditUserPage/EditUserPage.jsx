@@ -68,9 +68,9 @@ export default function EditUserPage({
 			.replaceAll(".", "+");
 
 		// let coords = [user.location.x, user.location.y];
-		// let coords = user.location;
+		let coords = user.location;
 		if (address !== originalAddress) {
-			let coords = await getNewUserGeo(addressRequest);
+			let = await getNewUserGeo(addressRequest);
 		}
 
 		//separate offers and exchanges into skills array
@@ -87,7 +87,7 @@ export default function EditUserPage({
 			})),
 		];
 		//update skills in userskills table
-		await addSkills(skillsArray, user_id);
+		await addSkills(skillsArray, user.user_id);
 		if (
 			address === "" ||
 			about === "" ||
@@ -107,7 +107,7 @@ export default function EditUserPage({
 			const response = await axios.put(
 				`${api}/users`,
 				{
-					userId: purify(user_id),
+					userId: user.user_id,
 					firstName: purify(firstName),
 					lastName: purify(lastName),
 					email: cleanEmail,
