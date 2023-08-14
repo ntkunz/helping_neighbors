@@ -67,54 +67,43 @@ export default function App() {
 	if (!loggedIn) {
 		return (
 			<div className='App'>
-				<h1 className='broken__header'>Site currently under maintenance</h1>
-				<h3 className='broken__subheader'>
-					Please check back soon... Thank you
-				</h3>
+				<Header
+					loggedIn={loggedIn}
+					handleLogout={handleLogout}
+					user={user}
+					setUser={setUser}
+				/>
+				<div className='App__routes'>
+					<Routes>
+						<Route
+							path='/login'
+							element={
+								<LoginPage
+									setUser={setUser}
+									setToken={setToken}
+									setLoggedIn={setLoggedIn}
+								/>
+							}
+						/>
+
+						<Route
+							path='/signup'
+							element={
+								<NewUserPage
+									setUser={setUser}
+									setLoggedIn={setLoggedIn}
+									setNeighbors={setNeighbors}
+									setToken={setToken}
+								/>
+							}
+						/>
+						<Route path='*' element={<Navigate to='/login' />} />
+					</Routes>
+				</div>
+				<Footer />
 			</div>
 		);
 	}
-
-	// if (!loggedIn) {
-	// 	return (
-	// 		<div className='App'>
-	// 			<Header
-	// 				loggedIn={loggedIn}
-	// 				handleLogout={handleLogout}
-	// 				user={user}
-	// 				setUser={setUser}
-	// 			/>
-	// 			<div className='App__routes'>
-	// 				<Routes>
-	// 					<Route
-	// 						path='/login'
-	// 						element={
-	// 							<LoginPage
-	// 								setUser={setUser}
-	// 								setToken={setToken}
-	// 								setLoggedIn={setLoggedIn}
-	// 							/>
-	// 						}
-	// 					/>
-
-	// 					<Route
-	// 						path='/signup'
-	// 						element={
-	// 							<NewUserPage
-	// 								setUser={setUser}
-	// 								setLoggedIn={setLoggedIn}
-	// 								setNeighbors={setNeighbors}
-	// 								setToken={setToken}
-	// 							/>
-	// 						}
-	// 					/>
-	// 					<Route path='*' element={<Navigate to='/login' />} />
-	// 				</Routes>
-	// 			</div>
-	// 			<Footer />
-	// 		</div>
-	// 	);
-	// }
 
 	return (
 		<div className='App'>
@@ -174,3 +163,15 @@ export default function App() {
 		</div>
 	);
 }
+
+// =========== In case of emergency : Under maintenance message ====================
+// if (!loggedIn) {
+// 	return (
+// 		<div className='App'>
+// 			<h1 className='broken__header'>Site currently under maintenance</h1>
+// 			<h3 className='broken__subheader'>
+// 				Please check back soon... Thank you
+// 			</h3>
+// 		</div>
+// 	);
+// }
