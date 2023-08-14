@@ -173,14 +173,13 @@ export default function NewUserPage({
 			});
 
 			const newUserToken = response.data.token;
-			const newUserId = response.data.userId;
-
+			// const newUserId = response.data.userId;
 			await setToken(newUserToken);
-			await addSkills(skillsArray, newUserId);
+			await addSkills(skillsArray, userId);
 
 			//upload image to users api once userId is created if img is not null or "default"
 			if (img !== null && img !== "default") {
-				await submitImage(newUserId);
+				await submitImage(userId);
 			}
 
 			const getNewUser = await axios.get(`${api}/users/verify`, {
@@ -197,9 +196,10 @@ export default function NewUserPage({
 				},
 			});
 
-			setUser(getNewUser.data);
-			setNeighbors(getNewNeighbors.data.neighbors);
+			// setUser(getNewUser.data);
+			// setNeighbors(getNewNeighbors.data.neighbors);
 			setLoggedIn(true);
+			setUser(getNewUser.data);
 			navigate("/");
 		} catch (err) {
 			setErrorMessage("Error creating new user");
