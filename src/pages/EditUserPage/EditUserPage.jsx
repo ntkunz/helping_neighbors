@@ -59,17 +59,18 @@ export default function EditUserPage({
 		e.preventDefault();
 
 		const cleanEmail = purify(email);
-		const user_id = user.user_id;
-		await removeSkills(purify(user_id));
+		// const user_id = user.user_id;
+		await removeSkills(user.user_id);
 		const address = purify(`${home} ${city} ${province}`);
 		const addressRequest = address
 			.replaceAll(",", " ")
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
 
-		let coords = [user.location.x, user.location.y];
+		// let coords = [user.location.x, user.location.y];
+		// let coords = user.location;
 		if (address !== originalAddress) {
-			coords = await getNewUserGeo(addressRequest);
+			let coords = await getNewUserGeo(addressRequest);
 		}
 
 		//separate offers and exchanges into skills array
