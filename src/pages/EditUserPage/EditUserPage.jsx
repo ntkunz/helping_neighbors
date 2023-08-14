@@ -123,21 +123,21 @@ export default function EditUserPage({
 					},
 				}
 			);
-
-			setUser(response.data);
 			setNeighbors([]);
-			axios
-				.get(`${api}/users`, {
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-				})
-				.then((res) => {
-					if (res.data.length > 0) {
-						setNeighbors(res.data.neighbors);
-					}
-				});
+			setUser(response.data);
+
+			// axios
+			// 	.get(`${api}/users`, {
+			// 		headers: {
+			// 			"Content-Type": "application/json",
+			// 			Authorization: `Bearer ${localStorage.getItem("token")}`,
+			// 		},
+			// 	})
+			// 	.then((res) => {
+			// 		if (res.data.length > 0) {
+			// 			setNeighbors(res.data.neighbors);
+			// 		}
+			// 	});
 		} catch (err) {
 			console.log("Error editing user");
 		}
