@@ -70,7 +70,7 @@ export default function EditUserPage({
 		// let coords = [user.location.x, user.location.y];
 		let coords = user.location;
 		if (address !== originalAddress) {
-			let = await getNewUserGeo(addressRequest);
+			coords = await getNewUserGeo(addressRequest);
 		}
 
 		//separate offers and exchanges into skills array
