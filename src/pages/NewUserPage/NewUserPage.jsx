@@ -189,12 +189,12 @@ export default function NewUserPage({
 				},
 			});
 
-			const getNewNeighbors = await axios.get(`${api}/users`, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
+			// const getNewNeighbors = await axios.get(`${api}/users`, {
+			// 	headers: {
+			// 		"Content-Type": "application/json",
+			// 		Authorization: `Bearer ${localStorage.getItem("token")}`,
+			// 	},
+			// });
 
 			// setUser(getNewUser.data);
 			// setNeighbors(getNewNeighbors.data.neighbors);
