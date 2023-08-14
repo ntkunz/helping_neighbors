@@ -172,15 +172,15 @@ export default function NewUserPage({
 				province: province,
 			});
 
-			const newUserToken = response.data.token;
-			// const newUserId = response.data.userId;
-			await setToken(newUserToken);
 			await addSkills(skillsArray, userId);
 
 			//upload image to users api once userId is created if img is not null or "default"
 			if (img !== null && img !== "default") {
 				await submitImage(userId);
 			}
+
+			const newUserToken = response.data.token;
+			await setToken(newUserToken);
 
 			const getNewUser = await axios.get(`${api}/users/verify`, {
 				headers: {
