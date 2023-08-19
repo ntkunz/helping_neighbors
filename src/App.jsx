@@ -20,59 +20,34 @@ export default function App() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		//TODO: move getUser function to utils folder??????
-		//TODO: refactor for readability, removing at least one layer
 		const token = localStorage.getItem("token");
 		if (token) {
-			const getUser = async () => {
-				try {
-					const user = await fetchUser();
-					setUser(user);
-				} catch (error) {
-					navigate("/login");
-				}
-			};
-			getUser();
+			fetchUser()
+				.then((user) => setUser(user))
+				.catch(() => navigate("/login"));
 		}
 		// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
-		//TODO: move getNeighbors function to utils folder?????
 		if (user.email) {
-			const getNeighbors = async () => {
-				const neighbors = await fetchNeighbors();
-				setNeighbors(neighbors);
-				setLoggedIn(true);
-				navigate("/neighbors");
-			};
-			getNeighbors();
+			fetchNeighbors()
+				.then((neighbors) => {
+					setNeighbors(neighbors);
+					setLoggedIn(true);
+					navigate("/neighbors");
+				})
+				.catch(() => navigate("/login"));
+		} else {
+			navigate("/login");
 		}
 		// eslint-disable-next-line
 	}, [user]);
 
-	//TODO : move handleLogout to header page?
-	function handleLogout(logoutEvent) {
-		logoutEvent.preventDefault();
-		if (loggedIn) {
-			setLoggedIn(!loggedIn);
-			setUser({});
-			localStorage.removeItem("token");
-			return navigate("/login");
-		} else {
-			return navigate("/login");
-		}
-	}
-
 	if (!loggedIn) {
 		return (
 			<div className='App'>
-				<Header
-					loggedIn={loggedIn}
-					handleLogout={handleLogout}
-					user={user}
-					setUser={setUser}
-				/>
+				<Header loggedIn={loggedIn} />
 				<div className='App__routes'>
 					<Routes>
 						<Route
@@ -107,7 +82,12 @@ export default function App() {
 
 	return (
 		<div className='App'>
-			<Header loggedIn={loggedIn} handleLogout={handleLogout} />
+			<Header
+				loggedIn={loggedIn}
+				setLoggedIn={setLoggedIn}
+				setUser={setUser}
+				setNeighbors={setNeighbors}
+			/>
 			<div className='App__routes'>
 				<Routes>
 					<Route path='/' element={<Navigate to='/neighbors' />} />
