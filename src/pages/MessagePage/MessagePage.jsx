@@ -37,7 +37,7 @@ export default function Message({ user, neighbors }) {
 		const message = document.querySelector(".message__input").value;
 
 		if (message === "") {
-			document.querySelector(".messageError").vlue = "Message cannot be blank";
+			document.querySelector(".messageError").value = "Message cannot be blank";
 			document.querySelector(".messageError").style.display = "inline-block";
 			return;
 		}
