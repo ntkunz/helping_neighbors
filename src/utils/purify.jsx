@@ -1,5 +1,5 @@
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 export default function purify(userInput) {
-   return DOMPurify.sanitize(userInput);
+	return DOMPurify.sanitize(userInput);
 }

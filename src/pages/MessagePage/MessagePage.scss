@@ -127,14 +127,14 @@
 		max-height: 25rem;
 		min-height: 10rem;
 		overflow-y: scroll;
-		border-radius: .25rem;
+		border-radius: 0.25rem;
 		outline: 0.125rem solid $color-two;
 		background-color: white;
 	}
 
 	&__neighbor {
 		// margin: 0 0 1rem;
-		padding: .5rem;
+		padding: 0.5rem;
 	}
 
 	//box around output date and sender and message
@@ -176,11 +176,11 @@
 	align-self: flex-end;
 }
 
-.error {
+.messageError {
 	background-color: $color-error;
 	color: $color-one;
 	display: none;
-	margin: .25rem;
-	padding: .125rem .25rem;
-	border-radius: .25rem;
+	margin: 0.25rem;
+	padding: 0.125rem 0.25rem;
+	border-radius: 0.25rem;
 }

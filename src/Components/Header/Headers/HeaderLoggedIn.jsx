@@ -1,5 +1,5 @@
 import "../Header.scss";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function HeaderLoggedIn({ setLoggedIn, setUser, setNeighbors }) {
 	function handleLogout(logoutEvent) {
@@ -14,10 +14,10 @@ export default function HeaderLoggedIn({ setLoggedIn, setUser, setNeighbors }) {
 		<header className='header'>
 			<div className='header__container'>
 				<div className='header__titlebox'>
-					<NavLink to='/' className='header__title-btn'>
+					<Link to='/' className='header__title-btn'>
 						<h1 className='header__title'>Helping</h1>
 						<h2 className='header__subtitle'>Neighbors</h2>
-					</NavLink>
+					</Link>
 				</div>
 
 				<div className='header__tagline-box'>

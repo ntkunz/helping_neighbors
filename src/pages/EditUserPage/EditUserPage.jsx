@@ -12,8 +12,8 @@ export default function EditUserPage({
 	setUser,
 	setLoggedIn,
 }) {
+	// TODO : Disable submit button until all fields are filled, and while delete user is in progress.
 	const navigate = useNavigate();
-
 	const api = process.env.REACT_APP_API_URL;
 
 	const [firstName, setFirstName] = useState(user.first_name);
@@ -126,29 +126,11 @@ export default function EditUserPage({
 			);
 			setNeighbors([]);
 			setUser(response.data);
-
-			// axios
-			// 	.get(`${api}/users`, {
-			// 		headers: {
-			// 			"Content-Type": "application/json",
-			// 			Authorization: `Bearer ${localStorage.getItem("token")}`,
-			// 		},
-			// 	})
-			// 	.then((res) => {
-			// 		if (res.data.length > 0) {
-			// 			setNeighbors(res.data.neighbors);
-			// 		}
-			// 	});
 		} catch (err) {
 			console.log("Error editing user");
 		}
 	}
 
-	/**
-	 * Async function to remove skills from a user.
-	 * @param {string} id - The ID of the user whose skills are being removed.
-	 * @returns {Promise} - A promise that resolves to the response from the server.
-	 */
 	//TODO: reloacte remove skills function to utils folder
 	async function removeSkills(id) {
 		try {
@@ -164,6 +146,7 @@ export default function EditUserPage({
 	}
 
 	//function to reveal password input field to confirm account deletion
+	// TODO : create modal to confirm account deletion
 	function deleteUserValidate(e) {
 		e.preventDefault();
 		document.querySelector(".edit__password").style.display = "flex";
@@ -188,7 +171,7 @@ export default function EditUserPage({
 
 			console.log("user deleted");
 
-			//TODO: add removal of all userskills and messages from database
+			//TODO: add removal of all userskills and messages from database upon user deletion
 
 			setNeighbors([]);
 			setLoggedIn(false);

@@ -1,22 +1,24 @@
-@use './variables' as *;
-@use './mixins' as *;
+@use "./variables" as *;
+@use "./mixins" as *;
 
 /*global styling*/
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Open Sans', sans-serif;
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Open Sans", sans-serif;
 }
 
 .container {
-    padding: 1rem 1.5rem;
+	padding: 1rem 1.5rem;
 
-    @include tablet {
-        padding: 2rem 4rem;
-    }
+	@include tablet {
+		padding: 2rem 4rem;
+	}
 
-    @include desktop {
-        padding: 3rem 8rem;
-    }
+	@include desktop {
+		padding: 3rem 8rem;
+	}
 }

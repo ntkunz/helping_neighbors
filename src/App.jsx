@@ -143,15 +143,3 @@ export default function App() {
 		</div>
 	);
 }
-
-// =========== In case of emergency : Under maintenance message ====================
-// if (!loggedIn) {
-// 	return (
-// 		<div className='App'>
-// 			<h1 className='broken__header'>Site currently under maintenance</h1>
-// 			<h3 className='broken__subheader'>
-// 				Please check back soon... Thank you
-// 			</h3>
-// 		</div>
-// 	);
-// }

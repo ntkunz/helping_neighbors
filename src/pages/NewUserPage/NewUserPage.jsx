@@ -32,7 +32,6 @@ export default function NewUserPage({
 		//eslint-disable-next-line
 	}, []);
 
-	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
 		e.preventDefault();
 		setUser({});
@@ -181,6 +180,8 @@ export default function NewUserPage({
 			await setToken(newUserToken);
 			await addSkills(skillsArray, userId);
 
+			// TODO : move axios call to utils file
+
 			const getNewUser = await axios.get(`${api}/users/verify`, {
 				headers: {
 					"Content-Type": "application/json",
@@ -188,15 +189,6 @@ export default function NewUserPage({
 				},
 			});
 
-			// const getNewNeighbors = await axios.get(`${api}/users`, {
-			// 	headers: {
-			// 		"Content-Type": "application/json",
-			// 		Authorization: `Bearer ${localStorage.getItem("token")}`,
-			// 	},
-			// });
-
-			// setUser(getNewUser.data);
-			// setNeighbors(getNewNeighbors.data.neighbors);
 			setLoggedIn(true);
 			setUser(getNewUser.data);
 			navigate("/");
@@ -209,7 +201,7 @@ export default function NewUserPage({
 	}
 
 	//upload image to users function
-	//TODO: move to utils file
+	//TODO: move submitImage function to utils file
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
@@ -224,7 +216,7 @@ export default function NewUserPage({
 	};
 
 	//set image function with file input
-	//TODO: move to utils file
+	//TODO: move image upload functions to utils file
 	const handleFileChange = async (e) => {
 		if (e.target.files[0].size > 1000000) {
 			e.target.value = "";
@@ -392,7 +384,6 @@ export default function NewUserPage({
 							Use default image
 						</button>
 					</label>
-					{/* <p className="error"></p> */}
 					{errorActive && <p className='new__error'>{errorMessage}</p>}
 					{apiCalled && <p className='new__in-progress'>{errorMessage}</p>}
 					<button className='new__btn'>Start Meeting Your Neighbors</button>

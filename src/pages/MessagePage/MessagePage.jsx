@@ -6,6 +6,7 @@ import Neighbor from "../../Components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
 
+// TODO : Update errors to use state and conditional rendering rather than DOM manipulation
 export default function Message({ user, neighbors }) {
 	const api = process.env.REACT_APP_API_URL;
 	const { id } = useParams();
@@ -31,18 +32,18 @@ export default function Message({ user, neighbors }) {
 		//eslint-disable-next-line
 	}, [receiver]);
 
-	//function to send new message if message input is not empty
 	function sendMessage(e) {
 		e.preventDefault();
-		//get message from input
 		const message = document.querySelector(".message__input").value;
 
 		if (message === "") {
-			document.querySelector(".error").style.display = "inline-block";
+			document.querySelector(".messageError").vlue = "Message cannot be blank";
+			document.querySelector(".messageError").style.display = "inline-block";
 			return;
 		}
-		//if message is not empty, hide error message and send message to api
-		document.querySelector(".error").style.display = "none";
+
+		document.querySelector(".messageError").style.display = "none";
+
 		axios
 			.post(
 				`${api}/messages`,
@@ -58,19 +59,18 @@ export default function Message({ user, neighbors }) {
 					},
 				}
 			)
-			.then((response) => {
-				//set message field to empty
+			.then(() => {
 				document.querySelector(".message__input").value = "";
 			})
 			.catch((error) => {
-				console.log("error sending new message", error);
+				// TODO : Add ui error handling in state
+				document.querySelector(".messageError").value = "Error sending message";
+				document.querySelector(".messageError").style.display = "inline-block";
 			});
 	}
 
-	//function to get messages from api
 	function getMessages(senderId, receiverId) {
 		axios
-			//include authorization bearer in header
 			.put(
 				`${api}/messages`,
 				{
@@ -85,15 +85,16 @@ export default function Message({ user, neighbors }) {
 				}
 			)
 			.then((response) => {
-				//sort messages by timestamp
 				const sortedMessages = response.data.sort(function (x, y) {
 					return y.unix_timestamp - x.unix_timestamp;
 				});
-				//set messages to sorted messages
 				setMessages(sortedMessages);
 			})
 			.catch((error) => {
-				console.log("error retrieving messages");
+				// TODO : Add ui error handling in state
+				document.querySelector(".messageError").value =
+					"Error retrieving messages";
+				document.querySelector(".messageError").style.display = "inline-block";
 			});
 	}
 
@@ -107,7 +108,6 @@ export default function Message({ user, neighbors }) {
 				</Link>
 			</h1>
 			<div className='message'>
-				{/* ternary to allow update once receiver set and display card */}
 				{receiver.user_id && (
 					<div className='message__receiver'>
 						<Neighbor neighbor={receiver} />
@@ -126,7 +126,7 @@ export default function Message({ user, neighbors }) {
 							<button className='message__btn' type='submit'>
 								Send Message
 							</button>
-							<p className='error'>Message must not be blank</p>
+							<p className='messageError'>Message cannot be blank</p>
 						</form>
 					</div>
 
