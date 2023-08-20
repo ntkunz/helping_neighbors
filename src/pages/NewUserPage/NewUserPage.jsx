@@ -34,8 +34,8 @@ export default function NewUserPage({
 
 	async function createNewUser(e) {
 		e.preventDefault();
-		setUser({});
-		setNeighbors({});
+		// setUser({});
+		// setNeighbors({});
 
 		setErrorMessage("Creating new user, please be patient");
 		setErrorActive(false);
