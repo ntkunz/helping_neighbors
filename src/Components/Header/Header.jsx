@@ -7,6 +7,7 @@ export default function Header({
 	setLoggedIn,
 	setUser,
 	setNeighbors,
+	setToken,
 }) {
 	if (!loggedIn) {
 		return <HeaderLoggedOut />;
@@ -16,6 +17,7 @@ export default function Header({
 			setLoggedIn={setLoggedIn}
 			setUser={setUser}
 			setNeighbors={setNeighbors}
+			setToken={setToken}
 		/>
 	);
 }

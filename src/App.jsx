@@ -8,8 +8,7 @@ import NewUserPage from "./pages/NewUserPage/NewUserPage";
 import EditUserPage from "./pages/EditUserPage/EditUserPage";
 import Neighbors from "./pages/Neighbors/Neighbors";
 import MessagePage from "./pages/MessagePage/MessagePage";
-import MessagersPage from "./pages/MessagersPage/MessagersPage";
-import setToken from "./utils/setToken";
+import placeToken from "./utils/placeToken";
 import fetchUser from "./utils/fetchUser";
 import fetchNeighbors from "./utils/fetchNeighbors";
 
@@ -17,50 +16,60 @@ export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState({});
 	const [neighbors, setNeighbors] = useState([]);
+	const storageToken = localStorage.getItem("token");
+	const [token, setToken] = useState(storageToken);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const token = localStorage.getItem("token");
 		if (token) {
+			if (!storageToken) placeToken(token);
 			fetchUser()
 				.then((user) => setUser(user))
-				.catch(() => navigate("/login"));
-		}
-		// eslint-disable-next-line
-	}, []);
-
-	useEffect(() => {
-		if (user.email) {
-			fetchNeighbors()
-				.then((neighbors) => {
-					setNeighbors(neighbors);
+				.then(() => fetchNeighbors())
+				.then((neighbors) => setNeighbors(neighbors))
+				.then(() => {
 					setLoggedIn(true);
-					navigate("/neighbors");
+					navigate("/");
 				})
-				.catch(() => navigate("/login"));
-		} else {
-			navigate("/login");
-		}
+				.catch(() => localStorage.removeItem("token"));
+		} else setToken(null);
 		// eslint-disable-next-line
-	}, [user]);
+	}, [storageToken, token]);
 
-	if (!loggedIn) {
-		return (
-			<div className='App'>
-				<Header loggedIn={loggedIn} />
-				<div className='App__routes'>
-					<Routes>
-						<Route
-							path='/login'
-							element={
+	return (
+		<div className='App'>
+			<Header
+				loggedIn={loggedIn}
+				setLoggedIn={setLoggedIn}
+				setUser={setUser}
+				setNeighbors={setNeighbors}
+				setToken={setToken}
+			/>
+			<div className='App__routes'>
+				<Routes>
+					<Route
+						path='/'
+						element={
+							loggedIn ? (
+								<Neighbors
+									loggedIn={loggedIn}
+									setLoggedIn={setLoggedIn}
+									user={user}
+									setUser={setUser}
+									neighbors={neighbors}
+									setNeighbors={setNeighbors}
+									token={token}
+								/>
+							) : (
 								<LoginPage
 									setUser={setUser}
 									setToken={setToken}
 									setLoggedIn={setLoggedIn}
 								/>
-							}
-						/>
-
+							)
+						}
+					/>
+					{!loggedIn && (
 						<Route
 							path='/signup'
 							element={
@@ -72,70 +81,28 @@ export default function App() {
 								/>
 							}
 						/>
-						<Route path='*' element={<Navigate to='/login' />} />
-					</Routes>
-				</div>
-				<Footer />
-			</div>
-		);
-	}
-
-	return (
-		<div className='App'>
-			<Header
-				loggedIn={loggedIn}
-				setLoggedIn={setLoggedIn}
-				setUser={setUser}
-				setNeighbors={setNeighbors}
-			/>
-			<div className='App__routes'>
-				<Routes>
-					<Route path='/' element={<Navigate to='/neighbors' />} />
-					<Route
-						path='/neighbors'
-						element={
-							<Neighbors
-								loggedIn={loggedIn}
-								user={user}
-								neighbors={neighbors}
-							/>
-						}
-					/>
-					<Route
-						path='/login'
-						element={<LoginPage setUser={setUser} setToken={setToken} />}
-					/>
-					<Route
-						path='/profile'
-						element={
-							<EditUserPage
-								user={user}
-								setNeighbors={setNeighbors}
-								setUser={setUser}
-								setToken={setToken}
-								setLoggedIn={setLoggedIn}
-							/>
-						}
-					/>
-					<Route
-						path='/signup'
-						element={
-							<NewUserPage
-								setUser={setUser}
-								setLoggedIn={setLoggedIn}
-								setNeighbors={setNeighbors}
-								setToken={setToken}
-							/>
-						}
-					/>
-					<Route
-						path='/neighbor/:id'
-						element={<MessagePage user={user} neighbors={neighbors} />}
-					/>
-					<Route
-						path='/neighbor'
-						element={<MessagersPage user={user} neighbors={neighbors} />}
-					/>
+					)}
+					{loggedIn && (
+						<Route
+							path='/:id'
+							element={<MessagePage user={user} neighbors={neighbors} />}
+						/>
+					)}
+					{loggedIn && (
+						<Route
+							path='/profile'
+							element={
+								<EditUserPage
+									user={user}
+									setNeighbors={setNeighbors}
+									setUser={setUser}
+									token={token}
+									setToken={setToken}
+									setLoggedIn={setLoggedIn}
+								/>
+							}
+						/>
+					)}
 					<Route path='*' element={<Navigate to='/' />} />
 				</Routes>
 			</div>

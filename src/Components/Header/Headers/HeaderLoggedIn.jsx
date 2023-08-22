@@ -1,13 +1,19 @@
 import "../Header.scss";
 import { Link, NavLink } from "react-router-dom";
 
-export default function HeaderLoggedIn({ setLoggedIn, setUser, setNeighbors }) {
+export default function HeaderLoggedIn({
+	setLoggedIn,
+	setUser,
+	setNeighbors,
+	setToken,
+}) {
 	function handleLogout(logoutEvent) {
 		logoutEvent.preventDefault();
 		localStorage.removeItem("token");
 		setNeighbors([]);
 		setLoggedIn(false);
 		setUser({});
+		setToken(null);
 	}
 
 	return (
@@ -26,7 +32,8 @@ export default function HeaderLoggedIn({ setLoggedIn, setUser, setNeighbors }) {
 				</div>
 
 				<div className='header__navbox'>
-					<NavLink to='/neighbors' className='header__btn'>
+					{/* <NavLink to='/neighbors' className='header__btn'> */}
+					<NavLink to='/' className='header__btn'>
 						Your Neighbors
 					</NavLink>
 

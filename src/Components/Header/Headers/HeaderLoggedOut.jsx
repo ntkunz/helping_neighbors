@@ -22,7 +22,8 @@ export default function HeaderLoggedOut() {
 						Sign Up
 					</NavLink>
 
-					<NavLink to='/login' className='header__btn'>
+					{/* <NavLink to="/login" className="header__btn"> */}
+					<NavLink to='/' className='header__btn'>
 						Login
 					</NavLink>
 				</div>

@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
+import placeToken from "../../utils/placeToken";
 
 export default function EditUserPage({
 	user,
 	setNeighbors,
 	setUser,
 	setLoggedIn,
+	setToken,
+	token,
 }) {
-	// TODO : Disable submit button until all fields are filled, and while delete user is in progress.
 	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
 
@@ -28,11 +30,13 @@ export default function EditUserPage({
 	const [exchanges, setExchanges] = useState("");
 	const [password, setPassword] = useState("");
 
+	const [error, setError] = useState("");
+	const [errorActive, setErrorActive] = useState(false);
+
 	useEffect(() => {
+		// Set user offers and exchanges based on offer value
 		let newOffers = "";
 		let newExchanges = "";
-
-		// Set user offers and exchanges based on offer value
 		user.barters.forEach((barter) => {
 			if (barter.offer === 1) {
 				if (newOffers !== "") newOffers += purify(", " + barter.skill);
@@ -42,11 +46,9 @@ export default function EditUserPage({
 				else newExchanges += purify(barter.skill);
 			}
 		});
-
 		// Update state with the new offers and exchanges
 		setOffers(newOffers.trim().replace(/,$/, ""));
 		setExchanges(newExchanges.trim().replace(/,$/, ""));
-
 		// eslint-disable-next-line
 	}, []);
 
@@ -54,9 +56,12 @@ export default function EditUserPage({
 	//TODO: add ability to change status to active or inactive
 	//TODO: add ability to block neighbor(s)
 
-	//submit the edit user form
+	// ====== Edit User Function =======
 	async function editUser(e) {
 		e.preventDefault();
+		setErrorActive(false);
+
+		// TODO : verify skills and/or desires are not empty and error if so!
 
 		const cleanEmail = purify(email);
 		// const user_id = user.user_id;
@@ -100,7 +105,8 @@ export default function EditUserPage({
 			city === "" ||
 			province === ""
 		) {
-			alert("Oops, you missed a field, please fill out all fields.");
+			setError("Oops, you missed a field, please fill out all fields.");
+			setErrorActive(true);
 			return;
 		}
 		try {
@@ -124,10 +130,12 @@ export default function EditUserPage({
 					},
 				}
 			);
-			setNeighbors([]);
-			setUser(response.data);
-		} catch (err) {
-			console.log("Error editing user");
+
+			setNeighbors(null);
+			placeToken(response.data.token);
+		} catch (error) {
+			setError("Error editing user, please try again.");
+			setErrorActive(true);
 		}
 	}
 
@@ -140,17 +148,17 @@ export default function EditUserPage({
 				},
 			});
 			return response;
-		} catch (err) {
-			console.log("Error removing skills");
+		} catch (error) {
+			setError("Error removing barters, please try again.");
+			setErrorActive(true);
 		}
 	}
 
 	//function to reveal password input field to confirm account deletion
-	// TODO : create modal to confirm account deletion
 	function deleteUserValidate(e) {
 		e.preventDefault();
+		setError("Are you sure you don't want to barter anymore?");
 		document.querySelector(".edit__password").style.display = "flex";
-		alert("Are you sure you want to delete this user?");
 		document.querySelector('input[name="password"]').focus();
 	}
 
@@ -171,16 +179,16 @@ export default function EditUserPage({
 
 			console.log("user deleted");
 
-			//TODO: add removal of all userskills and messages from database upon user deletion
+			//TODO: add removal of all userskills and messages from database
 
 			setNeighbors([]);
 			setLoggedIn(false);
 			localStorage.removeItem("token");
 			setUser({});
 			return;
-		} catch (err) {
-			console.log("Error deleting user");
-			alert("Unable to delete user. Check password and try again.");
+		} catch (error) {
+			setError("Error deleting user, please try again");
+			setErrorActive(true);
 		}
 	}
 
@@ -302,6 +310,7 @@ export default function EditUserPage({
 						One or two words for each thing you'd like to barter for, separated
 						by commas
 					</p>
+					{errorActive && <p className='edit__form-error'>{error}</p>}
 					<button className='edit__btn'>Edit Your Profile</button>
 					<button
 						onClick={(e) => {
@@ -314,7 +323,6 @@ export default function EditUserPage({
 					<span className='edit__btn' onClick={deleteUserValidate}>
 						Delete Account
 					</span>
-					{/* add password field to verify user to delete account  */}
 					<div className='edit__password'>
 						<label className='edit__label'>
 							Enter your password to delete your account

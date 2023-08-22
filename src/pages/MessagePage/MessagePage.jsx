@@ -6,7 +6,6 @@ import Neighbor from "../../Components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
 
-// TODO : Update errors to use state and conditional rendering rather than DOM manipulation
 export default function Message({ user, neighbors }) {
 	const api = process.env.REACT_APP_API_URL;
 	const { id } = useParams();
@@ -32,17 +31,16 @@ export default function Message({ user, neighbors }) {
 		//eslint-disable-next-line
 	}, [receiver]);
 
+	// TODO : Add proper error handling
 	function sendMessage(e) {
 		e.preventDefault();
 		const message = document.querySelector(".message__input").value;
 
 		if (message === "") {
-			document.querySelector(".messageError").value = "Message cannot be blank";
-			document.querySelector(".messageError").style.display = "inline-block";
+			document.querySelector(".error").style.display = "inline-block";
 			return;
 		}
-
-		document.querySelector(".messageError").style.display = "none";
+		document.querySelector(".error").style.display = "none";
 
 		axios
 			.post(
@@ -63,9 +61,7 @@ export default function Message({ user, neighbors }) {
 				document.querySelector(".message__input").value = "";
 			})
 			.catch((error) => {
-				// TODO : Add ui error handling in state
-				document.querySelector(".messageError").value = "Error sending message";
-				document.querySelector(".messageError").style.display = "inline-block";
+				console.log("error sending new message");
 			});
 	}
 
@@ -91,10 +87,8 @@ export default function Message({ user, neighbors }) {
 				setMessages(sortedMessages);
 			})
 			.catch((error) => {
-				// TODO : Add ui error handling in state
-				document.querySelector(".messageError").value =
-					"Error retrieving messages";
-				document.querySelector(".messageError").style.display = "inline-block";
+				// TODO : Add proper error handling
+				console.log("error retrieving messages");
 			});
 	}
 
@@ -103,11 +97,12 @@ export default function Message({ user, neighbors }) {
 			<h1 className='message__title'>
 				{user.first_name}, message {purify(receiver.first_name)} to arrange a
 				barter, or{" "}
-				<Link to='/neighbors' className='message__link'>
+				<Link to='/' className='message__link'>
 					explore other neighbors
 				</Link>
 			</h1>
 			<div className='message'>
+				{/* ternary to allow update once receiver set and display card */}
 				{receiver.user_id && (
 					<div className='message__receiver'>
 						<Neighbor neighbor={receiver} />
@@ -126,7 +121,7 @@ export default function Message({ user, neighbors }) {
 							<button className='message__btn' type='submit'>
 								Send Message
 							</button>
-							<p className='messageError'>Message cannot be blank</p>
+							<p className='error'>Message must not be blank</p>
 						</form>
 					</div>
 

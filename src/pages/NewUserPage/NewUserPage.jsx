@@ -32,6 +32,7 @@ export default function NewUserPage({
 		//eslint-disable-next-line
 	}, []);
 
+	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
 		e.preventDefault();
 		// setUser({});
@@ -72,6 +73,7 @@ export default function NewUserPage({
 		// Image validation
 		if (img !== null && img !== "default") {
 			if (img.data.size > 1000000) {
+				setImg(null);
 				setErrorMessage("Image too large, please add an image under 1MB");
 				setErrorActive(true);
 				setApiCalled(false);
@@ -171,26 +173,15 @@ export default function NewUserPage({
 				province: province,
 			});
 
+			await addSkills(skillsArray, userId);
+
 			//upload image to users api once userId is created if img is not null or "default"
 			if (img !== null && img !== "default") {
 				await submitImage(userId);
 			}
 
 			const newUserToken = response.data.token;
-			await setToken(newUserToken);
-			await addSkills(skillsArray, userId);
-
-			// TODO : move axios call to utils file
-
-			const getNewUser = await axios.get(`${api}/users/verify`, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
-
-			setLoggedIn(true);
-			setUser(getNewUser.data);
+			setToken(newUserToken);
 			navigate("/");
 		} catch (err) {
 			setErrorMessage("Error creating new user");
@@ -201,7 +192,7 @@ export default function NewUserPage({
 	}
 
 	//upload image to users function
-	//TODO: move submitImage function to utils file
+	//TODO: move to utils file
 	const submitImage = async (userId) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
@@ -216,23 +207,23 @@ export default function NewUserPage({
 	};
 
 	//set image function with file input
-	//TODO: move image upload functions to utils file
+	//TODO: move to utils file
 	const handleFileChange = async (e) => {
 		if (e.target.files[0].size > 1000000) {
 			e.target.value = "";
 			setImg(null);
-			// return alert("Image too large, please add an image under 1MB");
 			setErrorMessage("Image too large, please add an image under 1MB");
 			setErrorActive(true);
 			return;
 		}
 		if (!e.target.files[0].type.includes("image")) {
+			setImg(null);
 			return alert("Please add an image file");
 		}
-		const img = {
+		const uploadedImage = {
 			data: e.target.files[0],
 		};
-		setImg(img);
+		setImg(uploadedImage);
 	};
 
 	const removeImage = (e) => {

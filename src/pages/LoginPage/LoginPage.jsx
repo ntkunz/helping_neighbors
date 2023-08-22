@@ -5,9 +5,10 @@ import purify from "../../utils/purify";
 import axios from "axios";
 import validateEmail from "../../utils/validateEmail";
 import validatePassword from "../../utils/validatePassword";
-import setToken from "../../utils/setToken";
+import placeToken from "../../utils/placeToken";
 
-export default function LoginPage({ setUser, setLoggedIn }) {
+// TODO : Refactor to use formik and yup
+export default function LoginPage({ setToken }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const api = process.env.REACT_APP_API_URL;
@@ -41,16 +42,14 @@ export default function LoginPage({ setUser, setLoggedIn }) {
 			.post(`${api}/users/login`, { email, password })
 			.then((res) => {
 				if (res.data.user.email === email) {
+					placeToken(res.data.token);
 					setToken(res.data.token);
-					setUser(res.data.user);
-					setLoggedIn(true);
 				} else {
 					setErrorMessage("User not found");
 					setErrorActive(true);
 				}
 			})
 			.catch((error) => {
-				// TODO : Set error message differently if error is from too many attempts
 				setErrorMessage("Invalid User");
 				setErrorActive(true);
 			});
