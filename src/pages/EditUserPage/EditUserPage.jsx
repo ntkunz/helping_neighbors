@@ -6,7 +6,6 @@ import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
 import removeSkills from "../../utils/removeSkills";
-import placeToken from "../../utils/placeToken";
 
 export default function EditUserPage({
 	user,
@@ -129,7 +128,7 @@ export default function EditUserPage({
 					},
 				}
 			);
-
+			setUser(response.data);
 			navigate("/");
 			// setNeighbors(null);
 			// placeToken(response.data.token);
