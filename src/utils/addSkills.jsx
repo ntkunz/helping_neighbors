@@ -8,7 +8,7 @@ export default async function addSkills(arr, id) {
 			skills: arr,
 		});
 		return response;
-	} catch (err) {
-		console.log("Error adding skills: ", err);
+	} catch (error) {
+		console.log("Error adding skills");
 	}
 }

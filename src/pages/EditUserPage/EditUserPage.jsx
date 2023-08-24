@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
+import removeSkills from "../../utils/removeSkills";
 import placeToken from "../../utils/placeToken";
 
 export default function EditUserPage({
@@ -12,8 +13,6 @@ export default function EditUserPage({
 	setNeighbors,
 	setUser,
 	setLoggedIn,
-	setToken,
-	token,
 }) {
 	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
@@ -61,38 +60,9 @@ export default function EditUserPage({
 		e.preventDefault();
 		setErrorActive(false);
 
-		// TODO : verify skills and/or desires are not empty and error if so!
-
 		const cleanEmail = purify(email);
-		// const user_id = user.user_id;
-		await removeSkills(user.user_id);
 		const address = purify(`${home} ${city} ${province}`);
-		const addressRequest = address
-			.replaceAll(",", " ")
-			.replaceAll(" ", "+")
-			.replaceAll(".", "+");
 
-		// let coords = [user.location.x, user.location.y];
-		let coords = user.location;
-		if (address !== originalAddress) {
-			coords = await getNewUserGeo(addressRequest);
-		}
-
-		//separate offers and exchanges into skills array
-		const offersSplit = offers.split(",");
-		const exchangesSplit = exchanges.split(",");
-		const skillsArray = [
-			...offersSplit.map((offer) => ({
-				skill: purify(offer.trim()),
-				offer: true, // Indicate it as an offer
-			})),
-			...exchangesSplit.map((desire) => ({
-				skill: purify(desire.trim()),
-				offer: false, // Indicate it as a desire
-			})),
-		];
-		//update skills in userskills table
-		await addSkills(skillsArray, user.user_id);
 		if (
 			address === "" ||
 			about === "" ||
@@ -109,6 +79,35 @@ export default function EditUserPage({
 			setErrorActive(true);
 			return;
 		}
+
+		const addressRequest = address
+			.replaceAll(",", " ")
+			.replaceAll(" ", "+")
+			.replaceAll(".", "+");
+		let coords = user.location;
+		if (address !== originalAddress) {
+			const newCoords = await getNewUserGeo(addressRequest);
+			coords = { x: newCoords[0], y: newCoords[1] };
+		}
+
+		//separate offers and exchanges into skills array
+		const offersSplit = offers.split(",");
+		const exchangesSplit = exchanges.split(",");
+		const skillsArray = [
+			...offersSplit.map((offer) => ({
+				skill: purify(offer.trim()),
+				offer: true, // Indicate it as an offer
+			})),
+			...exchangesSplit.map((desire) => ({
+				skill: purify(desire.trim()),
+				offer: false, // Indicate it as a desire
+			})),
+		];
+		await removeSkills(user.user_id);
+		await addSkills(skillsArray, user.user_id);
+
+		// TODO : edit user with axios put to users below without response variable
+
 		try {
 			const response = await axios.put(
 				`${api}/users`,
@@ -131,25 +130,11 @@ export default function EditUserPage({
 				}
 			);
 
-			setNeighbors(null);
-			placeToken(response.data.token);
+			navigate("/");
+			// setNeighbors(null);
+			// placeToken(response.data.token);
 		} catch (error) {
 			setError("Error editing user, please try again.");
-			setErrorActive(true);
-		}
-	}
-
-	//TODO: reloacte remove skills function to utils folder
-	async function removeSkills(id) {
-		try {
-			const response = await axios.delete(`${api}/userskills/${id}`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
-			return response;
-		} catch (error) {
-			setError("Error removing barters, please try again.");
 			setErrorActive(true);
 		}
 	}
@@ -180,7 +165,7 @@ export default function EditUserPage({
 			console.log("user deleted");
 
 			//TODO: add removal of all userskills and messages from database
-
+			removeSkills(user.user_id);
 			setNeighbors([]);
 			setLoggedIn(false);
 			localStorage.removeItem("token");
