@@ -174,13 +174,14 @@ export default function NewUserPage({
 			});
 
 			await addSkills(skillsArray, userId);
+			const newUserToken = response.data.token;
 
 			//upload image to users api once userId is created if img is not null or "default"
+			// TODO : Send img in first request to users instead of second request
 			if (img !== null && img !== "default") {
-				await submitImage(userId);
+				await submitImage(userId, newUserToken);
 			}
 
-			const newUserToken = response.data.token;
 			setToken(newUserToken);
 			navigate("/");
 		} catch (err) {
@@ -193,13 +194,13 @@ export default function NewUserPage({
 
 	//upload image to users function
 	//TODO: move to utils file
-	const submitImage = async (userId) => {
+	const submitImage = async (userId, userToken) => {
 		let formData = new FormData();
 		formData.append("file", img.data);
 		formData.append("userId", userId);
 		const response = await axios.post(`${api}/users/image`, formData, {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				Authorization: `Bearer {"userToken":"${userToken}"}`,
 				"Content-Type": "multipart/form-data",
 			},
 		});
