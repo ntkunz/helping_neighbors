@@ -13,6 +13,7 @@ import fetchUser from "./utils/fetchUser";
 import fetchNeighbors from "./utils/fetchNeighbors";
 
 export default function App() {
+	const [isLoaded, setIsLoaded] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState({});
 	const [neighbors, setNeighbors] = useState([]);
@@ -35,6 +36,8 @@ export default function App() {
 		} else setToken(null);
 		// eslint-disable-next-line
 	}, [storageToken, token]);
+
+	if (!isLoaded) return null;
 
 	return (
 		<div className='App'>
