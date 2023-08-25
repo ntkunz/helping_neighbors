@@ -11,6 +11,8 @@ export default function Message({ user, neighbors }) {
 	const { id } = useParams();
 	const [receiver, setReceiver] = useState([]);
 	const [messages, setMessages] = useState([]);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [errorActive, setErrorActive] = useState(false);
 
 	useEffect(() => {
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
@@ -34,13 +36,14 @@ export default function Message({ user, neighbors }) {
 	// TODO : Add proper error handling
 	function sendMessage(e) {
 		e.preventDefault();
-		const message = document.querySelector(".message__input").value;
+		const message = e.target.message.value;
 
-		if (message === "") {
-			document.querySelector(".error").style.display = "inline-block";
+		if (message.trim() === "") {
+			setErrorMessage("Please enter a message");
+			setErrorActive(true);
 			return;
 		}
-		document.querySelector(".error").style.display = "none";
+		setErrorActive(false);
 
 		axios
 			.post(
@@ -58,10 +61,11 @@ export default function Message({ user, neighbors }) {
 				}
 			)
 			.then(() => {
-				document.querySelector(".message__input").value = "";
+				e.target.message.value = "";
 			})
 			.catch((error) => {
-				console.log("error sending new message");
+				setErrorMessage("Error sending message");
+				setErrorActive(true);
 			});
 	}
 
@@ -87,8 +91,8 @@ export default function Message({ user, neighbors }) {
 				setMessages(sortedMessages);
 			})
 			.catch((error) => {
-				// TODO : Add proper error handling
-				console.log("error retrieving messages");
+				setErrorMessage("Error getting messages");
+				setErrorActive(true);
 			});
 	}
 
@@ -121,7 +125,7 @@ export default function Message({ user, neighbors }) {
 							<button className='message__btn' type='submit'>
 								Send Message
 							</button>
-							<p className='error'>Message must not be blank</p>
+							{errorActive && <p className='message__error'>{errorMessage}</p>}
 						</form>
 					</div>
 

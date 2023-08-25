@@ -158,6 +158,14 @@
 		padding: 0.5rem;
 		border-radius: 0.25rem;
 	}
+
+	&__error {
+		background-color: $color-error;
+		color: $color-one;
+		margin: 0.25rem;
+		padding: 0.125rem 0.25rem;
+		border-radius: 0.25rem;
+	}
 }
 
 .semibold {
@@ -174,13 +182,4 @@
 	color: $color-five;
 	text-align: right;
 	align-self: flex-end;
-}
-
-.messageError {
-	background-color: $color-error;
-	color: $color-one;
-	display: none;
-	margin: 0.25rem;
-	padding: 0.125rem 0.25rem;
-	border-radius: 0.25rem;
 }

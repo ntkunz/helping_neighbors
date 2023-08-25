@@ -89,6 +89,8 @@ export default function EditUserPage({
 			coords = { x: newCoords[0], y: newCoords[1] };
 		}
 
+		// TODO : Compare if skills changed and if not, do not remove and add skills
+
 		//separate offers and exchanges into skills array
 		const offersSplit = offers.split(",");
 		const exchangesSplit = exchanges.split(",");
@@ -142,6 +144,7 @@ export default function EditUserPage({
 	function deleteUserValidate(e) {
 		e.preventDefault();
 		setError("Are you sure you don't want to barter anymore?");
+		// TODO : Change to use e.target rather than dom manipulation below
 		document.querySelector(".edit__password").style.display = "flex";
 		document.querySelector('input[name="password"]').focus();
 	}
@@ -299,7 +302,7 @@ export default function EditUserPage({
 					<button
 						onClick={(e) => {
 							e.preventDefault();
-							navigate("/neighbors");
+							navigate(-1);
 						}}
 						className='edit__btn'>
 						Cancel
@@ -307,6 +310,7 @@ export default function EditUserPage({
 					<span className='edit__btn' onClick={deleteUserValidate}>
 						Delete Account
 					</span>
+					{/* TODO : Add ui state for rendering rather than css */}
 					<div className='edit__password'>
 						<label className='edit__label'>
 							Enter your password to delete your account
