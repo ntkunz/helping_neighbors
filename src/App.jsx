@@ -29,11 +29,15 @@ export default function App() {
 				.then(() => fetchNeighbors())
 				.then((neighbors) => setNeighbors(neighbors))
 				.then(() => {
+					setIsLoaded(true);
 					setLoggedIn(true);
 					navigate("/");
 				})
 				.catch(() => localStorage.removeItem("token"));
-		} else setToken(null);
+		} else {
+			setToken(null);
+			setIsLoaded(true);
+		}
 		// eslint-disable-next-line
 	}, [storageToken, token]);
 
