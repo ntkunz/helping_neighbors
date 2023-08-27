@@ -1,4 +1,4 @@
-import Resizer from "path/to/Resizer"; // Import the Resizer library
+import Resizer from "react-image-file-resizer";
 
 export async function handleImageFileChange(
 	e,
