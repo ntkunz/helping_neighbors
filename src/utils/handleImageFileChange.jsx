@@ -1,6 +1,6 @@
 import Resizer from "react-image-file-resizer";
 
-export async function handleImageFileChange(
+export default async function handleImageFileChange(
 	e,
 	setImg,
 	setErrorMessage,
