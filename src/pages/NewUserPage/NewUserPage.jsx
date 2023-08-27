@@ -64,22 +64,12 @@ export default function NewUserPage({ setToken }) {
 			return;
 		}
 
-		// Image validation
+		// Image size validation
 		if (img !== null && img !== "default") {
 			if (img.size > 1000000) {
 				setImg(null);
 				document.getElementById("image-input").value = "";
 				setErrorMessage("Image too large, please add an image under 1MB");
-				setErrorActive(true);
-				setApiCalled(false);
-				return;
-			}
-
-			//return alert if not an image
-			if (!img.type.includes("image")) {
-				setImg(null);
-				document.getElementById("image-input").value = "";
-				setErrorMessage("Please add a valid image file");
 				setErrorActive(true);
 				setApiCalled(false);
 				return;
