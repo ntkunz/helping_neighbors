@@ -19,6 +19,7 @@ export default async function handleImageFileChange(
 
 	setErrorMessage("");
 	setErrorActive(false);
+	setApiCalled(false);
 
 	Resizer.imageFileResizer(
 		imageFile,
