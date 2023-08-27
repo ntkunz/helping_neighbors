@@ -8,7 +8,7 @@ export default async function submitImage(userId, userToken, imageFile) {
 	const response = await axios.post(`${api}/users/image`, formData, {
 		headers: {
 			Authorization: `Bearer {"userToken":"${userToken}"}`,
-			"Content-Type": "multipart/form-data",
+			// "Content-Type": "multipart/form-data",
 		},
 	});
 	return response;
