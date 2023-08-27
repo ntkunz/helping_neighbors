@@ -8,13 +8,10 @@ import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
 import validateEmail from "../../utils/validateEmail";
 import validatePassword from "../../utils/validatePassword";
+import submitImage from "../../utils/submitImage";
+import handleImageFileChange from "../../utils/handleImageFileChange";
 
-export default function NewUserPage({
-	setUser,
-	setLoggedIn,
-	setToken,
-	setNeighbors,
-}) {
+export default function NewUserPage({ setToken }) {
 	const navigate = useNavigate();
 	const api = process.env.REACT_APP_API_URL;
 	const [img, setImg] = useState(null);
@@ -35,9 +32,6 @@ export default function NewUserPage({
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
 		e.preventDefault();
-		// setUser({});
-		// setNeighbors({});
-
 		setErrorMessage("Creating new user, please be patient");
 		setErrorActive(false);
 		setApiCalled(true);
@@ -74,6 +68,7 @@ export default function NewUserPage({
 		if (img !== null && img !== "default") {
 			if (img.data.size > 1000000) {
 				setImg(null);
+				document.getElementById("image-input").value = "";
 				setErrorMessage("Image too large, please add an image under 1MB");
 				setErrorActive(true);
 				setApiCalled(false);
@@ -82,6 +77,8 @@ export default function NewUserPage({
 
 			//return alert if not an image
 			if (!img.data.type.includes("image")) {
+				setImg(null);
+				document.getElementById("image-input").value = "";
 				setErrorMessage("Please add a valid image file");
 				setErrorActive(true);
 				setApiCalled(false);
@@ -173,15 +170,13 @@ export default function NewUserPage({
 				province: province,
 			});
 
+			// TODO : Add skills in original request to server instead of second request
 			await addSkills(skillsArray, userId);
 			const newUserToken = response.data.token;
-
-			//upload image to users api once userId is created if img is not null or "default"
 			// TODO : Send img in first request to users instead of second request
 			if (img !== null && img !== "default") {
-				await submitImage(userId, newUserToken);
+				await submitImage(userId, newUserToken, img);
 			}
-
 			setToken(newUserToken);
 			navigate("/");
 		} catch (err) {
@@ -192,39 +187,14 @@ export default function NewUserPage({
 		}
 	}
 
-	//upload image to users function
-	//TODO: move to utils file
-	const submitImage = async (userId, userToken) => {
-		let formData = new FormData();
-		formData.append("file", img.data);
-		formData.append("userId", userId);
-		const response = await axios.post(`${api}/users/image`, formData, {
-			headers: {
-				Authorization: `Bearer {"userToken":"${userToken}"}`,
-				"Content-Type": "multipart/form-data",
-			},
-		});
-		return response;
-	};
-
-	//set image function with file input
-	//TODO: move to utils file
-	const handleFileChange = async (e) => {
-		if (e.target.files[0].size > 1000000) {
-			e.target.value = "";
-			setImg(null);
-			setErrorMessage("Image too large, please add an image under 1MB");
-			setErrorActive(true);
-			return;
-		}
-		if (!e.target.files[0].type.includes("image")) {
-			setImg(null);
-			return alert("Please add an image file");
-		}
-		const uploadedImage = {
-			data: e.target.files[0],
-		};
-		setImg(uploadedImage);
+	const handleImageChange = (e) => {
+		handleImageFileChange(
+			e,
+			setImg,
+			setErrorMessage,
+			setErrorActive,
+			setApiCalled
+		);
 	};
 
 	const removeImage = (e) => {
@@ -370,7 +340,7 @@ export default function NewUserPage({
 							type='file'
 							name='file'
 							id='image-input'
-							onChange={handleFileChange}></input>
+							onChange={handleImageChange}></input>
 						<p className='upload__desc'>File size limit: 1mb</p>
 						<button className='new__default-img-btn' onClick={removeImage}>
 							Use default image
