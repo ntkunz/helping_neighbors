@@ -66,7 +66,7 @@ export default function NewUserPage({ setToken }) {
 
 		// Image validation
 		if (img !== null && img !== "default") {
-			if (img.data.size > 1000000) {
+			if (img.size > 1000000) {
 				setImg(null);
 				document.getElementById("image-input").value = "";
 				setErrorMessage("Image too large, please add an image under 1MB");
@@ -76,7 +76,7 @@ export default function NewUserPage({ setToken }) {
 			}
 
 			//return alert if not an image
-			if (!img.data.type.includes("image")) {
+			if (!img.type.includes("image")) {
 				setImg(null);
 				document.getElementById("image-input").value = "";
 				setErrorMessage("Please add a valid image file");
