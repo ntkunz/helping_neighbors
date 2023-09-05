@@ -1,7 +1,7 @@
 import "./Neighbors.scss";
 import Neighbor from "../../Components/Neighbor/Neighbor";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import fetchNeighbors from "../../utils/fetchNeighbors";
 
 export default function Neighbors({
@@ -70,12 +70,7 @@ export default function Neighbors({
 
 			<div className='neighbors'>
 				{neighbors.map((neighbor) => (
-					<Link
-						className='neighbor__link'
-						key={neighbor.user_id}
-						to={`/${neighbor.user_id}`}>
-						<Neighbor key={neighbor.user_id} neighbor={neighbor} />
-					</Link>
+					<Neighbor key={neighbor.user_id} neighbor={neighbor} />
 				))}
 			</div>
 		</div>

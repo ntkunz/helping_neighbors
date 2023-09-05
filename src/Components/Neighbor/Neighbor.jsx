@@ -1,5 +1,6 @@
 import "./Neighbor.scss";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Neighbor({ neighbor }) {
 	const api = process.env.REACT_APP_API_URL;
@@ -56,14 +57,15 @@ export default function Neighbor({ neighbor }) {
 							)}
 						</div>
 					</div>
-
+					<Link className='neighbor__message-link' to={`/neighbor/${neighbor.user_id}`}>
+						Send a Message</Link>
 					<div className='neighbor__bio'>
 						<p className='neighbor__barter-title'>Offering</p>
 						<ul className='neighbor__barter-skills'>
 							{offering.length &&
 								offering.map((offer) => (
-									<li className='neighbor__barter-skill semibold' key={offer}>
-										-{offer}
+									<li className='neighbor__barter-skill' key={offer}>
+										{offer}
 									</li>
 								))}
 						</ul>
@@ -74,15 +76,15 @@ export default function Neighbor({ neighbor }) {
 						<ul className='neighbor__barter-skills'>
 							{exchange.length &&
 								exchange.map((want) => (
-									<li className='neighbor__barter-skill semibold' key={want}>
-										-{want}
+									<li className='neighbor__barter-skill' key={want}>
+										{want}
 									</li>
 								))}
 						</ul>
 					</div>
 
 					<div className='neighbor__bio'>
-						<p className='neighbor__barter-title semibold'>About</p>
+						<p className='neighbor__barter-title'>About</p>
 						<p className='neighbor__barter-skill'>{neighbor.about}</p>
 					</div>
 				</div>
