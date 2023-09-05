@@ -57,7 +57,7 @@ export default function Neighbor({ neighbor }) {
 							)}
 						</div>
 					</div>
-					<Link className='neighbor__message-link' to={`/neighbor/${neighbor.user_id}`}>
+					<Link className='neighbor__message-link' to={`/${neighbor.user_id}`}>
 						Send a Message</Link>
 					<div className='neighbor__bio'>
 						<p className='neighbor__barter-title'>Offering</p>
