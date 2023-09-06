@@ -57,7 +57,7 @@ export default function Neighbor({ neighbor }) {
 							)}
 						</div>
 					</div>
-					{location.pathname === `/neighbor/${neighbor.user_id}` ? (
+					{location.pathname === `/${neighbor.user_id}` ? (
 						null
 					) : (
 						<Link className='neighbor__message-link' to={`/${neighbor.user_id}`}>
