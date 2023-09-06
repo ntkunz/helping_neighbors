@@ -1,10 +1,10 @@
 import "./Neighbor.scss";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Neighbor({ neighbor }) {
 	const api = process.env.REACT_APP_API_URL;
-
+	const location = useLocation();
 	const [offering, setOffering] = useState([]);
 	const [exchange, setExchange] = useState([]);
 	const [strDate, setStrDate] = useState("");
@@ -57,8 +57,13 @@ export default function Neighbor({ neighbor }) {
 							)}
 						</div>
 					</div>
-					<Link className='neighbor__message-link' to={`/${neighbor.user_id}`}>
-						Send a Message</Link>
+					{location.pathname === `/neighbor/${neighbor.user_id}` ? (
+						null
+					) : (
+						<Link className='neighbor__message-link' to={`/${neighbor.user_id}`}>
+							Send a Message</Link>
+					)}
+
 					<div className='neighbor__bio'>
 						<p className='neighbor__barter-title'>Offering</p>
 						<ul className='neighbor__barter-skills'>
