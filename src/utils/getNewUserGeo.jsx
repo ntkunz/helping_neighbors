@@ -11,5 +11,6 @@ export default async function getNewUserGeo(addressRequest) {
 	} catch (error) {
 		// TODO: Add error handling
 		console.log("Error returning lat long from api");
+		return null;
 	}
 }

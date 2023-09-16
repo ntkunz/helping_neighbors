@@ -1,8 +1,8 @@
 import "./App.scss";
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import Header from "./component/Header/Header";
-import Footer from "./component/Footer/Footer";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NewUserPage from "./pages/NewUserPage/NewUserPage";
 import EditUserPage from "./pages/EditUserPage/EditUserPage";

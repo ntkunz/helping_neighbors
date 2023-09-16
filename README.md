@@ -1,13 +1,23 @@
-### Welcome to the Helping Neighbors frontend repository 👋
+Welcome to the Helping Neighbors Frontend Repository 👋
+🌐 View Live Beta Site: Helping Neighbors
 
-View live beta site - [Helping Neighbors](https://helping-neighbors.nicholaskunz.com) - :couple: :hammer: :dizzy:
+Screencast of Helping Neighbors Site
 
-![screencast of helping neighbors site](https://user-images.githubusercontent.com/33107555/233460679-af674c66-0b78-4ad7-a2e3-a20fb94c11af.gif)
+Why I'm Here:
+This repository houses my passion project, a journey into the intricate world of fullstack web development. 🚀
 
-When a user signs up they are preseneted all other users within a 1/2 kilometer of their address with the option to message them. More connected communities are safer and happier than isolated ones and working together can help create a sense of purpose. I think that helping people to connect in the real world may be one of the healthiest uses of technology at this point.
+What's Cooking:
+Currently, I'm in the midst of a comprehensive rewrite, overhauling both the frontend and backend. My goal? To master the latest techniques, with a special focus on Next.js, robust testing, flexible authentication, and harnessing the true potential of relational databases. 🛠️
 
-The site is functional and you are safe to create an account and have a look around (you may also delete your account in the edit profile section). There are many things I'd like to implement before calling it complete including adding 2-factor authentication, password reset, more user customization, a 'new message' alert, and plenty of ui updates. I also have some re-factoring to do for performance and clarity as this is a work in progress. If there is anything that you'd like to off up as a suggestion for improving the site it would be well received.
+Building Connected Communities:
+One of the project's highlights is a feature that connects users living within a half-kilometer radius of each other. This enables them to easily communicate and collaborate, fostering safer and happier communities. I believe that facilitating real-world connections is one of technology's most constructive roles. 🌍
 
-The repository for the Node/Express server is [here](https://github.com/ntkunz/hn_db).
+Explore and Contribute:
+Feel free to explore the live site and create an account (you can also delete your account in the profile settings). I'm continually working to enhance the user experience. Upcoming additions include 2-factor authentication, password reset, increased user customization, new message alerts, and various UI improvements. I'm also dedicated to refactoring for better performance and code clarity, as this project evolves. Your suggestions for site enhancements are always welcome. 🌟
 
-:incoming_envelope: mrnicholaskunz@gmail.com
+A Solo Journey:
+I'm the sole contributor to this project, and though I'm improving at keeping commits tidy, flying solo can sometimes lead to messy code. Your understanding and patience are greatly appreciated. 😅
+
+📬 Contact: 
+email: mrnicholaskunz@gmail.com
+https://www.linkedin.com/in/nich-kunz/

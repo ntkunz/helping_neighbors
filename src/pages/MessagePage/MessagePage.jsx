@@ -2,7 +2,7 @@ import "./MessagePage.scss";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Neighbor from "../../component/Neighbor/Neighbor";
+import Neighbor from "../../components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
 

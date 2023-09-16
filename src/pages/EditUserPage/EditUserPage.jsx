@@ -28,7 +28,7 @@ export default function EditUserPage({
 	const [exchanges, setExchanges] = useState("");
 	const [password, setPassword] = useState("");
 
-	const [error, setError] = useState("");
+	const [errorMessage, setErrorMessage] = useState("");
 	const [errorActive, setErrorActive] = useState(false);
 
 	useEffect(() => {
@@ -74,7 +74,7 @@ export default function EditUserPage({
 			city === "" ||
 			province === ""
 		) {
-			setError("Oops, you missed a field, please fill out all fields.");
+			setErrorMessage("Oops, you missed a field, please fill out all fields.");
 			setErrorActive(true);
 			return;
 		}
@@ -86,6 +86,14 @@ export default function EditUserPage({
 		let coords = user.location;
 		if (address !== originalAddress) {
 			const newCoords = await getNewUserGeo(addressRequest);
+
+			if (newCoords === null) {
+				// Handle the case where coordinates could not be obtained
+				setErrorMessage("Error getting user coordinates");
+				setErrorActive(true);
+				return; // Break out of the function
+			}
+
 			coords = { x: newCoords[0], y: newCoords[1] };
 		}
 
@@ -135,7 +143,7 @@ export default function EditUserPage({
 			// setNeighbors(null);
 			// placeToken(response.data.token);
 		} catch (error) {
-			setError("Error editing user, please try again.");
+			setErrorMessage("Error editing user, please try again.");
 			setErrorActive(true);
 		}
 	}
@@ -143,7 +151,7 @@ export default function EditUserPage({
 	//function to reveal password input field to confirm account deletion
 	function deleteUserValidate(e) {
 		e.preventDefault();
-		setError("Are you sure you don't want to barter anymore?");
+		setErrorMessage("Are you sure you don't want to barter anymore?");
 		// TODO : Change to use e.target rather than dom manipulation below
 		document.querySelector(".edit__password").style.display = "flex";
 		document.querySelector('input[name="password"]').focus();
@@ -174,7 +182,7 @@ export default function EditUserPage({
 			setUser({});
 			return;
 		} catch (error) {
-			setError("Error deleting user, please try again");
+			setErrorMessage("Error deleting user, please try again");
 			setErrorActive(true);
 		}
 	}
@@ -297,7 +305,7 @@ export default function EditUserPage({
 						One or two words for each thing you'd like to barter for, separated
 						by commas
 					</p>
-					{errorActive && <p className='edit__form-error'>{error}</p>}
+					{errorActive && <p className='edit__form-error'>{errorMessage}</p>}
 					<button className='edit__btn'>Edit Your Profile</button>
 					<button
 						onClick={(e) => {

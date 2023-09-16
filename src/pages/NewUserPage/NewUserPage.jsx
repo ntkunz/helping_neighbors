@@ -103,6 +103,14 @@ export default function NewUserPage({ setToken }) {
 			.replaceAll(".", "+");
 		const coords = await getNewUserGeo(addressRequest); // wait for the coordinates
 		//TODO : create break and return if unable to get new user geo
+		if (coords === null) {
+			// Handle the case where coordinates could not be obtained
+			setErrorMessage("Error getting user coordinates");
+			setErrorActive(true);
+			setApiCalled(false);
+			return; // Break out of the function
+		}
+
 		const status = "active";
 		const about = purify(e.target.about.value);
 
