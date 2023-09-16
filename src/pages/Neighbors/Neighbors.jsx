@@ -1,5 +1,5 @@
 import "./Neighbors.scss";
-import Neighbor from "../../Components/Neighbor/Neighbor";
+import Neighbor from "../../component/Neighbor/Neighbor";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import fetchNeighbors from "../../utils/fetchNeighbors";
