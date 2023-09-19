@@ -73,7 +73,7 @@ export default function Neighbors({
 
 			<div className='neighbors'>
 				{neighbors.map((neighbor) => (
-					<Neighbor key={neighbor.user_id} neighbor={neighbor} />
+					<Neighbor key={neighbor.user_id} neighbor={neighbor} loggedInUser={user.user_id} />
 				))}
 			</div>
 		</div>
