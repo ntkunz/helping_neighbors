@@ -67,8 +67,7 @@ export default function Neighbors({
 	return (
 		<div className='neighbors__container'>
 			<h1 className='neighbors__title'>
-				Welcome {user.first_name}, click a neighbor's card to message them and
-				arrange a barter
+				Welcome {user.first_name}, message a neighbor to arrange a barter
 			</h1>
 
 			<div className='neighbors'>

@@ -306,18 +306,21 @@ export default function EditUserPage({
 						by commas
 					</p>
 					{errorActive && <p className='edit__form-error'>{errorMessage}</p>}
-					<button className='edit__btn'>Edit Your Profile</button>
-					<button
-						onClick={(e) => {
-							e.preventDefault();
-							navigate(-1);
-						}}
-						className='edit__btn'>
-						Cancel
-					</button>
-					<span className='edit__btn' onClick={deleteUserValidate}>
-						Delete Account
-					</span>
+
+					<div className="edit__btn-container">
+						<button className='edit__btn'>Edit Your Profile</button>
+						<button
+							onClick={(e) => {
+								e.preventDefault();
+								navigate(-1);
+							}}
+							className='edit__btn'>
+							Cancel
+						</button>
+						<span className='edit__btn' onClick={deleteUserValidate}>
+							Delete Account
+						</span>
+					</div>
 					{/* TODO : Add ui state for rendering rather than css */}
 					<div className='edit__password'>
 						<label className='edit__label'>

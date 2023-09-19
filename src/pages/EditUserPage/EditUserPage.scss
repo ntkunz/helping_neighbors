@@ -109,10 +109,23 @@
 		}
 	}
 
+	&__btn-container {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		gap: 0.25rem;
+
+		@include tablet {
+			flex-direction: row;
+			gap: 1rem; 
+		}
+	}
+
 	&__btn {
 		@include labelLarge;
 		align-self: center;
 		text-decoration: none;
+		text-align: center;
 		color: $color-six;
 		font-weight: 600;
 		border: 1px solid $color-five;
@@ -121,7 +134,8 @@
 		margin: 0.5rem 0 0;
 		background-color: $color-two-light;
 		transition: all 0.125s ease-out;
-
+		flex-grow: 1;
+		
 		&:hover {
 			background-color: $color-five;
 			color: $color-one;
