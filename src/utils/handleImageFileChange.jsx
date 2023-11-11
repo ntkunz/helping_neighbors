@@ -55,9 +55,8 @@ export default async function handleImageFileChange(
 
 			function generateUniqueFileName(originalName) {
 				const timestamp = new Date().getTime();
-				const extension = originalName.split('.').pop();
-				const uniqueFileName = `${originalName}-${timestamp}.${extension}`;
-				return uniqueFileName;
+				const [fileNames, extension] = originalName.split('.').slice(0, -1);
+				return `${fileNames.join('.')}-${timestamp}.${extension}`;
 			}
 
 			if (resizedFile.size > 1000000) {
