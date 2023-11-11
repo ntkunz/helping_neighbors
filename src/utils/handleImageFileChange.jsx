@@ -48,10 +48,17 @@ export default async function handleImageFileChange(
 			const blob = new Blob([ab], { type: mimeString });
 
 			// Create a File object from the Blob
-			const resizedFile = new File([blob], imageFile.name, {
+			const resizedFile = new File([blob], generateUniqueFileName(imageFile.name), {
 				type: imageFile.type,
 				lastModified: imageFile.lastModified,
 			});
+
+			function generateUniqueFileName(originalName) {
+				const timestamp = new Date().getTime();
+				const extension = originalName.split('.').pop();
+				const uniqueFileName = `${originalName}-${timestamp}.${extension}`;
+				return uniqueFileName;
+			}
 
 			if (resizedFile.size > 1000000) {
 				setImg(null);
