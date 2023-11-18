@@ -1,5 +1,7 @@
 Welcome to the Helping Neighbors Frontend Repository 👋
-🌐 View Live Beta Site: Helping Neighbors
+🌐 View Live Beta Site: [Helping Neighbors](https://helping-neighbors.nicholaskunz.com/)
+
+[See Backend Repo Here](https://github.com/ntkunz/hn_db)
 
 Screencast of Helping Neighbors Site
 
@@ -7,7 +9,7 @@ Why I'm Here:
 This repository houses my passion project, a journey into the intricate world of fullstack web development. 🚀
 
 What's Cooking:
-Currently, I'm in the midst of a comprehensive rewrite, overhauling both the frontend and backend. My goal? To master the latest techniques, with a special focus on Next.js, robust testing, flexible authentication, and harnessing the true potential of relational databases. 🛠️
+Currently, I'm working on a comprehensive rewrite, overhauling both the frontend and backend. My goal is to update to a more lightweight deployment of React, simplifying and clarifying the project 🛠️
 
 Building Connected Communities:
 One of the project's highlights is a feature that connects users living within a half-kilometer radius of each other. This enables them to easily communicate and collaborate, fostering safer and happier communities. I believe that facilitating real-world connections is one of technology's most constructive roles. 🌍
