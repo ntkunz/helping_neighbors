@@ -1,10 +1,10 @@
 import "./LoginPage.scss";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
-import validateEmail from "../../utils/validateEmail";
-import validatePassword from "../../utils/validatePassword";
+// import validateEmail from "../../utils/validateEmail";
+// import validatePassword from "../../utils/validatePassword";
 import placeToken from "../../utils/placeToken";
 
 // TODO : Refactor to use formik and yup
@@ -12,6 +12,22 @@ export default function LoginPage({ setToken }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const api = process.env.REACT_APP_API_URL;
+
+	// ============= jan 24 new =========================
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+
+	const isEmailValid = useMemo(() => validateEmail(email), [email]);
+
+	function validateEmail(email) {
+		return email.length >= 3 && email.includes('@') && email.includes('.');
+	}
+
+	const isPasswordEightCharacters = useMemo(() => password.length >= 8, [password]);
+	const doesPasswordHaveOneNumber = useMemo(() => /\d/.test(password), [password]);
+	const doesPasswordHaveOneSpecialCharacter = useMemo(() => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password), [password]);
+	const doesPasswordHaveOneUppercase = useMemo(() => /[A-Z]+/.test(password), [password]);
+	const doesPasswordHaveOneLowercase = useMemo(() => /[a-z]+/.test(password), [password]);
 
 	//wakeup server on page load
 	useEffect(() => {
@@ -22,19 +38,14 @@ export default function LoginPage({ setToken }) {
 	async function handleLogin(loginForm) {
 		loginForm.preventDefault();
 
-		const email = purify(loginForm.target.email.value.toLowerCase());
-		if (validateEmail(email)) {
-			setErrorMessage("Invalid email");
-			setErrorActive(true);
+		if (!isEmailValid || !isPasswordEightCharacters || !doesPasswordHaveOneNumber || !doesPasswordHaveOneSpecialCharacter || !doesPasswordHaveOneUppercase || !doesPasswordHaveOneLowercase) {
 			return;
 		}
 
+
+		const email = purify(loginForm.target.email.value.toLowerCase());
+
 		const password = purify(loginForm.target.password.value);
-		if (validatePassword(password)) {
-			setErrorMessage("Invalid password");
-			setErrorActive(true);
-			return;
-		}
 
 		setErrorActive(false);
 
@@ -104,8 +115,10 @@ export default function LoginPage({ setToken }) {
 								className='login-form__input'
 								name='email'
 								placeholder='your email@something.com'
-								required
+								onChange={(changeEmail) => { setEmail(changeEmail.target.value) }}
+								value={email}
 							/>
+							<p className={`login-form__valid-label ${!isEmailValid ? 'login-form__valid-label--active' : ''}`}>Valid Email</p>
 							{errorActive && <p className='login-error'>{errorMessage}</p>}
 							<p className='login-form__label'>Password</p>
 							<input
@@ -113,10 +126,28 @@ export default function LoginPage({ setToken }) {
 								autoComplete='current-password'
 								className='login-form__input'
 								name='password'
+								onChange={(changePassword) => { setPassword(changePassword.target.value) }}
+								value={password}
 							/>
+							<p className={`login-form__valid-label ${!isPasswordEightCharacters ? 'login-form__valid-label--active' : ''}`}>At least 8 characters</p>
+							<p className={`login-form__valid-label ${!doesPasswordHaveOneNumber ? 'login-form__valid-label--active' : ''}`}>At least one number</p>
+							<p className={`login-form__valid-label ${!doesPasswordHaveOneSpecialCharacter ? 'login-form__valid-label--active' : ''}`}>At least one special character</p>
+							<p className={`login-form__valid-label ${!doesPasswordHaveOneUppercase ? 'login-form__valid-label--active' : ''}`}>At least one uppercase letter</p>
+							<p className={`login-form__valid-label ${!doesPasswordHaveOneLowercase ? 'login-form__valid-label--active' : ''}`}>At least one lowercase letter</p>
+
 						</div>
 						<div className='login-form__box'>
-							<button className='login-form__btn'>Sign In</button>
+							<button
+								type='submit'
+								className='login-form__btn'
+								disabled={!isEmailValid ||
+									!doesPasswordHaveOneLowercase ||
+									!doesPasswordHaveOneUppercase ||
+									!doesPasswordHaveOneSpecialCharacter ||
+									!doesPasswordHaveOneNumber ||
+									!isPasswordEightCharacters
+								}
+							>Sign In</button>
 							<Link className='login-form__btn signup' to='/signup'>
 								Sign Up
 							</Link>
