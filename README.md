@@ -6,13 +6,13 @@ Welcome to the Helping Neighbors Frontend Repository 👋
 Screencast of Helping Neighbors Site
 
 Why I'm Here:
-This repository houses my passion project, a journey into the intricate world of fullstack web development. 🚀
+This repository houses my capstone project, and my journey into the intricate world of fullstack web development.
 
 What's Cooking:
 Currently, I'm working on a comprehensive rewrite, overhauling both the frontend and backend. My goal is to update to a more lightweight deployment of React, simplifying and clarifying the project 🛠️
 
 Building Connected Communities:
-One of the project's highlights is a feature that connects users living within a half-kilometer radius of each other. This enables them to easily communicate and collaborate, fostering safer and happier communities. I believe that facilitating real-world connections is one of technology's most constructive roles. 🌍
+One of the project's highlights is a feature that connects users living within a half-kilometer radius of each other. This is done through utilizing MySQL's geospatial querying features. This enables them to easily communicate and collaborate, fostering safer and happier communities. I believe that facilitating real-world connections is one of technology's most constructive roles. 🌍
 
 Explore and Contribute:
 Feel free to explore the live site and create an account (you can also delete your account in the profile settings). I'm continually working to enhance the user experience. Upcoming additions include 2-factor authentication, password reset, increased user customization, new message alerts, and various UI improvements. I'm also dedicated to refactoring for better performance and code clarity, as this project evolves. Your suggestions for site enhancements are always welcome. 🌟
