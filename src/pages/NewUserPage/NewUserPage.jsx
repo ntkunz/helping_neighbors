@@ -1,7 +1,7 @@
 import "./NewUserPage.scss";
 import { v4 } from "uuid";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
@@ -19,6 +19,24 @@ export default function NewUserPage({ setToken }) {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [apiCalled, setApiCalled] = useState(false);
 
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordConfirm, setPasswordConfirm] = useState("");
+
+	const isEmailValid = useMemo(() => validateEmail(email), [email]);
+
+	function validateEmail(email) {
+		return email.length >= 3 && email.includes('@') && email.includes('.');
+	}
+
+	const isPasswordEightCharacters = useMemo(() => password.length >= 8, [password]);
+	const doesPasswordHaveOneNumber = useMemo(() => /\d/.test(password), [password]);
+	const doesPasswordHaveOneSpecialCharacter = useMemo(() => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password), [password]);
+	const doesPasswordHaveOneUppercase = useMemo(() => /[A-Z]+/.test(password), [password]);
+	const doesPasswordHaveOneLowercase = useMemo(() => /[a-z]+/.test(password), [password]);
+	const doPasswordsMatch = useMemo(() => passwordConfirm === password, [passwordConfirm, password]);
+
+
 	function capFirst(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
@@ -32,6 +50,13 @@ export default function NewUserPage({ setToken }) {
 	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
 		e.preventDefault();
+
+		if (!isEmailValid || !isPasswordEightCharacters || !doesPasswordHaveOneNumber || !doesPasswordHaveOneSpecialCharacter || !doesPasswordHaveOneUppercase || !doesPasswordHaveOneLowercase) {
+			setErrorMessage("Please make sure all fields are filled out")
+			setErrorActive(true);
+			return;
+		}
+
 		setErrorMessage("Creating new user, please be patient");
 		setErrorActive(false);
 		setApiCalled(true);
@@ -239,14 +264,20 @@ export default function NewUserPage({ setToken }) {
 							className='new__input'
 							name='email'
 							placeholder='your email@something.com'
+							onChange={(e) => setEmail(e.target.value)}
+							value={email}
 						/>
+
 					</label>
+					<p className={`new__valid-label ${!isEmailValid ? 'new__valid-label--active' : ''}`}>Valid Email</p>
 					<p className='new__requirement'>
 						Password must be at least 8 characters, contain at least one
 						uppercase letter, one lowercase letter, one number and one special
 						character. Temporarily no way to reset password, so please remember
 						it.
 					</p>
+
+
 					<label className='new__label'>
 						Password
 						<input
@@ -255,8 +286,16 @@ export default function NewUserPage({ setToken }) {
 							className='new__input'
 							name='password'
 							placeholder='Password'
+							onChange={(e) => setPassword(e.target.value)}
+							value={password}
 						/>
 					</label>
+
+					<p className={`new__valid-label ${!isPasswordEightCharacters ? 'new__valid-label--active' : ''}`}>At least 8 characters</p>
+					<p className={`new__valid-label ${!doesPasswordHaveOneNumber ? 'new__valid-label--active' : ''}`}>At least one number</p>
+					<p className={`new__valid-label ${!doesPasswordHaveOneSpecialCharacter ? 'new__valid-label--active' : ''}`}>At least one special character</p>
+					<p className={`new__valid-label ${!doesPasswordHaveOneUppercase ? 'new__valid-label--active' : ''}`}>At least one uppercase letter</p>
+					<p className={`new__valid-label ${!doesPasswordHaveOneLowercase ? 'new__valid-label--active' : ''}`}>At least one lowercase letter</p>
 					<label className='new__label'>
 						Confirm
 						<input
@@ -265,8 +304,11 @@ export default function NewUserPage({ setToken }) {
 							className='new__input'
 							name='password_confirm'
 							placeholder='Password again'
+							onChange={(e) => setPasswordConfirm(e.target.value)}
+							value={passwordConfirm}
 						/>
 					</label>
+					<p className={`new__valid-label ${!doPasswordsMatch ? 'new__valid-label--active' : ''}`}>Passwords match</p>
 					<label className='new__label'>
 						Home Address
 						<input

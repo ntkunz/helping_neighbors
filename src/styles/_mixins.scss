@@ -87,6 +87,14 @@
 	margin: 0;
 }
 
+@mixin validLabel {
+	@include label;
+	padding: 0.25rem;
+	background-color: $color-success;
+	margin-bottom: .5rem;
+	border-radius: 0.25rem;
+}
+
 @mixin tablet {
 	@media (min-width: $tablet-breakpoint) {
 		@content;
