@@ -6,9 +6,17 @@ import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
-import validatePassword from "../../utils/validatePassword";
+// import validatePassword from "../../utils/validatePassword";
 import submitImage from "../../utils/submitImage";
 import validateEmail from "../../utils/validateEmail";
+import {
+	passwordLength,
+	passwordContainsUppercase,
+	passwordContainsLowercase,
+	passwordContainsNumber,
+	passwordContainsSpecialCharacter,
+	passwordsMatch
+} from "../../utils/validatePassword";
 import handleImageFileChange from "../../utils/handleImageFileChange";
 
 export default function NewUserPage({ setToken }) {
@@ -23,19 +31,14 @@ export default function NewUserPage({ setToken }) {
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 
+	// Form validatoin for email and password
 	const isEmailValid = useMemo(() => validateEmail(email), [email]);
-
-	// function validateEmail(email) {
-	// 	return email.length >= 3 && email.includes('@') && email.includes('.');
-	// }
-
-	const isPasswordEightCharacters = useMemo(() => password.length >= 8, [password]);
-	const doesPasswordHaveOneNumber = useMemo(() => /\d/.test(password), [password]);
-	const doesPasswordHaveOneSpecialCharacter = useMemo(() => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password), [password]);
-	const doesPasswordHaveOneUppercase = useMemo(() => /[A-Z]+/.test(password), [password]);
-	const doesPasswordHaveOneLowercase = useMemo(() => /[a-z]+/.test(password), [password]);
-	const doPasswordsMatch = useMemo(() => passwordConfirm === password, [passwordConfirm, password]);
-
+	const isPasswordEightCharacters = useMemo(() => passwordLength(password), [password]);
+	const doesPasswordHaveOneNumber = useMemo(() => passwordContainsNumber(password), [password]);
+	const doesPasswordHaveOneSpecialCharacter = useMemo(() => passwordContainsSpecialCharacter(password), [password]);
+	const doesPasswordHaveOneUppercase = useMemo(() => passwordContainsUppercase(password), [password]);
+	const doesPasswordHaveOneLowercase = useMemo(() => passwordContainsLowercase(password), [password]);
+	const doPasswordsMatch = useMemo(() => passwordsMatch(password, passwordConfirm), [passwordConfirm, password]);
 
 	function capFirst(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
@@ -70,15 +73,6 @@ export default function NewUserPage({ setToken }) {
 
 		const password = purify(e.target.password.value);
 		const passwordConfirm = purify(e.target.password_confirm.value);
-
-		if (validatePassword(password)) {
-			setErrorMessage(
-				"Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, and one number"
-			);
-			setErrorActive(true);
-			setApiCalled(false);
-			return;
-		}
 
 		if (password !== passwordConfirm) {
 			setErrorMessage("Passwords do not match");
@@ -379,7 +373,15 @@ export default function NewUserPage({ setToken }) {
 					</label>
 					{errorActive && <p className='new__error'>{errorMessage}</p>}
 					{apiCalled && <p className='new__in-progress'>{errorMessage}</p>}
-					<button className='new__btn'>Start Meeting Your Neighbors</button>
+					<button className='new__btn'
+						disabled={!isEmailValid ||
+							!doesPasswordHaveOneLowercase ||
+							!doesPasswordHaveOneUppercase ||
+							!doesPasswordHaveOneSpecialCharacter ||
+							!doesPasswordHaveOneNumber ||
+							!isPasswordEightCharacters ||
+							!doPasswordsMatch
+						}>Start Meeting Your Neighbors</button>
 				</div>
 			</form>
 		</div>

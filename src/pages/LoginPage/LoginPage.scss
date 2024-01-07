@@ -130,6 +130,11 @@
 				border-color: $color-two-light;
 				cursor: pointer;
 			}
+
+			&:disabled {
+				opacity: 0.5;
+				pointer-events: none;
+			}
 		}
 
 		&__valid-label {

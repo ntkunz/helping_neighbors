@@ -4,7 +4,8 @@ import {
    passwordContainsUppercase,
    passwordContainsLowercase,
    passwordContainsNumber,
-   passwordContainsSpecialCharacter
+   passwordContainsSpecialCharacter,
+   passwordsMatch
 } from "../../utils/validatePassword";
 
 // Test case 1: Valid email
@@ -112,3 +113,18 @@ test('Password does not contain special character should return false', () => {
    expect(isValid).toBe(false);
 });
 
+// Test case 16: Passwords do not match
+test('Passwords do not match should return false', () => {
+   const password = 'ValidPassword@123';
+   const confirmPassword = 'DifferentPassword@123';
+   const isValid = password === confirmPassword;
+   expect(isValid).toBe(false);
+});
+
+// Test case 17: Passwords match
+test('Passwords match should return true', () => {
+   const password = 'ValidPassword@123';
+   const confirmPassword = 'ValidPassword@123';
+   const isValid = password === confirmPassword;
+   expect(isValid).toBe(true);
+})

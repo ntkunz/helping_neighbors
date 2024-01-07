@@ -5,6 +5,13 @@ import purify from "../../utils/purify";
 import axios from "axios";
 import placeToken from "../../utils/placeToken";
 import validateEmail from "../../utils/validateEmail";
+import {
+	passwordLength,
+	passwordContainsUppercase,
+	passwordContainsLowercase,
+	passwordContainsNumber,
+	passwordContainsSpecialCharacter
+} from "../../utils/validatePassword";
 
 // TODO: Create tested loginFormValidation function
 export default function LoginPage({ setToken }) {
@@ -17,11 +24,18 @@ export default function LoginPage({ setToken }) {
 
 	const isEmailValid = useMemo(() => validateEmail(email), [email]);
 
-	const isPasswordEightCharacters = useMemo(() => password.length >= 8, [password]);
-	const doesPasswordHaveOneNumber = useMemo(() => /\d/.test(password), [password]);
-	const doesPasswordHaveOneSpecialCharacter = useMemo(() => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password), [password]);
-	const doesPasswordHaveOneUppercase = useMemo(() => /[A-Z]+/.test(password), [password]);
-	const doesPasswordHaveOneLowercase = useMemo(() => /[a-z]+/.test(password), [password]);
+	const isPasswordEightCharacters = useMemo(() => passwordLength(password), [password]);
+	const doesPasswordHaveOneNumber = useMemo(() => passwordContainsNumber(password), [password]);
+	const doesPasswordHaveOneSpecialCharacter = useMemo(() => passwordContainsSpecialCharacter(password), [password]);
+	const doesPasswordHaveOneUppercase = useMemo(() => passwordContainsUppercase(password), [password]);
+	const doesPasswordHaveOneLowercase = useMemo(() => passwordContainsLowercase(password), [password]);
+
+
+	// const isPasswordEightCharacters = useMemo(() => password.length >= 8, [password]);
+	// const doesPasswordHaveOneNumber = useMemo(() => /\d/.test(password), [password]);
+	// const doesPasswordHaveOneSpecialCharacter = useMemo(() => /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/.test(password), [password]);
+	// const doesPasswordHaveOneUppercase = useMemo(() => /[A-Z]+/.test(password), [password]);
+	// const doesPasswordHaveOneLowercase = useMemo(() => /[a-z]+/.test(password), [password]);
 
 	//wakeup server on page load
 	useEffect(() => {
