@@ -15,7 +15,7 @@ Building Connected Communities:
 One of the project's highlights is a feature that connects users living within a half-kilometer radius of each other. This is done through utilizing MySQL's geospatial querying features. This enables them to easily communicate and collaborate, fostering safer and happier communities. I believe that facilitating real-world connections is one of technology's most constructive roles. 🌍
 
 Explore and Contribute:
-Feel free to explore the live site and create an account (you can also delete your account in the profile settings). I'm continually working to enhance the user experience. Upcoming additions include 2-factor authentication, password reset, increased user customization, new message alerts, and various UI improvements. I'm also dedicated to refactoring for better performance and code clarity, as this project evolves. Your suggestions for site enhancements are always welcome. 🌟
+Feel free to explore the live site and create an account (you can also delete your account in the profile settings). I'm continually working to enhance the user experience. Upcoming additions include 2-factor authentication, password reset, increased user customization, new message alerts, and various UI improvements. I'm also dedicated to refactoring for better code clarity, as this project evolves. Your suggestions for site enhancements are always welcome. 🌟
 
 A Solo Journey:
 I'm the sole contributor to this project, and though I'm improving at keeping commits tidy, flying solo can sometimes lead to messy code. Your understanding and patience are greatly appreciated. 😅
