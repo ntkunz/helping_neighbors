@@ -67,9 +67,7 @@ export default function App() {
 								/>
 							) : (
 								<LoginPage
-									setUser={setUser}
 									setToken={setToken}
-									setLoggedIn={setLoggedIn}
 								/>
 							)
 						}
@@ -79,9 +77,6 @@ export default function App() {
 							path='/signup'
 							element={
 								<NewUserPage
-									setUser={setUser}
-									setLoggedIn={setLoggedIn}
-									setNeighbors={setNeighbors}
 									setToken={setToken}
 								/>
 							}
@@ -101,8 +96,6 @@ export default function App() {
 									user={user}
 									setNeighbors={setNeighbors}
 									setUser={setUser}
-									token={token}
-									setToken={setToken}
 									setLoggedIn={setLoggedIn}
 								/>
 							}
