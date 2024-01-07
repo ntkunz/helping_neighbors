@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
-// import validateEmail from "../../utils/validateEmail";
 import validatePassword from "../../utils/validatePassword";
 import submitImage from "../../utils/submitImage";
 import handleImageFileChange from "../../utils/handleImageFileChange";
@@ -47,7 +46,6 @@ export default function NewUserPage({ setToken }) {
 		//eslint-disable-next-line
 	}, []);
 
-	//create new user on form submit and redirect to user page
 	async function createNewUser(e) {
 		e.preventDefault();
 
@@ -81,7 +79,6 @@ export default function NewUserPage({ setToken }) {
 			return;
 		}
 
-		// Throw error if passwords do not match
 		if (password !== passwordConfirm) {
 			setErrorMessage("Passwords do not match");
 			setErrorActive(true);
@@ -133,7 +130,7 @@ export default function NewUserPage({ setToken }) {
 			setErrorMessage("Error getting user coordinates");
 			setErrorActive(true);
 			setApiCalled(false);
-			return; // Break out of the function
+			return;
 		}
 
 		const status = "active";
@@ -147,11 +144,11 @@ export default function NewUserPage({ setToken }) {
 		//create skills array from offers and exchanges
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
-				skill: offer.trim(),
+				skill: offer,
 				offer: true, // Indicate it as an offer
 			})),
 			...exchangesSplit.map((desire) => ({
-				skill: desire.trim(),
+				skill: desire,
 				offer: false, // Indicate it as a desire
 			})),
 		];
@@ -193,10 +190,10 @@ export default function NewUserPage({ setToken }) {
 				province: province,
 			});
 
-			// TODO : Add skills in original request to server instead of second request
+			// TODO: Add skills in original request to server instead of second request
 			await addSkills(skillsArray, userId);
 			const newUserToken = response.data.token;
-			// TODO : Send img in first request to users instead of second request
+			// TODO: Send img in first request to users instead of second request
 			if (img !== null && img !== "default") {
 				await submitImage(userId, newUserToken, img);
 			}

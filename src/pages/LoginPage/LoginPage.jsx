@@ -3,17 +3,14 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
-// import validateEmail from "../../utils/validateEmail";
-// import validatePassword from "../../utils/validatePassword";
 import placeToken from "../../utils/placeToken";
 
-// TODO : Refactor to use formik and yup
+// TODO: Create tested loginFormValidation function
 export default function LoginPage({ setToken }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const api = process.env.REACT_APP_API_URL;
 
-	// ============= jan 24 new =========================
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -41,7 +38,6 @@ export default function LoginPage({ setToken }) {
 		if (!isEmailValid || !isPasswordEightCharacters || !doesPasswordHaveOneNumber || !doesPasswordHaveOneSpecialCharacter || !doesPasswordHaveOneUppercase || !doesPasswordHaveOneLowercase) {
 			return;
 		}
-
 
 		const email = purify(loginForm.target.email.value.toLowerCase());
 

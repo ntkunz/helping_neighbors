@@ -1,6 +1,6 @@
 @use "./variables" as *;
 
-// TODO : Add media querie font changes to this file
+// TODO : Add media queriis for font changes to this file
 
 @mixin tablet {
 	@media (min-width: $tablet-breakpoint) {
@@ -14,7 +14,7 @@
 	}
 }
 
-/*font styles - mixins*/
+/*font mixins*/
 @mixin pageHeader {
 	font-size: 2rem;
 	line-height: 2.5rem;

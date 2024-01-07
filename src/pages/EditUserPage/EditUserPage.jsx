@@ -54,7 +54,6 @@ export default function EditUserPage({
 	//TODO: add ability to change status to active or inactive
 	//TODO: add ability to block neighbor(s)
 
-	// ====== Edit User Function =======
 	async function editUser(e) {
 		e.preventDefault();
 		setErrorActive(false);
@@ -91,7 +90,7 @@ export default function EditUserPage({
 				// Handle the case where coordinates could not be obtained
 				setErrorMessage("Error getting user coordinates");
 				setErrorActive(true);
-				return; // Break out of the function
+				return;
 			}
 
 			coords = { x: newCoords[0], y: newCoords[1] };
@@ -104,18 +103,16 @@ export default function EditUserPage({
 		const exchangesSplit = exchanges.split(",");
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
-				skill: purify(offer.trim()),
+				skill: purify(offer),
 				offer: true, // Indicate it as an offer
 			})),
 			...exchangesSplit.map((desire) => ({
-				skill: purify(desire.trim()),
+				skill: purify(desire),
 				offer: false, // Indicate it as a desire
 			})),
 		];
 		await removeSkills(user.user_id);
 		await addSkills(skillsArray, user.user_id);
-
-		// TODO : edit user with axios put to users below without response variable
 
 		try {
 			const response = await axios.put(
@@ -140,8 +137,6 @@ export default function EditUserPage({
 			);
 			setUser(response.data);
 			navigate("/");
-			// setNeighbors(null);
-			// placeToken(response.data.token);
 		} catch (error) {
 			setErrorMessage("Error editing user, please try again.");
 			setErrorActive(true);

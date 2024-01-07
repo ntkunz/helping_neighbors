@@ -8,10 +8,8 @@ export default function Neighbors({
 	loggedIn,
 	setLoggedIn,
 	user,
-	setUser,
 	neighbors,
 	setNeighbors,
-	token,
 }) {
 	const navigate = useNavigate();
 

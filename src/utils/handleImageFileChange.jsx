@@ -35,7 +35,7 @@ export default async function handleImageFileChange(
 		0, // Rotation
 		(dataURL) => {
 			// Convert data URL to Blob
-			// Something far beyond my understanding that I've used the below
+			// Something far beyond my understanding, I've used the below
 			// snippet from https://stackoverflow.com/questions/12168909/blob-from-dataurl
 			// and https://stackoverflow.com/questions/6850276/how-to-convert-dataurl-to-file-object-in-javascript
 			const byteString = atob(dataURL.split(",")[1]);
@@ -53,12 +53,6 @@ export default async function handleImageFileChange(
 				lastModified: imageFile.lastModified,
 			});
 
-			// function generateUniqueFileName(originalName) {
-			// 	const timestamp = new Date().getTime();
-			// 	const [fileNames, extension] = originalName.split('.').slice(0, -1);
-			// 	console.log(fileNames, extension);
-			// 	return `${fileNames.join('.')}-${timestamp}.${extension}`;
-			// }
 
 			function generateUniqueFileName(originalName) {
 				const timestamp = new Date().getTime();

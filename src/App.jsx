@@ -62,10 +62,8 @@ export default function App() {
 									loggedIn={loggedIn}
 									setLoggedIn={setLoggedIn}
 									user={user}
-									setUser={setUser}
 									neighbors={neighbors}
 									setNeighbors={setNeighbors}
-									token={token}
 								/>
 							) : (
 								<LoginPage
