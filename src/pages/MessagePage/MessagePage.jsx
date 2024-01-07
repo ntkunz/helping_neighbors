@@ -7,6 +7,9 @@ import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
 
 export default function Message({ user, neighbors }) {
+
+	// TODO: Send only neighbor whose id is clicked from Neighbors page
+
 	const api = process.env.REACT_APP_API_URL;
 	const { id } = useParams();
 	const [receiver, setReceiver] = useState([]);
