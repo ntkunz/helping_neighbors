@@ -267,13 +267,6 @@ export default function NewUserPage({ setToken }) {
 
 					</label>
 					<p className={`new__valid-label ${!isEmailValid ? 'new__valid-label--active' : ''}`}>Valid Email</p>
-					<p className='new__requirement'>
-						Password must be at least 8 characters, contain at least one
-						uppercase letter, one lowercase letter, one number and one special
-						character. Temporarily no way to reset password, so please remember
-						it.
-					</p>
-
 
 					<label className='new__label'>
 						Password
