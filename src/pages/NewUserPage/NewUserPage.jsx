@@ -8,6 +8,7 @@ import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
 import validatePassword from "../../utils/validatePassword";
 import submitImage from "../../utils/submitImage";
+import validateEmail from "../../utils/validateEmail";
 import handleImageFileChange from "../../utils/handleImageFileChange";
 
 export default function NewUserPage({ setToken }) {
@@ -24,9 +25,9 @@ export default function NewUserPage({ setToken }) {
 
 	const isEmailValid = useMemo(() => validateEmail(email), [email]);
 
-	function validateEmail(email) {
-		return email.length >= 3 && email.includes('@') && email.includes('.');
-	}
+	// function validateEmail(email) {
+	// 	return email.length >= 3 && email.includes('@') && email.includes('.');
+	// }
 
 	const isPasswordEightCharacters = useMemo(() => password.length >= 8, [password]);
 	const doesPasswordHaveOneNumber = useMemo(() => /\d/.test(password), [password]);

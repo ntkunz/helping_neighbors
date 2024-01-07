@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import purify from "../../utils/purify";
 import axios from "axios";
 import placeToken from "../../utils/placeToken";
+import validateEmail from "../../utils/validateEmail";
 
 // TODO: Create tested loginFormValidation function
 export default function LoginPage({ setToken }) {
@@ -15,10 +16,6 @@ export default function LoginPage({ setToken }) {
 	const [password, setPassword] = useState('');
 
 	const isEmailValid = useMemo(() => validateEmail(email), [email]);
-
-	function validateEmail(email) {
-		return email.length >= 3 && email.includes('@') && email.includes('.');
-	}
 
 	const isPasswordEightCharacters = useMemo(() => password.length >= 8, [password]);
 	const doesPasswordHaveOneNumber = useMemo(() => /\d/.test(password), [password]);
