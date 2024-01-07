@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
-import validateEmail from "../../utils/validateEmail";
+// import validateEmail from "../../utils/validateEmail";
 import validatePassword from "../../utils/validatePassword";
 import submitImage from "../../utils/submitImage";
 import handleImageFileChange from "../../utils/handleImageFileChange";
@@ -62,7 +62,7 @@ export default function NewUserPage({ setToken }) {
 		setApiCalled(true);
 
 		const email = purify(e.target.email.value.toLowerCase());
-		if (validateEmail(email)) {
+		if (!validateEmail(email)) {
 			setErrorMessage("Please enter a valid email");
 			setErrorActive(true);
 			setApiCalled(false);

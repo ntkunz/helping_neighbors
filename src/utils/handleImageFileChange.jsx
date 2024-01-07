@@ -53,9 +53,17 @@ export default async function handleImageFileChange(
 				lastModified: imageFile.lastModified,
 			});
 
+			// function generateUniqueFileName(originalName) {
+			// 	const timestamp = new Date().getTime();
+			// 	const [fileNames, extension] = originalName.split('.').slice(0, -1);
+			// 	console.log(fileNames, extension);
+			// 	return `${fileNames.join('.')}-${timestamp}.${extension}`;
+			// }
+
 			function generateUniqueFileName(originalName) {
 				const timestamp = new Date().getTime();
-				const [fileNames, extension] = originalName.split('.').slice(0, -1);
+				const fileNames = originalName.split('.').slice(0, -1);
+				const extension = originalName.split('.').pop();
 				return `${fileNames.join('.')}-${timestamp}.${extension}`;
 			}
 
