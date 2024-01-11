@@ -5,7 +5,8 @@ import axios from "axios";
 import Neighbor from "../../components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
-import io from 'socket.io-client';
+import { socket } from "../../socket";
+// import io from 'socket.io-client';
 
 export default function Message({ user, neighbors }) {
 
@@ -17,37 +18,69 @@ export default function Message({ user, neighbors }) {
 	const [messages, setMessages] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [errorActive, setErrorActive] = useState(false);
+	const [message, setMessage] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
-	const socket = useRef(null);
+	const [isConnected, setIsConnected] = useState(socket.connected);
+
+	// const socket = useRef(null);
 
 	useEffect(() => {
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
 		//eslint-disable-next-line
 	}, [neighbors]);
 
+	// TESTING: This below works to send message through socket
+	// now updateing to work with socketio docs and their react best practices
+
+	// useEffect(() => {
+	// 	// const socket = io(`${api}/messages`, {
+	// 	// const socket = io(`ws://localhost:8080`, {
+	// 	socket.current = io(`ws://localhost:8080`, {
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 			Authorization: `Bearer ${localStorage.getItem("token")}`,
+	// 		},
+	// 		withCredentials: true,
+	// 		// path: `/messages`,
+	// 	}); // Replace 'api' with your server's Socket.IO endpoint
+
+	// 	// socket.current.on("connect", () => {
+	// 	// 	socket.emit("join", {
+	// 	// 		user_id: user.user_id,
+	// 	// 		receiver_id: receiver.user_id,
+	// 	// 	});
+	// 	// })
+	// 	// Add event listeners and emit events as needed
+
+
+	// 	return () => {
+	// 		socket.current.disconnect(); // Clean up the socket connection when the component unmounts
+	// 	};
+	// }, []);
+
+	// TESTING: V2
 	useEffect(() => {
-		// const socket = io(`${api}/messages`, {
-		// const socket = io(`ws://localhost:8080`, {
-		socket.current = io(`ws://localhost:8080`, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
-			},
-			withCredentials: true,
-			// path: `/messages`,
-		}); // Replace 'api' with your server's Socket.IO endpoint
+		function onConnect() {
+			setIsConnected(true);
+		}
 
-		// socket.current.on("connect", () => {
-		// 	socket.emit("join", {
-		// 		user_id: user.user_id,
-		// 		receiver_id: receiver.user_id,
-		// 	});
-		// })
-		// Add event listeners and emit events as needed
+		function onDisconnect() {
+			setIsConnected(false);
+		}
 
+		socket.on('connect', onConnect);
+		socket.on('disconnect', onDisconnect);
+		socket.on('sendMessage', sendMessage);
+		socket.on('receiveMessage', (messageData) => {
+			console.log('Received message:', messageData);
+		});
 
 		return () => {
-			socket.current.disconnect(); // Clean up the socket connection when the component unmounts
+			socket.off('connect', onConnect);
+			socket.off('disconnect', onDisconnect);
+			socket.off('sendMessage', sendMessage);
+			socket.off('receiveMessage', receiveMessage);
 		};
 	}, []);
 
@@ -66,49 +99,70 @@ export default function Message({ user, neighbors }) {
 		//eslint-disable-next-line
 	}, [receiver]);
 
-	// TODO : Add proper error handling
 	function sendMessage(e) {
 		e.preventDefault();
-		const message = e.target.message.value;
+		setIsLoading(true);
+		// setFooEvents(previous => [...previous, value]);
 
-		if (message.trim() === "") {
-			setErrorMessage("Please enter a message");
-			setErrorActive(true);
-			return;
-		}
-		setErrorActive(false);
-
-		// TESTING: 
-		// send with socket rather than with axios
-		socket.current.emit("sendMessage", {
+		socket.emit("sendMessage", {
 			senderId: user.user_id,
 			receiverId: receiver.user_id,
 			message: purify(message),
+		}, (received) => {
+			console.log('received', received);
 		})
-
-		// axios
-		// 	.post(
-		// 		`${api}/messages`,
-		// 		{
-		// 			senderId: user.user_id,
-		// 			receiverId: receiver.user_id,
-		// 			message: purify(message),
-		// 		},
-		// 		{
-		// 			headers: {
-		// 				"Content-Type": "application/json",
-		// 				Authorization: `Bearer ${localStorage.getItem("token")}`,
-		// 			},
-		// 		}
-		// 	)
-		// 	.then(() => {
-		e.target.message.value = "";
-		// })
-		// .catch((error) => {
-		// 	setErrorMessage("Error sending message");
-		// 	setErrorActive(true);
-		// });
+		setIsLoading(false);
+		setMessage("");
 	}
+
+	function receiveMessage(receivedMessage) {
+		console.log('Received Message: ', receivedMessage)
+	}
+
+
+	// TODO : Add proper error handling
+	// function sendMessage(e) {
+	// 	e.preventDefault();
+	// 	const message = e.target.message.value;
+
+	// 	if (message.trim() === "") {
+	// 		setErrorMessage("Please enter a message");
+	// 		setErrorActive(true);
+	// 		return;
+	// 	}
+	// 	setErrorActive(false);
+
+	// 	// TESTING: 
+	// 	// send with socket rather than with axios
+	// 	socket.current.emit("sendMessage", {
+	// 		senderId: user.user_id,
+	// 		receiverId: receiver.user_id,
+	// 		message: purify(message),
+	// 	})
+
+	// 	// axios
+	// 	// 	.post(
+	// 	// 		`${api}/messages`,
+	// 	// 		{
+	// 	// 			senderId: user.user_id,
+	// 	// 			receiverId: receiver.user_id,
+	// 	// 			message: purify(message),
+	// 	// 		},
+	// 	// 		{
+	// 	// 			headers: {
+	// 	// 				"Content-Type": "application/json",
+	// 	// 				Authorization: `Bearer ${localStorage.getItem("token")}`,
+	// 	// 			},
+	// 	// 		}
+	// 	// 	)
+	// 	// 	.then(() => {
+	// 	e.target.message.value = "";
+	// 	// })
+	// 	// .catch((error) => {
+	// 	// 	setErrorMessage("Error sending message");
+	// 	// 	setErrorActive(true);
+	// 	// });
+	// }
 
 	function getMessages(senderId, receiverId) {
 		axios
@@ -162,8 +216,10 @@ export default function Message({ user, neighbors }) {
 								type='text'
 								name='message'
 								placeholder='Insert your message here'
+								value={message}
+								onChange={e => setMessage(e.target.value)}
 							/>
-							<button className='message__btn' type='submit'>
+							<button className='message__btn' type='submit' disabled={isLoading}>
 								Send Message
 							</button>
 							{errorActive && <p className='message__error'>{errorMessage}</p>}
