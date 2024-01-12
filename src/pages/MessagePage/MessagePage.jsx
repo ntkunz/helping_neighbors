@@ -5,10 +5,10 @@ import axios from "axios";
 import Neighbor from "../../components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
-import { socket } from "../../socket";
+// import { socket } from "../../socket";
 // import io from 'socket.io-client';
 
-export default function Message({ user, neighbors }) {
+export default function Message({ user, neighbors, socket }) {
 
 	// TODO: Send only neighbor whose id is clicked from Neighbors page
 
@@ -21,7 +21,7 @@ export default function Message({ user, neighbors }) {
 	const [message, setMessage] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
-	const [isConnected, setIsConnected] = useState(socket.connected);
+	// const [isConnected, setIsConnected] = useState(socket.connected);
 
 	// const socket = useRef(null);
 
@@ -30,94 +30,85 @@ export default function Message({ user, neighbors }) {
 		//eslint-disable-next-line
 	}, [neighbors]);
 
+	useEffect(() => {
+		if (receiver.user_id) {
+			socket.emit("joinRoom", user.user_id, receiver.user_id); // joinRoom
+			socket.on("conversation", (messages) => {
+				const sortedMessages = messages.sort(function (a, b) {
+					return b.unix_timestamp - a.unix_timestamp;
+				});
+				setMessages(sortedMessages);
+			})
+		}
+		return () => {
+			socket.off("conversation");
+		}
+	}, [receiver]);
+
 	// TESTING: This below works to send message through socket
 	// now updateing to work with socketio docs and their react best practices
 
+	// TESTING: V2 
+	// below works, logging the response to the console
+	// now trying to have it retrieve all messages for those users from the 
+	// database on load and whenever updated
+
 	// useEffect(() => {
-	// 	// const socket = io(`${api}/messages`, {
-	// 	// const socket = io(`ws://localhost:8080`, {
-	// 	socket.current = io(`ws://localhost:8080`, {
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 			Authorization: `Bearer ${localStorage.getItem("token")}`,
-	// 		},
-	// 		withCredentials: true,
-	// 		// path: `/messages`,
-	// 	}); // Replace 'api' with your server's Socket.IO endpoint
-
-	// 	// socket.current.on("connect", () => {
-	// 	// 	socket.emit("join", {
-	// 	// 		user_id: user.user_id,
-	// 	// 		receiver_id: receiver.user_id,
-	// 	// 	});
-	// 	// })
-	// 	// Add event listeners and emit events as needed
-
-
+	// 	socket.on("sendResponseToClient", (response) => {
+	// 		console.log('sendResponseToClient', response);
+	// 		// setIsLoading(false);
+	// 	})
 	// 	return () => {
-	// 		socket.current.disconnect(); // Clean up the socket connection when the component unmounts
-	// 	};
+	// 		socket.off("sendResponseToClient");
+	// 	}
 	// }, []);
 
-	// TESTING: V2
-	useEffect(() => {
-		function onConnect() {
-			setIsConnected(true);
-		}
-
-		function onDisconnect() {
-			setIsConnected(false);
-		}
-
-		socket.on('connect', onConnect);
-		socket.on('disconnect', onDisconnect);
-		socket.on('sendMessage', sendMessage);
-		socket.on('receiveMessage', (messageData) => {
-			console.log('Received message:', messageData);
-		});
-
-		return () => {
-			socket.off('connect', onConnect);
-			socket.off('disconnect', onDisconnect);
-			socket.off('sendMessage', sendMessage);
-			socket.off('receiveMessage', receiveMessage);
-		};
-	}, []);
 
 
-	useEffect(() => {
-		if (receiver.user_id) {
-			getMessages(user.user_id, receiver.user_id);
-			//set interval to retrieve messages every 2 seconds
-			const messageInt = setInterval(() => {
-				getMessages(user.user_id, receiver.user_id);
-			}, 2000);
-			return () => {
-				clearInterval(messageInt);
-			};
-		}
-		//eslint-disable-next-line
-	}, [receiver]);
+	// useEffect(() => {
+	// 	if (receiver.user_id) {
+	// 		getMessages(user.user_id, receiver.user_id);
+	// 		//set interval to retrieve messages every 2 seconds
+	// 		//TESTING: belowturned off for socket test
+	// 		// const messageInt = setInterval(() => {
+	// 		// 	getMessages(user.user_id, receiver.user_id);
+	// 		// }, 2000);
+	// 		// return () => {
+	// 		// 	clearInterval(messageInt);
+	// 		// };
+	// 	}
+	// 	//eslint-disable-next-line
+	// }, [receiver]);
 
 	function sendMessage(e) {
-		e.preventDefault();
+		// console.log('e', e)
+		if (e && e.preventDefault) {
+			e.preventDefault();
+		}
+
 		setIsLoading(true);
 		// setFooEvents(previous => [...previous, value]);
 
-		socket.emit("sendMessage", {
+		const messageToSend = {
 			senderId: user.user_id,
 			receiverId: receiver.user_id,
 			message: purify(message),
-		}, (received) => {
-			console.log('received', received);
-		})
+		}
+
+		// socket.emit("sendMessageToApi", {
+		// 	senderId: user.user_id,
+		// 	receiverId: receiver.user_id,
+		// 	message: purify(message),
+		// }, (receiveMessage) => {
+		socket.emit("sendMessageToApi", messageToSend);
+		// setMessages([...messages, messageToSend]);
 		setIsLoading(false);
 		setMessage("");
 	}
 
-	function receiveMessage(receivedMessage) {
-		console.log('Received Message: ', receivedMessage)
-	}
+	// function receiveMessage(receivedMessage) {
+	// 	console.log('Received Message: ', receivedMessage)
+	// }
 
 
 	// TODO : Add proper error handling
@@ -164,32 +155,32 @@ export default function Message({ user, neighbors }) {
 	// 	// });
 	// }
 
-	function getMessages(senderId, receiverId) {
-		axios
-			.put(
-				`${api}/messages`,
-				{
-					senderId: senderId,
-					receiverId: receiverId,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-				}
-			)
-			.then((response) => {
-				const sortedMessages = response.data.sort(function (x, y) {
-					return y.unix_timestamp - x.unix_timestamp;
-				});
-				setMessages(sortedMessages);
-			})
-			.catch((error) => {
-				setErrorMessage("Error getting messages");
-				setErrorActive(true);
-			});
-	}
+	// function getMessages(senderId, receiverId) {
+	// 	axios
+	// 		.put(
+	// 			`${api}/messages`,
+	// 			{
+	// 				senderId: senderId,
+	// 				receiverId: receiverId,
+	// 			},
+	// 			{
+	// 				headers: {
+	// 					"Content-Type": "application/json",
+	// 					Authorization: `Bearer ${localStorage.getItem("token")}`,
+	// 				},
+	// 			}
+	// 		)
+	// 		.then((response) => {
+	// 			const sortedMessages = response.data.sort(function (x, y) {
+	// 				return y.unix_timestamp - x.unix_timestamp;
+	// 			});
+	// 			setMessages(sortedMessages);
+	// 		})
+	// 		.catch((error) => {
+	// 			setErrorMessage("Error getting messages");
+	// 			setErrorActive(true);
+	// 		});
+	// }
 
 	return (
 		<div className='message__container'>
