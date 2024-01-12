@@ -11,6 +11,7 @@ import MessagePage from "./pages/MessagePage/MessagePage";
 import placeToken from "./utils/placeToken";
 import fetchUser from "./utils/fetchUser";
 import fetchNeighbors from "./utils/fetchNeighbors";
+import { socket } from "./socket";
 
 export default function App() {
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -40,6 +41,20 @@ export default function App() {
 		}
 		// eslint-disable-next-line
 	}, [storageToken, token]);
+
+	useEffect(() => {
+		loggedIn && socket.connect();
+		socket.on("connect", () => {
+			console.log("connected");
+		});
+		return () => {
+			if (socket.connected) {
+				socket.disconnect();
+				socket.off("connect");
+				socket.off("sendMessageToApi");
+			}
+		}
+	}, [loggedIn]);
 
 	if (!isLoaded) return null;
 
@@ -85,7 +100,9 @@ export default function App() {
 					{loggedIn && (
 						<Route
 							path='/:id'
-							element={<MessagePage user={user} neighbors={neighbors} />}
+							element={<MessagePage user={user} neighbors={neighbors}
+								socket={socket}
+							/>}
 						/>
 					)}
 					{loggedIn && (

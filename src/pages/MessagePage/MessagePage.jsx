@@ -1,21 +1,19 @@
 import "./MessagePage.scss";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Neighbor from "../../components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
 
-export default function Message({ user, neighbors }) {
+export default function Message({ user, neighbors, socket }) {
 
-	// TODO: Send only neighbor whose id is clicked from Neighbors page
-
-	const api = process.env.REACT_APP_API_URL;
 	const { id } = useParams();
 	const [receiver, setReceiver] = useState([]);
 	const [messages, setMessages] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [errorActive, setErrorActive] = useState(false);
+	const [message, setMessage] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
@@ -24,22 +22,25 @@ export default function Message({ user, neighbors }) {
 
 	useEffect(() => {
 		if (receiver.user_id) {
-			getMessages(user.user_id, receiver.user_id);
-			//set interval to retrieve messages every 2 seconds
-			const messageInt = setInterval(() => {
-				getMessages(user.user_id, receiver.user_id);
-			}, 2000);
-			return () => {
-				clearInterval(messageInt);
-			};
+			socket.emit("joinRoom", user.user_id, receiver.user_id); // joinRoom
+			socket.on("conversation", (messages) => {
+				const sortedMessages = messages.sort(function (a, b) {
+					return b.unix_timestamp - a.unix_timestamp;
+				});
+				setMessages(sortedMessages);
+			})
+		}
+		return () => {
+			socket.off("conversation");
 		}
 		//eslint-disable-next-line
 	}, [receiver]);
 
-	// TODO : Add proper error handling
 	function sendMessage(e) {
-		e.preventDefault();
-		const message = e.target.message.value;
+		// below to prevent form submit, if needed
+		if (e && e.preventDefault) {
+			e.preventDefault();
+		}
 
 		if (message.trim() === "") {
 			setErrorMessage("Please enter a message");
@@ -48,55 +49,18 @@ export default function Message({ user, neighbors }) {
 		}
 		setErrorActive(false);
 
-		axios
-			.post(
-				`${api}/messages`,
-				{
-					senderId: user.user_id,
-					receiverId: receiver.user_id,
-					message: purify(message),
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-				}
-			)
-			.then(() => {
-				e.target.message.value = "";
-			})
-			.catch((error) => {
-				setErrorMessage("Error sending message");
-				setErrorActive(true);
-			});
-	}
+		//disable form while sending
+		setIsLoading(true);
 
-	function getMessages(senderId, receiverId) {
-		axios
-			.put(
-				`${api}/messages`,
-				{
-					senderId: senderId,
-					receiverId: receiverId,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-				}
-			)
-			.then((response) => {
-				const sortedMessages = response.data.sort(function (x, y) {
-					return y.unix_timestamp - x.unix_timestamp;
-				});
-				setMessages(sortedMessages);
-			})
-			.catch((error) => {
-				setErrorMessage("Error getting messages");
-				setErrorActive(true);
-			});
+		const messageToSend = {
+			senderId: user.user_id,
+			receiverId: receiver.user_id,
+			message: purify(message),
+		}
+
+		socket.emit("sendMessageToApi", messageToSend);
+		setIsLoading(false);
+		setMessage("");
 	}
 
 	return (
@@ -124,8 +88,10 @@ export default function Message({ user, neighbors }) {
 								type='text'
 								name='message'
 								placeholder='Insert your message here'
+								value={message}
+								onChange={e => setMessage(e.target.value)}
 							/>
-							<button className='message__btn' type='submit'>
+							<button className='message__btn' type='submit' disabled={isLoading}>
 								Send Message
 							</button>
 							{errorActive && <p className='message__error'>{errorMessage}</p>}
