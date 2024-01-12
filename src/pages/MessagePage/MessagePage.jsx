@@ -1,18 +1,12 @@
 import "./MessagePage.scss";
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import Neighbor from "../../components/Neighbor/Neighbor";
 import dynamictimestamp from "../../utils/dynamictimestamp";
 import purify from "../../utils/purify";
-// import { socket } from "../../socket";
-// import io from 'socket.io-client';
 
 export default function Message({ user, neighbors, socket }) {
 
-	// TODO: Send only neighbor whose id is clicked from Neighbors page
-
-	const api = process.env.REACT_APP_API_URL;
 	const { id } = useParams();
 	const [receiver, setReceiver] = useState([]);
 	const [messages, setMessages] = useState([]);
@@ -20,10 +14,6 @@ export default function Message({ user, neighbors, socket }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [message, setMessage] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-
-	// const [isConnected, setIsConnected] = useState(socket.connected);
-
-	// const socket = useRef(null);
 
 	useEffect(() => {
 		setReceiver(neighbors.find((neighbor) => neighbor.user_id === id));
@@ -43,51 +33,24 @@ export default function Message({ user, neighbors, socket }) {
 		return () => {
 			socket.off("conversation");
 		}
+		//eslint-disable-next-line
 	}, [receiver]);
 
-	// TESTING: This below works to send message through socket
-	// now updateing to work with socketio docs and their react best practices
-
-	// TESTING: V2 
-	// below works, logging the response to the console
-	// now trying to have it retrieve all messages for those users from the 
-	// database on load and whenever updated
-
-	// useEffect(() => {
-	// 	socket.on("sendResponseToClient", (response) => {
-	// 		console.log('sendResponseToClient', response);
-	// 		// setIsLoading(false);
-	// 	})
-	// 	return () => {
-	// 		socket.off("sendResponseToClient");
-	// 	}
-	// }, []);
-
-
-
-	// useEffect(() => {
-	// 	if (receiver.user_id) {
-	// 		getMessages(user.user_id, receiver.user_id);
-	// 		//set interval to retrieve messages every 2 seconds
-	// 		//TESTING: belowturned off for socket test
-	// 		// const messageInt = setInterval(() => {
-	// 		// 	getMessages(user.user_id, receiver.user_id);
-	// 		// }, 2000);
-	// 		// return () => {
-	// 		// 	clearInterval(messageInt);
-	// 		// };
-	// 	}
-	// 	//eslint-disable-next-line
-	// }, [receiver]);
-
 	function sendMessage(e) {
-		// console.log('e', e)
+		// below to prevent form submit, if needed
 		if (e && e.preventDefault) {
 			e.preventDefault();
 		}
 
+		if (message.trim() === "") {
+			setErrorMessage("Please enter a message");
+			setErrorActive(true);
+			return;
+		}
+		setErrorActive(false);
+
+		//disable form while sending
 		setIsLoading(true);
-		// setFooEvents(previous => [...previous, value]);
 
 		const messageToSend = {
 			senderId: user.user_id,
@@ -95,92 +58,10 @@ export default function Message({ user, neighbors, socket }) {
 			message: purify(message),
 		}
 
-		// socket.emit("sendMessageToApi", {
-		// 	senderId: user.user_id,
-		// 	receiverId: receiver.user_id,
-		// 	message: purify(message),
-		// }, (receiveMessage) => {
 		socket.emit("sendMessageToApi", messageToSend);
-		// setMessages([...messages, messageToSend]);
 		setIsLoading(false);
 		setMessage("");
 	}
-
-	// function receiveMessage(receivedMessage) {
-	// 	console.log('Received Message: ', receivedMessage)
-	// }
-
-
-	// TODO : Add proper error handling
-	// function sendMessage(e) {
-	// 	e.preventDefault();
-	// 	const message = e.target.message.value;
-
-	// 	if (message.trim() === "") {
-	// 		setErrorMessage("Please enter a message");
-	// 		setErrorActive(true);
-	// 		return;
-	// 	}
-	// 	setErrorActive(false);
-
-	// 	// TESTING: 
-	// 	// send with socket rather than with axios
-	// 	socket.current.emit("sendMessage", {
-	// 		senderId: user.user_id,
-	// 		receiverId: receiver.user_id,
-	// 		message: purify(message),
-	// 	})
-
-	// 	// axios
-	// 	// 	.post(
-	// 	// 		`${api}/messages`,
-	// 	// 		{
-	// 	// 			senderId: user.user_id,
-	// 	// 			receiverId: receiver.user_id,
-	// 	// 			message: purify(message),
-	// 	// 		},
-	// 	// 		{
-	// 	// 			headers: {
-	// 	// 				"Content-Type": "application/json",
-	// 	// 				Authorization: `Bearer ${localStorage.getItem("token")}`,
-	// 	// 			},
-	// 	// 		}
-	// 	// 	)
-	// 	// 	.then(() => {
-	// 	e.target.message.value = "";
-	// 	// })
-	// 	// .catch((error) => {
-	// 	// 	setErrorMessage("Error sending message");
-	// 	// 	setErrorActive(true);
-	// 	// });
-	// }
-
-	// function getMessages(senderId, receiverId) {
-	// 	axios
-	// 		.put(
-	// 			`${api}/messages`,
-	// 			{
-	// 				senderId: senderId,
-	// 				receiverId: receiverId,
-	// 			},
-	// 			{
-	// 				headers: {
-	// 					"Content-Type": "application/json",
-	// 					Authorization: `Bearer ${localStorage.getItem("token")}`,
-	// 				},
-	// 			}
-	// 		)
-	// 		.then((response) => {
-	// 			const sortedMessages = response.data.sort(function (x, y) {
-	// 				return y.unix_timestamp - x.unix_timestamp;
-	// 			});
-	// 			setMessages(sortedMessages);
-	// 		})
-	// 		.catch((error) => {
-	// 			setErrorMessage("Error getting messages");
-	// 			setErrorActive(true);
-	// 		});
-	// }
 
 	return (
 		<div className='message__container'>

@@ -47,7 +47,6 @@ export default function App() {
 		socket.on("connect", () => {
 			console.log("connected");
 		});
-		// socket.on("sendMessageToApi", sendNewMessage);
 		return () => {
 			if (socket.connected) {
 				socket.disconnect();

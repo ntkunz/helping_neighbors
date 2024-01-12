@@ -7,7 +7,6 @@ export const socket = io(URL, {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
    },
-   autoConnect: false
-   ,
+   autoConnect: false,
    withCredentials: true,
 });
