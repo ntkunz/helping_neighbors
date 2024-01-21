@@ -1,8 +1,8 @@
 import "./LoginPage.scss";
-import { Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { get, post } from "../../utils/api";
 import purify from "../../utils/purify";
-import axios from "axios";
 import placeToken from "../../utils/placeToken";
 import validateEmail from "../../utils/validateEmail";
 import {
@@ -17,7 +17,6 @@ import {
 export default function LoginPage({ setToken }) {
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
-	const api = process.env.REACT_APP_API_URL;
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -32,7 +31,7 @@ export default function LoginPage({ setToken }) {
 
 	//wakeup server on page load
 	useEffect(() => {
-		axios.get(`${api}/users/newemail`);
+		get(`users/newemail`);
 		//eslint-disable-next-line
 	}, []);
 
@@ -40,32 +39,33 @@ export default function LoginPage({ setToken }) {
 		loginForm.preventDefault();
 
 		if (!isEmailValid || !isPasswordEightCharacters || !doesPasswordHaveOneNumber || !doesPasswordHaveOneSpecialCharacter || !doesPasswordHaveOneUppercase || !doesPasswordHaveOneLowercase) {
-			setErrorMessage("Please make sure all fields are filled out correctly");
+			setErrorMessage("Please correct your email and password");
 			setErrorActive(true);
 			return;
 		}
 
-		const email = purify(loginForm.target.email.value.toLowerCase());
 
-		const password = purify(loginForm.target.password.value);
+		const emailAtLogin = purify(loginForm.target.email.value.toLowerCase());
 
-		setErrorActive(false);
+		const loginData = {
+			email: emailAtLogin,
+			password: purify(loginForm.target.password.value),
+		};
 
-		await axios
-			.post(`${api}/users/login`, { email, password })
-			.then((res) => {
-				if (res.data.user.email === email) {
-					placeToken(res.data.token);
-					setToken(res.data.token);
-				} else {
-					setErrorMessage("User not found");
-					setErrorActive(true);
-				}
-			})
-			.catch((error) => {
-				setErrorMessage("Invalid User");
+		try {
+			const returnedUser = await post(`users/login`, loginData);
+			if (returnedUser.data.user.email === emailAtLogin) {
+				placeToken(returnedUser.data.token);
+				setToken(returnedUser.data.token);
+			} else {
+				setErrorMessage("User not found");
 				setErrorActive(true);
-			});
+			}
+		} catch (error) {
+			console.log('login error: ', error)
+			setErrorMessage("Invalid User");
+			setErrorActive(true);
+		}
 	}
 
 	return (

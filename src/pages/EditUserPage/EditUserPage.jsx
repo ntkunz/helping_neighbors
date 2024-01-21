@@ -1,6 +1,6 @@
 import "./EditUserPage.scss";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { put, deleteWithData } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
@@ -14,7 +14,6 @@ export default function EditUserPage({
 	setLoggedIn,
 }) {
 	const navigate = useNavigate();
-	const api = process.env.REACT_APP_API_URL;
 
 	const [firstName, setFirstName] = useState(user.first_name);
 	const [lastName, setLastName] = useState(user.last_name);
@@ -31,6 +30,10 @@ export default function EditUserPage({
 	const [errorMessage, setErrorMessage] = useState("");
 	const [errorActive, setErrorActive] = useState(false);
 
+	// TODO: Disable edit user form submit when deleteInProgress
+	// TODO: Add cancel delete button for deleteInProgress
+	// const [deleteInProgress, setDeleteInProgress] = useState(false);
+
 	useEffect(() => {
 		// Set user offers and exchanges based on offer value
 		let newOffers = "";
@@ -44,7 +47,6 @@ export default function EditUserPage({
 				else newExchanges += purify(barter.skill);
 			}
 		});
-		// Update state with the new offers and exchanges
 		setOffers(newOffers.trim().replace(/,$/, ""));
 		setExchanges(newExchanges.trim().replace(/,$/, ""));
 		// eslint-disable-next-line
@@ -82,6 +84,7 @@ export default function EditUserPage({
 			.replaceAll(",", " ")
 			.replaceAll(" ", "+")
 			.replaceAll(".", "+");
+		// TODO: Move geocaching to server
 		let coords = user.location;
 		if (address !== originalAddress) {
 			const newCoords = await getNewUserGeo(addressRequest);
@@ -114,28 +117,21 @@ export default function EditUserPage({
 		await removeSkills(user.user_id);
 		await addSkills(skillsArray, user.user_id);
 
+		const editUserData = {
+			firstName: purify(firstName),
+			lastName: purify(lastName),
+			email: cleanEmail,
+			coords: coords,
+			about: purify(about),
+			address: address,
+			home: purify(home),
+			city: purify(city),
+			province: purify(province),
+		};
+
 		try {
-			const response = await axios.put(
-				`${api}/users`,
-				{
-					userId: user.user_id,
-					firstName: purify(firstName),
-					lastName: purify(lastName),
-					email: cleanEmail,
-					coords: coords,
-					about: purify(about),
-					address: address,
-					home: purify(home),
-					city: purify(city),
-					province: purify(province),
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-				}
-			);
-			setUser(response.data);
+			const editedUser = await put("users", editUserData);
+			setUser(editedUser.data);
 			navigate("/");
 		} catch (error) {
 			setErrorMessage("Error editing user, please try again.");
@@ -147,30 +143,25 @@ export default function EditUserPage({
 	function deleteUserValidate(e) {
 		e.preventDefault();
 		setErrorMessage("Are you sure you don't want to barter anymore?");
-		// TODO : Change to use e.target rather than dom manipulation below
+		setErrorActive(true);
+		// TODO : Change to use react state rather than dom manipulation below
 		document.querySelector(".edit__password").style.display = "flex";
 		document.querySelector('input[name="password"]').focus();
+		// setDeleteInProgress(true);
 	}
 
-	async function deleteUser(e) {
+	async function handleDeleteUser(e) {
 		e.preventDefault();
-		const passwordValidate = purify(password);
+
+		const deleteUserData = {
+			email: user.email,
+			userId: user.user_id,
+			password: purify(password),
+		};
+
 		try {
-			await axios.delete(`${api}/users`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-				data: {
-					email: user.email,
-					userId: user.user_id,
-					password: passwordValidate,
-				},
-			});
-
+			await deleteWithData('users', deleteUserData);
 			console.log("user deleted");
-
-			//TODO: add removal of all userskills and messages from database
-			removeSkills(user.user_id);
 			setNeighbors([]);
 			setLoggedIn(false);
 			localStorage.removeItem("token");
@@ -327,14 +318,17 @@ export default function EditUserPage({
 								autoComplete='current-password'
 								placeholder=''
 								value={password}
-								onChange={(e) => setPassword(e.target.value)}
+								onChange={(e) => {
+									setPassword(e.target.value)
+								}
+								}
 							/>
 						</label>
 						<p className='edit__desc'>
 							This cannot be undone and will delete all of your data from
 							Helping Neighbors
 						</p>
-						<button className='edit__btn delete__btn' onClick={deleteUser}>
+						<button className='edit__btn delete__btn' onClick={handleDeleteUser}>
 							Delete Account
 						</button>
 					</div>

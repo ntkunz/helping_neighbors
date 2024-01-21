@@ -36,7 +36,10 @@ export default function Message({ user, neighbors, socket }) {
 		//eslint-disable-next-line
 	}, [receiver]);
 
+	// TODO: Add ability to delete messages
+
 	function sendMessage(e) {
+		// TODO: Get more clear on if preventDefault is needed here, being a form submit bu a socket event
 		// below to prevent form submit, if needed
 		if (e && e.preventDefault) {
 			e.preventDefault();
