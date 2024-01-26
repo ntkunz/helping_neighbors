@@ -1,12 +1,10 @@
 import "./NewUserPage.scss";
 import { v4 } from "uuid";
-import axios from "axios";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
 import addSkills from "../../utils/addSkills";
-// import validatePassword from "../../utils/validatePassword";
 import submitImage from "../../utils/submitImage";
 import validateEmail from "../../utils/validateEmail";
 import {
@@ -18,10 +16,10 @@ import {
 	passwordsMatch
 } from "../../utils/validatePassword";
 import handleImageFileChange from "../../utils/handleImageFileChange";
+import { get, post } from "../../utils/api";
 
 export default function NewUserPage({ setToken }) {
 	const navigate = useNavigate();
-	const api = process.env.REACT_APP_API_URL;
 	const [img, setImg] = useState(null);
 	const [errorActive, setErrorActive] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -46,7 +44,7 @@ export default function NewUserPage({ setToken }) {
 
 	//wakeup server on page load
 	useEffect(() => {
-		axios.get(`${api}/users/newemail`);
+		get(`users/newemail`);
 		//eslint-disable-next-line
 	}, []);
 
@@ -102,7 +100,7 @@ export default function NewUserPage({ setToken }) {
 		const lastName = purify(capFirst(e.target.lastName.value));
 
 		// Throw error if email is already in use in databse
-		const newEmail = await axios.post(`${api}/users/newemail`, { email });
+		const newEmail = await post(`users/newemail`, { email });
 		if (newEmail.status === 202) {
 			setErrorMessage("Invalid email, email may already be in use");
 			setErrorActive(true);
@@ -169,25 +167,26 @@ export default function NewUserPage({ setToken }) {
 			return;
 		}
 
-		try {
-			const response = await axios.post(`${api}/users`, {
-				userId: userId,
-				firstName: firstName,
-				lastName: lastName,
-				email: email,
-				password: password,
-				status: status,
-				coords: coords,
-				about: about,
-				address: address,
-				home: home,
-				city: city,
-				province: province,
-			});
+		const newUserData = {
+			userId: userId,
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			password: password,
+			status: status,
+			coords: coords,
+			about: about,
+			address: address,
+			home: home,
+			city: city,
+			province: province,
+		};
 
+		try {
+			const newUser = await post('users', newUserData);
 			// TODO: Add skills in original request to server instead of second request
 			await addSkills(skillsArray, userId);
-			const newUserToken = response.data.token;
+			const newUserToken = newUser.data.token;
 			// TODO: Send img in first request to users instead of second request
 			if (img !== null && img !== "default") {
 				await submitImage(userId, newUserToken, img);
