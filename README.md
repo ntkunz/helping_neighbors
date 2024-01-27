@@ -1,25 +1,36 @@
-Welcome to the Helping Neighbors Frontend Repository 👋
-🌐 View Live Beta Site: [Helping Neighbors](https://helping-neighbors.nicholaskunz.com/)
+# Helping Neighbors
+
+Welcome to the Helping Neighbors Frontend Repository! This repository contains the frontend of the Helping Neighbors project, a fullstack web application built with React and Socket.io.
+
+![Screencast of Helping Neighbors Site](https://user-images.githubusercontent.com/33107555/233460679-af674c66-0b78-4ad7-a2e3-a20fb94c11af.gif)
+
+## Overview
+
+The Helping Neighbors project aims to connect users living within a half-kilometer radius of each other, fostering safer and happier communities by enabling easy communication and collaboration. The project leverages MySQL's geospatial querying features to achieve this functionality.
+
+## Features
+
+- User authentication and account management
+- Real-time messaging using Socket.io
+- Geospatial querying to connect users within close proximity
+- User profile management and customization
+- Continuous improvements to the user experience
+
+## Getting Started
+
+To explore the live site and create an account, visit [Helping Neighbors](https://helping-neighbors.nicholaskunz.com/). You can also provide feedback and suggestions for site enhancements. 
+
+## Technology Stack
+
+- React
+- Socket.io
+- MySQL
+- Geospatial querying
+- Node.js
+- KNEX orm
 
 [See Backend Repo Here](https://github.com/ntkunz/hn_db)
 
-Screencast of Helping Neighbors Site
+## Contact
 
-Why I'm Here:
-This repository houses my capstone project, and my journey into the intricate world of fullstack web development.
-
-What's Cooking:
-Currently, I'm working on a comprehensive rewrite, overhauling both the frontend and backend. My goal is to update to a more lightweight deployment of React, simplifying and clarifying the project 🛠️
-
-Building Connected Communities:
-One of the project's highlights is a feature that connects users living within a half-kilometer radius of each other. This is done through utilizing MySQL's geospatial querying features. This enables them to easily communicate and collaborate, fostering safer and happier communities. I believe that facilitating real-world connections is one of technology's most constructive roles. 🌍
-
-Explore and Contribute:
-Feel free to explore the live site and create an account (you can also delete your account in the profile settings). I'm continually working to enhance the user experience. Upcoming additions include 2-factor authentication, password reset, increased user customization, new message alerts, and various UI improvements. I'm also dedicated to refactoring for better code clarity, as this project evolves. Your suggestions for site enhancements are always welcome. 🌟
-
-A Solo Journey:
-I'm the sole contributor to this project, and though I'm improving at keeping commits tidy, flying solo can sometimes lead to messy code. Your understanding and patience are greatly appreciated. 😅
-
-📬 Contact: 
-email: mrnicholaskunz@gmail.com
-https://www.linkedin.com/in/nich-kunz/
+For any inquiries or feedback, please feel free to contact the project owner at [mrnicholaskunz@gmail.com](mailto:mrnicholaskunz@gmail.com) or visit the [LinkedIn profile](https://www.linkedin.com/in/nich-kunz/).
