@@ -20,7 +20,6 @@ export default function App() {
 	const [neighbors, setNeighbors] = useState([]);
 	const storageToken = localStorage.getItem("token");
 	const [token, setToken] = useState(storageToken);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (token) {
@@ -32,7 +31,6 @@ export default function App() {
 				.then(() => {
 					setIsLoaded(true);
 					setLoggedIn(true);
-					navigate("/");
 				})
 				.catch(() => localStorage.removeItem("token"));
 		} else {
