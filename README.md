@@ -29,6 +29,8 @@ To explore the live site and create an account, visit [Helping Neighbors](https:
 - Node.js
 - KNEX orm
 
+[See Backend Repo Here](https://github.com/ntkunz/hn_db)
+
 ## Contact
 
 For any inquiries or feedback, please feel free to contact the project owner at [mrnicholaskunz@gmail.com](mailto:mrnicholaskunz@gmail.com) or visit the [LinkedIn profile](https://www.linkedin.com/in/nich-kunz/).
