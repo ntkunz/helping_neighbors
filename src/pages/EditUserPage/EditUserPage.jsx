@@ -40,11 +40,11 @@ export default function EditUserPage({
 		let newExchanges = "";
 		user.barters.forEach((barter) => {
 			if (barter.offer === 1) {
-				if (newOffers !== "") newOffers += purify(", " + barter.skill);
-				else newOffers += purify(barter.skill);
+				if (newOffers !== "") newOffers += purify(", " + barter.skill).trim();
+				else newOffers += purify(barter.skill).trim();
 			} else {
-				if (newExchanges !== "") newExchanges += purify(", " + barter.skill);
-				else newExchanges += purify(barter.skill);
+				if (newExchanges !== "") newExchanges += purify(", " + barter.skill).trim();
+				else newExchanges += purify(barter.skill).trim();
 			}
 		});
 		setOffers(newOffers.trim().replace(/,$/, ""));
@@ -106,11 +106,11 @@ export default function EditUserPage({
 		const exchangesSplit = exchanges.split(",");
 		const skillsArray = [
 			...offersSplit.map((offer) => ({
-				skill: purify(offer),
+				skill: purify(offer).trim(),
 				offer: true, // Indicate it as an offer
 			})),
 			...exchangesSplit.map((desire) => ({
-				skill: purify(desire),
+				skill: purify(desire).trim(),
 				offer: false, // Indicate it as a desire
 			})),
 		];
