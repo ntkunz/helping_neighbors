@@ -55,8 +55,6 @@ export default function App() {
 
   if (!isLoaded) return null;
 
-  console.log("neighbors: ", Neighbors);
-
   return (
     <div className="App">
       <Header
@@ -111,6 +109,7 @@ export default function App() {
                   setNeighbors={setNeighbors}
                   setUser={setUser}
                   setLoggedIn={setLoggedIn}
+                  setIsLoaded={setIsLoaded}
                 />
               }
             />

@@ -10,6 +10,7 @@ export default function EditUserPage({
   setNeighbors,
   setUser,
   setLoggedIn,
+  setIsLoaded,
 }) {
   const navigate = useNavigate();
 
@@ -135,9 +136,14 @@ export default function EditUserPage({
 
     try {
       makeApiCall("PUT", "users", editUserData, true).then((editedUser) => {
-        setUser(editedUser);
-        navigate("/");
-      });
+          setUser(editedUser);
+          // Set loaded to false to prevent neighbors page from trying to render empty neighbors
+          setIsLoaded(false);
+          setNeighbors([]);
+          // remove token to trigger re-fetch of neighbors from App page with updated user information
+          localStorage.removeItem("token");
+          navigate("/");
+        });
     } catch (error) {
       setErrorMessage("Error editing user, please try again.");
       setErrorActive(true);

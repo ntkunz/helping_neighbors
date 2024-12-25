@@ -129,7 +129,7 @@ export default function NewUserPage({ setToken }) {
     // TODO: reinstate status check when backend adjusted to account for fetch not seeting status 
     if (newEmail.includes("User found with email")) {  
     // if (newEmail.status === 202) {
-      setErrorMessage("Invalid email, email may already be in use");
+      setErrorMessage("Invalid email, may already be in use");
       setErrorActive(true);
       setApiCalled(false);
       return;
@@ -211,22 +211,20 @@ export default function NewUserPage({ setToken }) {
     };
 
     try {
+      // TODO: Await all calls before writing to database
       const newUser = await makeApiCall("POST", "users", newUserData);
-      // TODO: Add skills in original request to server instead of second request
       await makeApiCall("POST", `userskills`, { user_id: userId, skills: skillsArray });
-      // await addSkills(skillsArray, userId);
       const newUserToken = newUser.token;
-      // TODO: Send img in first request to users instead of second request
-      if (img !== null && img !== "default") {
-        await submitImage(userId, newUserToken, img);
-      }
+      // Removed temporarily to refactor image upload
+      // if (img !== null && img !== "default") {
+      //   await submitImage(userId, newUserToken, img);
+      // }
       setToken(newUserToken);
       navigate("/");
     } catch (err) {
       setErrorMessage("Error creating new user");
       setErrorActive(true);
       setApiCalled(false);
-      console.log("Error creating new user" + err);
     }
   }
 
@@ -431,7 +429,8 @@ export default function NewUserPage({ setToken }) {
             One or two words for each thing you'd like to barter for, separated
             by commas
           </p>
-          <label className="new__label upload">
+          {/* Image upload disabled for refactor to use netlify blobs for image storage */}
+          {/* <label className="new__label upload">
             Upload a profile picture
             <input
               type="file"
@@ -443,7 +442,7 @@ export default function NewUserPage({ setToken }) {
             <button className="new__default-img-btn" onClick={removeImage}>
               Use default image
             </button>
-          </label>
+          </label> */}
           {errorActive && <p className="new__error">{errorMessage}</p>}
           {apiCalled && <p className="new__in-progress">{errorMessage}</p>}
           <button
