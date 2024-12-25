@@ -1,6 +1,8 @@
 import { get } from "./api";
+import { makeApiCall } from "./api";
 
 export default async function fetchNeighbors() {
-	const getNeighbors = await get("users");
-	return getNeighbors.data.neighbors;
+	// const neighbors = await get("users");
+	// return neighbors.neighbors;
+	return await makeApiCall("GET", "users/neighbors", null, true);
 }
