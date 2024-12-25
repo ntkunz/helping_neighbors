@@ -4,8 +4,6 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import purify from "../../utils/purify";
 import getNewUserGeo from "../../utils/getNewUserGeo";
-// import addSkills from "../../utils/addSkills";
-import submitImage from "../../utils/submitImage";
 import validateEmail from "../../utils/validateEmail";
 import {
   passwordLength,
@@ -15,7 +13,6 @@ import {
   passwordContainsSpecialCharacter,
   passwordsMatch,
 } from "../../utils/validatePassword";
-import handleImageFileChange from "../../utils/handleImageFileChange";
 import { makeApiCall } from "../../utils/api";
 
 export default function NewUserPage({ setToken }) {
@@ -228,21 +225,22 @@ export default function NewUserPage({ setToken }) {
     }
   }
 
-  const handleImageChange = (e) => {
-    handleImageFileChange(
-      e,
-      setImg,
-      setErrorMessage,
-      setErrorActive,
-      setApiCalled
-    );
-  };
+  // Removed temporarily to refactor image upload
+  // const handleImageChange = (e) => {
+  //   handleImageFileChange(
+  //     e,
+  //     setImg,
+  //     setErrorMessage,
+  //     setErrorActive,
+  //     setApiCalled
+  //   );
+  // };
 
-  const removeImage = (e) => {
-    e.preventDefault();
-    setImg(null);
-    document.getElementById("image-input").value = "";
-  };
+  // const removeImage = (e) => {
+  //   e.preventDefault();
+  //   setImg(null);
+  //   document.getElementById("image-input").value = "";
+  // };
 
   return (
     <div className="new">
